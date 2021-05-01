@@ -22,7 +22,7 @@
     <body class="font-sans antialiased">
      <div>
          <div id="theOneModal_HideOnPageLoadHacks" class="hidden">                                                      {{--  x-cloak wasn't hiding the modal on pageload, as expected, so class='hidden' is here.  Yuck. HideOnPageLoadHacks--}}
-         @livewire('the-modal-box')
+         @livewire('tassy::livewire.the-modal-box')
          </div>
     </div>
 

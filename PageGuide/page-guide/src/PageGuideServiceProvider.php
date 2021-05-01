@@ -12,6 +12,8 @@ use TallAndSassy\PageGuide\Components\Sidenav;
 use TallAndSassy\PageGuide\Http\Controllers\PageGuideController;
 use TallAndSassy\PageGuide\Components\Lepage;
 use TallAndSassy\PageGuide\Components\LeSwappableChunk;
+use TallAndSassy\PageGuide\Http\Livewire\DoModal;
+use TallAndSassy\PageGuide\Http\Livewire\TheModalBox;
 
 class PageGuideServiceProvider extends ServiceProvider
 {
@@ -161,6 +163,8 @@ class PageGuideServiceProvider extends ServiceProvider
         \Livewire\Livewire::component('tassy::livewire.le-swappable-chunk', LeSwappableChunk::class);
         \Livewire\Livewire::component('tassy::livewire.bobby',  Bobby::class);
 
+        \Livewire\Livewire::component('tassy::livewire.do-modal',  DoModal::class);
+        \Livewire\Livewire::component('tassy::livewire.the-modal-box',  TheModalBox::class);
 //        \TallAndSassy\PageGuide\MenuTree::singleton('upper')->pushTop(
 //            'admin.bob',
 //            'Bob',
