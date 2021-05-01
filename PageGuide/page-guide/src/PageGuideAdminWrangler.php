@@ -5,6 +5,12 @@ namespace TallAndSassy\PageGuide;
 
 abstract class PageGuideAdminWrangler extends \TallAndSassy\PageGuide\RenderWrangler
 {
+    public static function IsAdminPage(): bool {
+        $url = app('request')->url(); # "http://test-jet.test/p1/p2/p3"
+        $arrUrl = explode('/', $url);
+        $p1 = $arrUrl[4] ?? '';
+        return ($p1 == 'admin');
+    }
     public static function getKeyFromUrl(): string
     {
         $url = app('request')->url(); # "http://test-jet.test/p1/p2/p3"
