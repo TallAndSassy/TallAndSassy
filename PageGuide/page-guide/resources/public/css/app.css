@@ -1,0 +1,12 @@
+/* MUST: add entry in /webpack.mix.js, mirroring whatever is done for /resources/css/app.css, something like:
+    .postCss('modules/TallAndSassy/page-guide/resources/public/css/app.css', 'public/css', [
+        require('postcss-import'),
+        require('tailwindcss'),
+    ])
+ */
+
+/* Do not show > reveal */
+
+details > summary.jDetails_summary {
+    list-style: none;
+}

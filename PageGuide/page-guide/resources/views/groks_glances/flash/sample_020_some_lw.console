@@ -1,0 +1,3 @@
+# So, you want to flash something. Make a controller that
+# does something useful, like respond to a click
+php artisan make:livewire Demo/DemoFlashOnClick

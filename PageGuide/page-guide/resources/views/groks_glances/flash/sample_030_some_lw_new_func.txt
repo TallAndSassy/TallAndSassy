@@ -1,0 +1,7 @@
+
+// Add this, say, to newly created controller 'resources/views/livewire/demo/demo-flash-on-click.blade.php'
+public function doClick() {
+    // This does the actual flash message
+    flash('Your request was successful2!')->success()->livewire($this);
+}
+
