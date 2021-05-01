@@ -19,7 +19,7 @@
               $firstLeafText_cssClasses = "pl-2 pt-0.5";
               $secondLeaf_cssClasses  = "$linkFontColor_cssClasses        $linkFocus_cssClasses group flex items-center ml-8 px-2 py-1 text-sm leading-5 rounded-md  ";
               $secondBreak_cssClasses = "$placeholderFontColor_cssClasses ml-10   text-base font-bold ";
-              $thirdLeaf_cssClasses   = "$linkFontColor_cssClasses        $linkFocus_cssClasses ml-13  ";
+              $thirdLeaf_cssClasses   = "$linkFontColor_cssClasses        $linkFocus_cssClasses ml-12  ";
               $IconSizingClasses_Default = 'beIconWrapper w-6 h-6';
               //$IconSizingClasses = $menuEntry['IconSizingClasses'] ? $menuEntry['IconSizingClasses'] : $IconSizingClasses_Default;
               $icon_cssClasses = "topLevelNavIcon  $placeholderFontColor_cssClasses ";
