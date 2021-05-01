@@ -8,7 +8,8 @@ abstract class PageGuideAdminWrangler extends \TallAndSassy\PageGuide\RenderWran
     public static function IsAdminPage(): bool {
         $url = app('request')->url(); # "http://test-jet.test/p1/p2/p3"
         $arrUrl = explode('/', $url);
-        $p1 = $arrUrl[4] ?? '';
+        $p1 = $arrUrl[3] ?? '';
+
         return ($p1 == 'admin');
     }
     public static function getKeyFromUrl(): string
