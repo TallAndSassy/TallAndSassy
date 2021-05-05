@@ -4,7 +4,8 @@ return [
     'DoSamples' => false,
     'DoAbout' => false,
     'DoConfig' => false,
-    'DoDashboard' => false,
+    'DoSampleDashboard' => false,
+    'DoSampleLibraryMaybePremature' => false,
     'DoHelp' => false,
     'DefaultSubSlug' => 'config',
 ];
