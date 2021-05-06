@@ -98,7 +98,7 @@ abstract class PageGuideAdminController_Base extends \Illuminate\Routing\Control
     }
 
     #abstract public function getBodyView(string $subLevels) :  \Illuminate\View\View;
-    public function getBodyView(string $subLevels) : \Illuminate\View\View
+    public function getBodyView(string $subLevels) : \Illuminate\View\View|string
     {
         return view(static::viewRef);
     }
