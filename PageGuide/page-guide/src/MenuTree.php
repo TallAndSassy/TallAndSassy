@@ -70,6 +70,9 @@ class MenuTree # implements #\Iterator
         return $this;
     }
 
+    public function pushLinkViaMenuInterface(MenuItem_Vlto $menuish): self {
+        return $this->pushLink(handle: $menuish->handle, Label: $menuish->Label, url:$menuish->url);
+    }
     public function pushLink(string $handle, string $Label, string $url)
     {
         $this->asrMenus[$handle] = [

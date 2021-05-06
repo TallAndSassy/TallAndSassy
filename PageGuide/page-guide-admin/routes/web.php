@@ -32,3 +32,15 @@ Route::middleware(['auth:sanctum', 'verified'])->get(
     '/admin/config/{sublevels?}',
     [\TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\ConfigController::class, 'getFrontView']
 )->name('admin/config');
+
+
+if (config('tassy.admin.DoSamples')) {
+    Route::middleware(['auth:sanctum', 'verified'])
+        #->get('/admin/bob/{sublevels?}', 'TallAndSassy\PageGuide\Http\Controllers\Admin\BobController@getFrontView') // syntax works
+        ->get(
+            '/admin/bob/{sublevels?}',
+            //[\TallAndSassy\PageGuide\Http\Controllers\Admin\BobController::class, 'getFrontView'] // syntax works
+            [\TallAndSassy\PageGuideAdmin\Http\Controllers\BobController::class, 'getFrontView'] // syntax works w/ use Statement
+        )
+        ->where('sublevels', '.*');
+}

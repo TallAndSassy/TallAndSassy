@@ -183,6 +183,7 @@ class PageGuideServiceProvider extends ServiceProvider
 
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__ . '/../config/tassy/app-versioning.php', 'tassy.app-versioning');
         $this->mergeConfigFrom(__DIR__ . '/../config/tassy/page-guide.php', 'tassy.page-guide');
         $this->mergeConfigFrom(__DIR__ . '/../config/tassy/app-branding.php', 'tassy.app-branding');
     }

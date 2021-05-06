@@ -5,8 +5,11 @@ namespace TallAndSassy\PageGuideAdmin;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base;
+use TallAndSassy\PageGuideAdmin\Http\Controllers\BobController;
+
 #use TallAndSassy\PageGuideAdmin\Commands\PageGuideAdminCommand;
-use TallAndSassy\PageGuideAdmin\Http\Controllers\PageGuideAdminController;
+#use TallAndSassy\PageGuideAdmin\Http\Controllers\PageGuideAdminController;
 
 class PageGuideAdminServiceProvider extends ServiceProvider
 {
@@ -92,7 +95,7 @@ class PageGuideAdminServiceProvider extends ServiceProvider
                                 }
                             );
 
-                            // prefixed url to blade view
+                            // prefixed path to blade view
                             Route::get(
                                 '/TallAndSassy/PageGuideAdmin/sample_blade',
                                 function () {
@@ -103,7 +106,7 @@ class PageGuideAdminServiceProvider extends ServiceProvider
                             // prefixed url to controller
                             Route::get(
                                 '/TallAndSassy/PageGuideAdmin/controller',
-                                [PageGuideAdminController::class, 'sample']
+                                [BobController::class, 'sample']
                             );
                         }
                         // Prefix Route Samples -END-

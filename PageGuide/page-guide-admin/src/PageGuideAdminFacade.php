@@ -5,7 +5,7 @@ namespace TallAndSassy\PageGuideAdmin;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \TallAndSassy\PageGuideAdmin\PageGuideAdminController
+ *
  */
 class PageGuideAdminFacade extends Facade
 {

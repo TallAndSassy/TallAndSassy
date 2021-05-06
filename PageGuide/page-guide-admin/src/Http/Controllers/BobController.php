@@ -10,6 +10,6 @@ class BobController extends PageGuideAdminController_Base
     public static string $title = 'Bob';
     public function getBodyView(string $subLevels) : \Illuminate\View\View
     {
-        return view(static::viewRef, ['LastName' => "Deis"]);
+        return view(static::viewRef, ['LastName' => "Deis2"]);
     }
 }

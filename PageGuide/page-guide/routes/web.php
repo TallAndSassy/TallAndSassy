@@ -18,14 +18,6 @@ Route::get('/admin', fn () => redirect('/admin/default'));
 # works: Route::middleware(['auth:sanctum', 'verified'])->get('/admin/bob', fn () => 'hi');
 # works Route::middleware(['auth:sanctum', 'verified'])->get('/admin/bob', function () { return 'bye';});
 # works (but shows nothing, as expected) Route::middleware(['auth:sanctum', 'verified'])->get('/admin/bob', function (BobController $b) { return 'b';});
-Route::middleware(['auth:sanctum', 'verified'])
-    #->get('/admin/bob/{sublevels?}', 'TallAndSassy\PageGuide\Http\Controllers\Admin\BobController@getFrontView') // syntax works
-    ->get(
-        '/admin/bob/{sublevels?}',
-        //[\TallAndSassy\PageGuide\Http\Controllers\Admin\BobController::class, 'getFrontView'] // syntax works
-        [\TallAndSassy\PageGuideAdmin\Http\Controllers\BobController::class, 'getFrontView'] // syntax works w/ use Statement
-    )
-    ->where('sublevels', '.*');
 
 
 
