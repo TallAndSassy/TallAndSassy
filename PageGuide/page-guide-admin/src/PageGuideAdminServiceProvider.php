@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base;
-use TallAndSassy\PageGuideAdmin\Http\Controllers\BobController;
+use TallAndSassy\PageGuideAdmin\Http\Controllers\Bob_outputByBlade_Controller;
 
 #use TallAndSassy\PageGuideAdmin\Commands\PageGuideAdminCommand;
 #use TallAndSassy\PageGuideAdmin\Http\Controllers\PageGuideAdminController;
@@ -106,7 +106,7 @@ class PageGuideAdminServiceProvider extends ServiceProvider
                             // prefixed url to controller
                             Route::get(
                                 '/TallAndSassy/PageGuideAdmin/controller',
-                                [BobController::class, 'sample']
+                                [Bob_outputByBlade_Controller::class, 'sample']
                             );
                         }
                         // Prefix Route Samples -END-

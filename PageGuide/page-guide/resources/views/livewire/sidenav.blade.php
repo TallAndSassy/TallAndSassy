@@ -35,6 +35,7 @@
                 history.pushState(null, null, url);
             });
             console.log('done');
+
         });
 
         function urlChange(newUrl) {
@@ -54,7 +55,9 @@
             location.reload();
         }
 
-
+        window.Spruce.store('sprucetest_modal', {
+            open: 'login',
+        });
     </script>
 
     @php

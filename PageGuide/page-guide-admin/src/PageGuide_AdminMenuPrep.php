@@ -114,19 +114,21 @@ final class PageGuide_AdminMenuPrep
             );
 
         MenuTree::singleton('upper')->pushTop(
-            'admin.bob',
-            'Bob',
+            'admin.bob_string',
+            'Bob > String',
             null,
             'heroicon-o-question-mark-circle',
-            '/admin/bob'
+            '/admin/bob_string'
         );
         MenuTree::singleton('upper')->pushTop(
-            'admin.bobby',
-            'Bobby',
+            'admin.bob_blade',
+            'Bob > blade',
             null,
             'heroicon-o-question-mark-circle',
-            '/admin/bobby'
+            '/admin/bob_blade'
         );
+
+
 
     }
 

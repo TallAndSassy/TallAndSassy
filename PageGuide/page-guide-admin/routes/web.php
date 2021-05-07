@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Route;
 Route::get('/admin', fn() => redirect('/admin/'.config('tassy.admin.DefaultSubSlug')));
 
 
@@ -38,9 +38,17 @@ if (config('tassy.admin.DoSamples')) {
     Route::middleware(['auth:sanctum', 'verified'])
         #->get('/admin/bob/{sublevels?}', 'TallAndSassy\PageGuide\Http\Controllers\Admin\BobController@getFrontView') // syntax works
         ->get(
-            '/admin/bob/{sublevels?}',
-            //[\TallAndSassy\PageGuide\Http\Controllers\Admin\BobController::class, 'getFrontView'] // syntax works
-            [\TallAndSassy\PageGuideAdmin\Http\Controllers\BobController::class, 'getFrontView'] // syntax works w/ use Statement
+            '/admin/bob_string/{sublevels?}',
+            [\TallAndSassy\PageGuideAdmin\Http\Controllers\Bob_outputByReturnedString_Controller::class, 'getFrontView'] // syntax works w/ use Statement
         )
         ->where('sublevels', '.*');
+
+    Route::middleware(['auth:sanctum', 'verified'])
+        #->get('/admin/bob/{sublevels?}', 'TallAndSassy\PageGuide\Http\Controllers\Admin\BobController@getFrontView') // syntax works
+        ->get(
+            '/admin/bob_blade/{sublevels?}',
+            [\TallAndSassy\PageGuideAdmin\Http\Controllers\Bob_outputByBlade_Controller::class, 'getFrontView'] // syntax works w/ use Statement
+        )
+        ->where('sublevels', '.*');
+
 }

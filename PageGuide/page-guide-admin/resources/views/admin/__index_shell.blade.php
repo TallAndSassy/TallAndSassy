@@ -209,7 +209,7 @@
 
                         console.log(' -- and just updated the browser url to: '+newUrl);
                         history.replaceState(null, null, newUrl); //https://stackoverflow.com/a/3503206/93933
-                    } else if (eenumUrlType == 'page') {
+                    } else if (enumUrlType == 'page') {
                         console.log(' -- so swapping url to...');
                     }
 
