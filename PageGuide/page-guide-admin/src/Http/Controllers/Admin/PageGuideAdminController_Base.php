@@ -74,7 +74,12 @@ abstract class PageGuideAdminController_Base extends \Illuminate\Routing\Control
             #dd($arrParams);
 
             #assert(isset($arrParams[$i + 1]), __FILE__.__LINE__."$subLevels arrParams must be key/value set at i($i) '".implode('-', $arrParams)."' count(numParams):".$numParams."vs ".$numParams);
-            $asrParams[$arrParams[$i]] = $arrParams[$i + 1];
+            if ( isset($arrParams[$i+1])) {
+                $asrParams[$arrParams[$i]] = $arrParams[$i + 1];
+            } else {
+                $asrParams[$arrParams[$i]] = null;
+            }
+
         }
 
 
@@ -84,7 +89,12 @@ abstract class PageGuideAdminController_Base extends \Illuminate\Routing\Control
     // showAdminFronts is called by the routes/web.php
     public function getFrontView(string $subLevels = '')
     {
-        $asrParams = [];//static::subLevels2asrParams($subLevels);
+        $subLevels = 'admin/'.$subLevels;
+        $asrParams = static::subLevels2asrParams($subLevels);
+        if (isset($asrParams['fetchy']) && $asrParams['fetchy'] == 1) {
+            return static::getBodyView($subLevels);
+        }
+
         return view("tassy::admin.__index_shell", ['viewRef' => static::viewRef,'asrParams' => $asrParams, 'ControllerName' => get_called_class(), 'controllerObj' => $this]);
         //            if ($isBodyOnly) {
         //                return 'body from AdminController';
@@ -100,6 +110,7 @@ abstract class PageGuideAdminController_Base extends \Illuminate\Routing\Control
     #abstract public function getBodyView(string $subLevels) :  \Illuminate\View\View;
     public function getBodyView(string $subLevels) : \Illuminate\View\View|string
     {
+        // maybe this should be 5/21' static::getBodyView($sublevels)
         return view(static::viewRef);
     }
 

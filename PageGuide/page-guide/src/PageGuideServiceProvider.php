@@ -23,14 +23,14 @@ class PageGuideServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes(
-                [
-                    __DIR__ . '/../config/page-guide.php' => config_path('page-guide.php'),
+                [   // todo: add the stub
+                    __DIR__ . '/../config/tassy/app-branding.stub.php' => config_path('/tassy/app-branding.php'),
                 ],
                 'config'
             );
 
             $this->publishes(
-                [
+                [ // todo: make friendlier?
                     __DIR__ . '/../resources/views' => base_path('resources/views/vendor/page-guide'),
                 ],
                 'views'
