@@ -6,3 +6,4 @@
         <span>[spinner for {{$tabName}}]</span>
     @endif
 </div>
+
