@@ -1,5 +1,44 @@
 @props(['active'])
+@once
+    <script type="text/javascript">
+        // Url tools
+        // This should be higher in the stack
+        function addOrUpdateUrlParam(existingUrl, paramName, newValue) {
+            let addr = new URL(existingUrl); //https://developer.mozilla.org/en-US/docs/Web/API/URL_API
+            addr.searchParams.set(paramName, newValue);
+            return addr.toString();
+        }
+        // This should be higher in the stack
+        function _urlChangedViaAjaxSoUpdateBrowserSoFeelsLikePageChange(newUrl) {
+            console.log('pushing to browser history: ' + newUrl);
+            history.pushState(null, null, newUrl);
+            console.log('NewUrl: '+newUrl);
+        }
+        // This should be higher in the stack
+        window.onpopstate = function (event) {
+            // https://www.quanzhanketang.com/jsref/met_loc_reload.html
+            // https://developer.mozilla.org/en-US/docs/Web/API/History_API
+            // https://stackoverflow.com/questions/29500484/window-onpopstate-is-not-working-nothing-happens-when-i-navigate-back-to-page
+            // Fix back button 7/20' https://stackoverflow.com/questions/15394156/back-button-in-browser-not-working-properly-after-using-pushstate-in-chrome
+            //
+            location.reload();
+        }
+    </script>
+    <script>
+        // Tab specific
+        function updateUrlToReflectNewTabClick(theSlugForThisNewTab) {
+            // Put new url in browser, even though we loaded via ajax: https://jquerytraining.com/update-the-value-of-url-query-string-in-javascript/
+            const existingUrl=window.location.href ;
+            var updatedurl = addOrUpdateUrlParam(existingUrl, '{{\StZoo\StFrame\TabsProducer_SimpleImplementation::$PAGE_TAB_KEY}}', theSlugForThisNewTab);
+            _urlChangedViaAjaxSoUpdateBrowserSoFeelsLikePageChange(updatedurl);
+        }
+    </script>
+@endonce
 
+{{--JJ - you left off having _just_ copied those above scripts from StTabs.blade.php....--}}
+{{--you want to urls to reflect tab navigation.--}}
+{{--Note: These scripts are in the Tabs component. We probably want to move them into app.js--}}
+{{--    so that they could still work from a modal.--}}
 <div x-data="{
        activeTab: '{{$active}}',
        tabs: [],
@@ -33,7 +72,7 @@
     <div>
         <template x-for="(tab, index) in tabHeadings" :key="index">
             <button  x-text="tab"
-                     @click="activeTab = tab; toggleTabs();"
+                     @click="activeTab = tab; toggleTabs(); updateUrlToReflectNewTabClick(tab)"
                      class="whitespace-no-wrap
                                         px-3 py-2
                                         font-medium text-sm leading-5 text-gray-600 no-underline
