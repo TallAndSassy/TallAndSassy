@@ -68,3 +68,21 @@ Get resource/public/css/app.css to work via webpack
         ])
 
 
+webpack.mix.js (something like this...)
+mix.js([
+'resources/js/app.js',
+'modules/TallAndSassy/Ui/assets/js/app.js' // <-- Import module js.  There is definetly a better way
+], 'public/js')
+.postCss('resources/css/app.css', 'public/css', [
+require('postcss-import'),
+require('tailwindcss'),
+])
+.postCss('modules/TallAndSassy/PageGuide/page-guide/resources/public/css/app.css', 'public/css', [
+require('postcss-import'),
+require('tailwindcss'),
+])
+.postCss('modules/TallAndSassy/PageGuide/page-guide-admin/resources/public/css/app.css', 'public/css', [
+require('postcss-import'),
+require('tailwindcss'),
+]) // We can probably combine all module .css into one array, like in the mix.js above. But, there is also an probably and automated way, too.
+;

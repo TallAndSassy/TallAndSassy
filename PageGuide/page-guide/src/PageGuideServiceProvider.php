@@ -54,9 +54,9 @@ class PageGuideServiceProvider extends ServiceProvider
 
 
 
-            // Publishing assets.
+            // Publishing resources.
             /*$this->publishes([
-                __DIR__.'/../resources/assets' => public_path('tallandsassy/page-guide'),
+                __DIR__.'/../resources/resources' => public_path('tallandsassy/page-guide'),
             ], 'grok.views');*/
 
             // Publishing the translation files.

@@ -21,7 +21,7 @@ class UiGlances_ServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             // TODO-Before 1.0: publish give useful config stubs
             // TODO-Before 1.0: publish give useful migrations stuff
-            // TODO-Before 1.0: publish resources and assets
+            // TODO-Before 1.0: publish resources and resources
             // TODO-Before 1.0: publish translation files
             // TODO-Before 1.0: show available commands, if any
         }
