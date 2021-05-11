@@ -5,7 +5,7 @@
     </x-slot>
     <x-slot name="footer">
         <x-tassy-ui::button
-            type='cancel'
+            enumStyle='cancel'
             @click="show = false">Go Away</x-tassy-ui::button>
     </x-slot>
 </x-tassy-ui::modal_blade>

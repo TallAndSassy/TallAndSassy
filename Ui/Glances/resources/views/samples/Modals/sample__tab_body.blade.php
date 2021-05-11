@@ -7,7 +7,7 @@
 
     <x-tassy-ui::button
         onclick="$modals.showBladeModalNamed('sample-modal')"
-        type="primary"
+        enumStyle="primary"
     >
         Click me!
     </x-tassy-ui::button>
