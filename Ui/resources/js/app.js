@@ -1,3 +1,4 @@
+// ----------------------------- Mostly for Tabs - -BEGIN- -------------------------------------------------------------
 window.addOrUpdateUrlParam = function (existingUrl, paramName, newValue) {
     let addr = new URL(existingUrl); //https://developer.mozilla.org/en-US/docs/Web/API/URL_API
     addr.searchParams.set(paramName, newValue);
@@ -18,3 +19,18 @@ window.onpopstate = function (event) {
     //
     location.reload();
 }
+
+// ----------------------------- Mostly for Tabs - -END- ---------------------------------------------------------------
+
+
+// ----------------------------- Mostly for Modal - -BEGIN- ------------------------------------------------------------
+// https://laracasts.com/series/modals-with-the-tall-stack/episodes/9
+window.$modals = {
+    showBladeModalNamed(name) {
+        console.log('in showModalNamed. dispatching custom event "modal" with detail.name=>'+name);
+        window.dispatchEvent(new CustomEvent('modal', {
+            detail: name
+        }));
+    }
+}
+// ----------------------------- Mostly for Modal - -END- --------------------------------------------------------------

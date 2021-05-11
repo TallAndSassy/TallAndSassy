@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base;
 use TallAndSassy\PageGuideAdmin\Http\Controllers\Bob_outputByBlade_Controller;
+use TallAndSassy\Ui\Glances\Samples\Admin_Init;
 use TallAndSassy\Ui\Glances\Samples\TabSample1__Page;
 use TallAndSassy\Ui\Glances\Samples\TabSamples;
 
@@ -57,9 +58,8 @@ class UiGlances_ServiceProvider extends ServiceProvider
 
 
         // Samples
-        if (config('tassy.ui-glances.DoSamples')) {
-            TabSample1__Page::Init();
-        }
+        Admin_Init::Init();
+
 
     }
 
