@@ -24,7 +24,7 @@
             <main class="px-6 mb-4">
                 {{$body}}
             </main>
-            <footer class="flex justify-end px-6 mt-6 bg-gray0200 rounded-b-md">
+            <footer class="flex justify-end pt-2 px-6 mt-6 bg-gray-200 rounded-b-md ">
                 {{$footer}}
             </footer>
         </div>

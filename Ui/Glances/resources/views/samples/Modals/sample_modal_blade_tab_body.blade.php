@@ -7,7 +7,7 @@
 
     <x-tassy-ui::button
         onclick="$modals.showBladeModalNamed('sample-modal')"
-        enumStyle="primary"
+        enumStyle="Primary"
     >
         Click me!
     </x-tassy-ui::button>
@@ -42,3 +42,5 @@
 
     {{--    Look at http://127.0.0.1:8002/grok/ElegantTechnologies/Grok/grok in Teamsy10--}}
 </div>
+{{--        Put modals at bottom of page avoid issues  --}}
+@include('tassy-ui::samples.Modals.sample-modal-blade')
