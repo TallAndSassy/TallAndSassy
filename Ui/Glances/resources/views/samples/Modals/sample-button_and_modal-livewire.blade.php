@@ -8,7 +8,9 @@
     Click me for livewire modal (show:{{$showModal ? 1 : 0}})!
 </x-tassy-ui::button>
 
-
+@php
+//You left about to move LiveWire into Ui
+@endphp
 <x-tassy-ui::modal_livewire name="sample-modal">
     <x-slot name="title">A Sample Modal from livewire</x-slot>
     <x-slot name="body">
