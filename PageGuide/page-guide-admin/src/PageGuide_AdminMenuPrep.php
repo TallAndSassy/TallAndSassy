@@ -30,7 +30,7 @@ final class PageGuide_AdminMenuPrep
         if (config('tassy.admin.DoConfig')) {
             self::InjectConfigMenu();
         }
-        if (config('tassy.admin.DoConfig')) {
+        if (config('tassy.admin.DoAbout')) {
             self::InjectAboutMenu();
         }
 
