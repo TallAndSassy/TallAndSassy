@@ -1,12 +1,16 @@
 <?php
 
-namespace TallAndSassy\Ui\Glances\Components;
+namespace TallAndSassy\Ui\Glances\Samples\Modals;
 
 use Livewire\Component;
 
-class ModalLivewire extends Component
+class SampleButtonModal_LivewireController extends Component
 {
     public  $showModal = false;
+
+    public static function SelfRegister(): void {
+        \Livewire\Livewire::component('tassy-ui::Samples.Modals.SampleButtonModal_CustomAlias',  self::class);
+    }
     public function handleGoToModal():void {
         $this->showModal = true;
     }
@@ -18,6 +22,6 @@ class ModalLivewire extends Component
     }
     public function render()
     {
-        return view('tassy-ui::samples.Modals.sample-button_and_modal-livewire');
+        return view('tassy-ui::samples.Modals.sample_modal_livewire_buttonAndModal');
     }
 }

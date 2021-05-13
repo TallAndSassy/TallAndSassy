@@ -1,3 +1,6 @@
+{{--
+This works with the livewire component: \Livewire\Livewire::component('tassy-ui::Samples.Modals.SampleButtonModal_CustomAlias',  self::class);
+--}}
 <div>
     <x-tassy-ui::button
         wire:click="handleGoToModal()"

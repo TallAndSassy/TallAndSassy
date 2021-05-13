@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 #use TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base;
 use TallAndSassy\PageGuideAdmin\Http\Controllers\Bob_outputByBlade_Controller;
-use TallAndSassy\Ui\Glances\Components\ModalLivewire;
+#use TallAndSassy\Ui\Glances\Components\ModalLivewire;
 use TallAndSassy\Ui\Glances\Samples\Admin_Init;
+use TallAndSassy\Ui\Glances\Samples\ModalLivewire;
+
 #use TallAndSassy\Ui\Glances\Samples\TabSample1__Page;
 #use TallAndSassy\Ui\Glances\Samples\TabSamples;
 
@@ -54,7 +56,7 @@ class UiGlances_ServiceProvider extends ServiceProvider
         // make http://test-jet.test/staff/TallAndSassy/PageGuideAdmin/string work
 
         // TODO: Register your livewire components that live in this package here:
-        \Livewire\Livewire::component('tassy-ui::modal-livewire',  ModalLivewire::class);
+
         #\Livewire\Livewire::component('tassy-ui::tab',  \TallAndSassy\GrokLivewireJet\Components\DemoUiChunks\AANothing::class);
 
 

@@ -15,7 +15,7 @@
             @include('tassy-ui::samples/Modals/sample_modal_blade_tab_body')
         </x-tassy-ui::tab>
         <x-tassy-ui::tab name="Modal-Livewire Sample">
-            @include('tassy-ui::samples/Modals/sample_modal_livewire_tab_body')
+            @include('tassy-ui::samples/Modals/sample_modal_livewire__tab_body')
         </x-tassy-ui::tab>
         <x-tassy-ui::tab name="Tabbed Tech Check">
             <div class="border shadow mt-2 p-2 ">
