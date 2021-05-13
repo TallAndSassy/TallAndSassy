@@ -15,6 +15,7 @@ class MenuTree # implements #\Iterator
     #private static string $lastSingletonKey; // ??? needed?
     # private static string $lastTopHandle;
     #private static string $lastChildHandle;
+    public string $handle;
 
 
     //    public function __construct()
@@ -25,6 +26,7 @@ class MenuTree # implements #\Iterator
     {
         if (! isset(static::$mes[$handle])) {
             static::$mes[$handle] = new MenuTree();
+            static::$mes[$handle]->handle = $handle;
         }
 
         #static::$lastSingletonKey = $handle;
@@ -225,9 +227,11 @@ class MenuTree # implements #\Iterator
     */
     public function getHtml(array $arrAttributes = ['class' => '']) : string
     {
+
         return view('tassy::admin.menutree', [
             'menutree' => $this,
             'arrAttributes' => $arrAttributes,
+            'handle'=>$this->handle
         ])->render();
         //        foreach ($this->topMenu as $top) {
         //            $Label = $top['Label'];

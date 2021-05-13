@@ -50,5 +50,22 @@ if (config('tassy.admin.DoSamples')) {
             [\TallAndSassy\PageGuideAdmin\Http\Controllers\Bob_outputByBlade_Controller::class, 'getFrontView'] // syntax works w/ use Statement
         )
         ->where('sublevels', '.*');
+}
 
+if(config('tassy.admin.DoSamples_Side_Blade')) {
+    Route::middleware(['auth:sanctum', 'verified'])
+        ->get(
+            '/admin/sampleTopLeaf_page/{sublevels?}',
+            [\TallAndSassy\PageGuideAdmin\Http\Controllers\Samples\MenuSide\MenuSampe1_outputByBlade_Controller::class, 'getFrontView']
+     //[\TallAndSassy\PageGuideAdmin\Http\Controllers\Bob_outputByBlade_Controller::class, 'getFrontView'] // syntax works w/ use Statement
+            // [\TallAndSassy\PageGuideAdmin\Http\Controllers\Bob_outputByReturnedString_Controller::class, 'getFrontView'] // syntax works w/ use Statement
+            // works: fn() => 'this works but no layout, just this string '
+            // function() {return 'this also works. same as above';}
+            // fn() => view('tassy::samples/menu-side/sample__body') // Works, but again, is whole page
+            // nope fn() => view('tassy::admin/__index_shell', ['viewRef'=>'tassy::samples/menu-side/sample__body', 'asrParams'=>[]]) // loops forever
+            //fn() => view('tassy::samples/menu-side/sample__body') // loops forever
+            //'viewRef' => static::viewRef,'asrParams' => $asrParams,
+            // fn($sublevels) =>PageGuideAdminController_Base::getFrontView(sublevels)
+        )
+        ->where('sublevels', '.*');
 }

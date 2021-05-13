@@ -1,3 +1,4 @@
+{{--INPUT: EnumType Top...--}}
 <div src="vendor/tallandsassy/page-guide/resources/views/admin/menutree.blade.php">
 
     @php
@@ -43,6 +44,13 @@
 
     <nav class=" flex flex-1  {{ $arrAttributes['class']}}">
         <ul class="pt-2 w-full">
+
+            @if ($handle == 'upper')
+                @include('tassy::admin.menu-side-upper-above')
+            @endif
+            @if ($handle == 'lower')
+                @include('tassy::admin.menu-side-lower-above')
+            @endif
             @php $menuKeys = array_keys($menutree->asrMenus);;@endphp
             @for ($i = 0; $i < count($menuKeys); $i++)
                 @php
@@ -156,6 +164,16 @@
                     @php dump([__FILE__,__LINE__,"YIKES:",'i'=>$i, '$key'=>$key, '$menuEntry'=>$menuEntry, 'menutree'=>$menutree]); @endphp
                 @endif
             @endfor
+                @if ($handle == 'upper')
+                    @include('tassy::admin.menu-side-upper-below')
+                    @if(config('tassy.admin.DoSamples_Side_Blade'))
+                        @include('tassy::samples/menu-side/sample_menu')
+                    @endif
+
+                @endif
+                @if ($handle == 'lower')
+                    @include('tassy::admin.menu-side-lower-below')
+                @endif
         </ul>
     </nav>
 </div>
