@@ -4,23 +4,28 @@
         require('tailwindcss'),
     ])
  */
-/* ---- menu-side ---*/
-.liWrapper_1  {
-    @apply pr-0
-}
-.liWrapper_2 {
-    @apply pr-0
-}
-.liWrapper_3 {
-    @apply pr-1 pl-2
-}
+/* ---- menu-side
+JJ 5/21' This is bloat from ealrier - try hard to minimize for things are truly go in css...
+---*/
 .linkFontColor_cssClasses {
-        @apply text-gray-300
-    }
-
-.linkFocus_cssClasses {
-    @apply group flex pr-1 pl-2 rounded-md focus:outline-none focus:bg-gray-700 transition ease-in-out duration-150
+    @apply text-gray-300
 }
+.linkFocus_cssClasses {
+     @apply group flex pr-1 pl-2 rounded-md focus:outline-none focus:bg-gray-700 transition ease-in-out duration-150
+ }
+
+/*.liWrapper_1  {*/
+/*    @apply pr-0*/
+/*}*/
+/*.liWrapper_2 {*/
+/*    @apply pr-0*/
+/*}*/
+/*.liWrapper_3 {*/
+/*    @apply pr-1 pl-2*/
+/*}*/
+
+
+
 
 .picked_classes {
     /*FyiBePickedLink*/

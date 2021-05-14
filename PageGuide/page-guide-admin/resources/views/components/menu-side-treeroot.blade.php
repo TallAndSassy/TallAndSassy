@@ -12,19 +12,7 @@
     <details class="" {{$isActiveRouteUnderMe ? 'open' : ''}}>
         <summary class="jDetails_summary">
             <div class="FYI_subdiv_must_be_here_for_safari_Nov_20 jDetails_summary_subdiv_cssClasses">
-                @if (!empty($svghtml))
-                    <div class="mr-1.5">
-                        {!! $svghtml !!}
-                    </div>
-                @elseif (!empty($iconname))
-                    @php $IconSizingClasses = 'iconsizingclasses' ? 'iconsizingclasses' : 'IconSizingClasses_Default'; @endphp
-
-                    <div class="IconSizingClasses_Default mr-1.5">
-                        @svg($iconname,'icon_cssClasses'.' '.'IconSizingClasses')
-                    </div>
-                @endif
-
-                <div class=" ">{{$label}}</div>
+                {!!  $label !!}
             </div>
         </summary>
         <div class="jDetails_body jDetails_body_cssClasses">
