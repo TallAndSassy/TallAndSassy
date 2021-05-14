@@ -19,8 +19,9 @@
     TreeRootLeafIcn1
 </x-tassy::menu-side-treerootleaf>
 <x-tassy::menu-side-treerootleaf suburl="/admin/help">
-    <div class="mr-1.5">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+    {{--    Pro-Tip: We subdued the icon with a wrapping div color and adjusted the inner svg for h/w-5 (vs 6)--}}
+    <div class="mr-1.5 text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
              stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
