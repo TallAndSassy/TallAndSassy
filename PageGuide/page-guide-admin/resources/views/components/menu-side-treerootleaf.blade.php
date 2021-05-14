@@ -5,7 +5,7 @@
     $pickedClasses_ifOnThisRoute = $isOnThisRoute ? 'picked_classes' : '';
 @endphp
 <li class=' '>
-    <a {!! \TallAndSassy\PageGuide\Components\Lepage::wireSwaplinkInA($suburl) !!} class=" linkFontColor_cssClasses linkFocus_cssClasses {{$isOnThisRoute ? 'font-extrabold text-lg' : ''}} pickedClasses_ifOnThisRoute">
+    <a {!! \TallAndSassy\PageGuide\Components\Lepage::wireSwaplinkInA($suburl) !!} class=" linkFontColor_cssClasses linkFocus_cssClasses {{$isOnThisRoute ? 'font-extrabold text-lg' : ''}} pickedClasses_ifOnThisRoute divNode_cssClasses ">
 {{--        @if (!empty($svghtml))--}}
 {{--            <div class="mr-1.5">--}}
 {{--            {!! $svghtml !!}--}}

@@ -1,5 +1,11 @@
 <x-tassy::menu-side-treerootleaf suburl="/admin/help">
-    treerootleaf
+    TreeRootLeaf NoIcon
+</x-tassy::menu-side-treerootleaf>
+<x-tassy::menu-side-treerootleaf suburl="/admin/help">
+    TreeRootLeaf2
+</x-tassy::menu-side-treerootleaf>
+<x-tassy::menu-side-treerootleaf suburl="/admin/help">
+    TreeRootLeaf3
 </x-tassy::menu-side-treerootleaf>
 
 <x-tassy::menu-side-treerootleaf suburl="/admin/help">
@@ -10,10 +16,28 @@
                   d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
         </svg>
     </div>
-    treerootleaf w/ icn
+    TreeRootLeafIcn1
+</x-tassy::menu-side-treerootleaf>
+<x-tassy::menu-side-treerootleaf suburl="/admin/help">
+    <div class="mr-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+             stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+        </svg>
+    </div>
+    TreeRootLeafIcn2
+</x-tassy::menu-side-treerootleaf>
+<x-tassy::menu-side-treerootleaf suburl="/admin/help">
+    TreeRootLeaf4
+</x-tassy::menu-side-treerootleaf>
+<x-tassy::menu-side-treerootleaf suburl="/admin/help">
+    TreeRootLeaf5
 </x-tassy::menu-side-treerootleaf>
 
+
 <x-tassy::menu-side-divider-at-root-level/>
+
 
 <x-tassy::menu-side-treeroot>
     <x-slot name="label">
@@ -24,7 +48,7 @@
                       d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
             </svg>
         </div>
-        TopNode
+        <div class="italic">TreeRoot</div>
     </x-slot>
 
     <x-tassy::menu-side-treeroot-leaf suburl="/admin/sample_menuside_sub1" label="Sub1"/>
