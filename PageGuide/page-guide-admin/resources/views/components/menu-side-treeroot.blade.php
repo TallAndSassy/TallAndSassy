@@ -11,7 +11,7 @@
 <li class=''>
     <details class="" {{$isActiveRouteUnderMe ? 'open' : ''}}>
         <summary class="jDetails_summary">
-            <div class="FYI_subdiv_must_be_here_for_safari_Nov_20 jDetails_summary_subdiv_cssClasses">
+            <div class="FYI_subdiv_must_be_here_for_safari_Nov_20 divNode_cssClasses ">
                 {!!  $label !!}
             </div>
         </summary>
