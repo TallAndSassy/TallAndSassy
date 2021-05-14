@@ -4,3 +4,65 @@
         require('tailwindcss'),
     ])
  */
+/* ---- menu-side ---*/
+.liWrapper_1  {
+    @apply pr-0
+}
+.liWrapper_2 {
+    @apply pr-0
+}
+.liWrapper_3 {
+    @apply pr-1 pl-2
+}
+.linkFontColor_cssClasses {
+        @apply text-gray-300
+    }
+
+.linkFocus_cssClasses {
+    @apply group flex pr-1 pl-2 rounded-md focus:outline-none focus:bg-gray-700 transition ease-in-out duration-150
+}
+
+.picked_classes {
+    /*FyiBePickedLink*/
+    @apply  bg-gray-500 rounded
+}
+.placeholderFontColor_cssClasses {
+    @apply text-gray-400
+}
+.divNode_cssClasses {
+    @apply linkFontColor_cssClasses        linkFocus_cssClasses no-underline group flex items-center px-2 py-2 text-lg leading-5 font-bold
+}
+.firstLeaf_cssClasses {
+    @apply linkFontColor_cssClasses        linkFocus_cssClasses p-2 text-lg leading-5 font-bold
+}
+.firstLeafText_cssClasses {
+    @apply pl-2 pt-0.5
+}
+.secondLeaf_cssClasses {
+    @apply linkFontColor_cssClasses        linkFocus_cssClasses group flex items-center ml-8 px-2 py-1 text-sm leading-5 rounded-md
+}
+.secondBreak_cssClasses {
+    @apply placeholderFontColor_cssClasses ml-10   text-base font-bold
+}
+.thirdLeaf_cssClasses {
+    @apply linkFontColor_cssClasses        linkFocus_cssClasses ml-12
+}
+.IconSizingClasses_Default {
+    /*FyiBeIconWrapper*/
+    @apply  w-6 h-6
+}
+.icon_cssClasses {
+    /*topLevelNavIcon*/
+    @apply   placeholderFontColor_cssClasses
+}
+.jDetails_summary_cssClasses {
+    /*jDetails_summary*/
+    @apply    cursor-pointer
+}
+.jDetails_summary_subdiv_cssClasses {
+    @apply divNode_cssClasses
+}
+.jDetails_body_cssClasses {
+    @apply ml-0
+}
+

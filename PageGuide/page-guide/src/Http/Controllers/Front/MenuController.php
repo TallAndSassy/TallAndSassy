@@ -17,8 +17,20 @@ class MenuController
                     "routeIs" => "me*",
                 ]
             );
+            // Doesn't seem to show up, not sure why - oh well 5/21'
+            // But we really do want the top nav for front and my pages to be the same
+//            \TallAndSassy\PageGuide\PageGuideMenuWranglerBack::wrangleMe(
+//                "admin",
+//                [
+//                    'name' => __('tassy::PageGuide.AdminLinkText'),
+//                    "url" => "/admin",
+//                    "classes" => "",
+//                    "routeIs" => fn () => 0,
+//                ]
+//            );
 
-        // FYI: 10/20' -
+
+            // FYI: 10/20' -
 
         //            \TallAndSassy\PageGuide\PageGuideMenuWranglerFront::wrangleMe(
             //                "log-out",
