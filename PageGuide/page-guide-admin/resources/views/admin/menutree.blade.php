@@ -42,7 +42,7 @@
         }
     </style>
 
-    <nav class=" flex flex-1  {{ $arrAttributes['class']}}">
+    <nav class=" flex flex-1 w-44 {{ $arrAttributes['class']}}">
         <ul class="pt-2 w-full">
 
             @if ($handle == 'upper')
