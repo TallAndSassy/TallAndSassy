@@ -9,6 +9,16 @@ class MenuController
         $isLoggedIn = (\Illuminate\Support\Facades\Auth::user()) ? true : false;
         if ($isLoggedIn) {
             \TallAndSassy\PageGuide\PageGuideMenuWranglerFront::wrangleMe(
+                "admin",
+                [
+                    'name' => __('tassy::PageGuide.AdminLinkText'),
+                    "url" => "/admin",
+                    "classes" => "",
+                    "routeIs" => "admin*",
+                ]
+            );
+
+            \TallAndSassy\PageGuide\PageGuideMenuWranglerFront::wrangleMe(
                 "me",
                 [
                     'name' => __('tassy::PageGuide.MeLinkText'),
@@ -17,6 +27,7 @@ class MenuController
                     "routeIs" => "me*",
                 ]
             );
+
             // Doesn't seem to show up, not sure why - oh well 5/21'
             // But we really do want the top nav for front and my pages to be the same
 //            \TallAndSassy\PageGuide\PageGuideMenuWranglerBack::wrangleMe(
