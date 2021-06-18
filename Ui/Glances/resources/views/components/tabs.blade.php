@@ -11,7 +11,7 @@ Example: See modules/TallAndSassy/Ui/Glances/resources/views/samples/TabSamples/
 --}}
 
 <div x-data="{
-       activeTab: '{{app('request')->input(\StZoo\StFrame\TabsProducer_SimpleImplementation::$PAGE_TAB_KEY) ?? $defaultTab}}',
+       activeTab: '{{app('request')->input(\TallAndSassy\Ui\Glances\TabsProducer_SimpleImplementation::$PAGE_TAB_KEY) ?? $defaultTab}}',
        tabs: [],
        tabHeadings:[],
        toggleTabs() {
@@ -22,7 +22,7 @@ Example: See modules/TallAndSassy/Ui/Glances/resources/views/samples/TabSamples/
        updateUrlToReflectNewTabClick(theSlugForThisNewTab) {
             // Put new url in browser, even though we loaded via ajax: https://jquerytraining.com/update-the-value-of-url-query-string-in-javascript/
             const existingUrl=window.location.href ;
-            var updatedurl = addOrUpdateUrlParam(existingUrl, '{{\StZoo\StFrame\TabsProducer_SimpleImplementation::$PAGE_TAB_KEY}}', theSlugForThisNewTab);
+            var updatedurl = addOrUpdateUrlParam(existingUrl, '{{\TallAndSassy\Ui\Glances\TabsProducer_SimpleImplementation::$PAGE_TAB_KEY}}', theSlugForThisNewTab);
             _urlChangedViaAjaxSoUpdateBrowserSoFeelsLikePageChange(updatedurl);
         }
        }"
