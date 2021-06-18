@@ -19,9 +19,14 @@
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
         @livewireStyles
-
+        <style>
+            [x-cloak] {
+                display: none !important;
+            }
+        </style>
         <!-- Scripts -->
 {{--        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.js" defer></script>--}}
+        @bukStyles
     </head>
     @if  (config('tassy.admin.DoSamples',false))
     <script>
@@ -65,11 +70,13 @@
 
         <!-- Page Content -->
             <x-tassy::page-_base-body>
+
             {{ $slot }}
             </x-tassy::page-_base-body>
         @stack('modals')
         @stack('TassyScripts')
         @livewireScripts
+     @bukScripts
     </body>
 </html>
 
