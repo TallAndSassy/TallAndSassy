@@ -1,3 +1,3 @@
- <div class="tassy::page-guid.components.header-front">
+ <div class="bg-blue-200" {{ $attributes->merge(['class' => 'tassy::page-guide.components.header.front.index']) }} >
     <x-tassy::header.front.menu/>
  </div>
