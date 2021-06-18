@@ -39,7 +39,7 @@ copy this into /resources/views/layouts
 @endif
 
 <!-- Page Content -->
-    <main>
+    <main class="FYImodules/TallAndSassy/PageGuide/page-guide/resources/views/layouts/app.blade.php">
         {{ $slot }}
     </main>
 </div>
