@@ -13,7 +13,9 @@ concern
 composer.json
     [ ] add to psr4
         "TallAndSassy\\PageGuide\\": "modules/TallAndSassy/PageGuide/page-guide/src",
-        "TallAndSassy\\PageGuideAdmin\\": "modules/TallAndSassy/PageGuide/page-guide-admin/src"
+        "TallAndSassy\\PageGuideAdmin\\": "modules/TallAndSassy/PageGuide/page-guide-admin/src",
+        "TallAndSassy\\Ui\\Glances\\": "modules/TallAndSassy/Ui/Glances/src",
+        "TallAndSassy\\Strings\\": "modules/TallAndSassy/Strings/src"
     [ ] composer require blade-ui-kit/blade-heroicons
     [ ] composer require blade-ui-kit/blade-zondicons
     [ ] composer require owenvoke/blade-fontawesome
