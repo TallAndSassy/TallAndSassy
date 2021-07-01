@@ -6,16 +6,19 @@ Try to keep it segregated and eventually move back into a package
 and definitely to keep the core poking around a separate area of 
 concern
 ============
-[ ] Install this into /modules
-    mkdir modules
-    git clone https://github.com/TallAndSassy/TallAndSassy.git modules
+[ ] Install this into /submodules
+    -- In Sourtree
+        Add, as a submodule https://github.com/TallAndSassy/TallAndSassy to 'submodules/TallAndSassy' on 'main' branch
+    -- OR (manually) --
+        mkdir submodules
+        git clone https://github.com/TallAndSassy/TallAndSassy.git modules
+
 
 composer.json
     [ ] add to psr4
-        "TallAndSassy\\PageGuide\\": "modules/TallAndSassy/PageGuide/page-guide/src",
-        "TallAndSassy\\PageGuideAdmin\\": "modules/TallAndSassy/PageGuide/page-guide-admin/src",
-        "TallAndSassy\\Ui\\Glances\\": "modules/TallAndSassy/Ui/Glances/src",
-        "TallAndSassy\\Strings\\": "modules/TallAndSassy/Strings/src"
+        "TallAndSassy\\PageGuide\\": "submodules/TallAndSassy/PageGuide/page-guide/src",
+        "TallAndSassy\\PageGuideAdmin\\": "submodules/TallAndSassy/PageGuide/page-guide-admin/src"
+        ...
     [ ] composer require blade-ui-kit/blade-heroicons
     [ ] composer require blade-ui-kit/blade-zondicons
     [ ] composer require owenvoke/blade-fontawesome
@@ -48,18 +51,32 @@ replace resources/view/auth,profile,team ????
 /config (add)     ????
     cp -r modules/TallAndSassy/PageGuide/page-guide/config config
     (maybe tweak stuff)
+    NiceTODO: make a 'publish' util 
 
 /routes/web (replace)
-    [ ] replace whole file, just append include
+    [ ]  just append include
+        // Make work with TallAndSassy routes. This should be automatic (shrug)
         require_once(__DIR__ . '/../modules/TallAndSassy/PageGuide/page-guide/routes/web.php');
         require_once(__DIR__ . '/../modules/TallAndSassy/PageGuide/page-guide-admin/routes/web.php');
+        require_once(__DIR__ . '/../modules/TallAndSassy/Ui/Glances/routes/web.php');
 
 public/img/logos
-    cp -r modules/TallAndSassy/PageGuide/page-guide/resources/public/img resources/img
+    cp -r submodules/TallAndSassy/PageGuide/page-guide/resources/public/img resources/img
 
 Get resource/public/css/app.css to work via webpack
+    [ ] This is not compatible with tail/jit Beta (6/30/21')
+        In 'tailwind.config.js' disable jit like this: // mode: 'jit'
+
     For each sub-module, you need to make an entry mirroring whatever you do for app.css
     Like:
+        mix.js([
+        'resources/js/app.js',
+        'modules/TallAndSassy/Ui/resources/js/app.js', // <-- Import module js.  There is definetly a better way
+        ], 'public/js')
+        .postCss('resources/css/app.css', 'public/css', [
+        require('postcss-import'),
+        require('tailwindcss'),
+        ])
         .postCss('modules/TallAndSassy/PageGuide/page-guide/resources/public/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss'),
@@ -67,7 +84,8 @@ Get resource/public/css/app.css to work via webpack
         .postCss('modules/TallAndSassy/PageGuide/page-guide-admin/resources/public/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss'),
-        ])
+        ]) // We can probably combine all module .css into one array, like in the mix.js above. But, there is also an probably and automated way, too.
+        ;
 
 
 webpack.mix.js (something like this...)
