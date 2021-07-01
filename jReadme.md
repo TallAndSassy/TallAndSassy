@@ -61,7 +61,7 @@ replace resources/view/auth,profile,team ????
         require_once(__DIR__ . '/../modules/TallAndSassy/Ui/Glances/routes/web.php');
 
 public/img/logos
-    cp -r submodules/TallAndSassy/PageGuide/page-guide/resources/public/img resources/img
+    cp -r submodules/TallAndSassy/PageGuide/page-guide/resources/public/img public/img
 
 Get resource/public/css/app.css to work via webpack
     [ ] This is not compatible with tail/jit Beta (6/30/21')
