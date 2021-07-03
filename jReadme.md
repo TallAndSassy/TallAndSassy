@@ -29,7 +29,10 @@ composer dump-autoload
 
 config/app.php
     Add service provider...
-    [ ] \TallAndSassy\PageGuide\PageGuideServiceProvider::class
+        // --- Tall And Sassy
+        \TallAndSassy\PageGuide\PageGuideServiceProvider::class,
+        \TallAndSassy\PageGuideAdmin\PageGuideAdminServiceProvider::class,
+        \TallAndSassy\Ui\Glances\UiGlances_ServiceProvider::class,
 
 // Change default home page
 app/Providers/RouteServiceProvider.php
