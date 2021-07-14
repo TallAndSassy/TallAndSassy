@@ -2,44 +2,64 @@
 
 namespace TallAndSassy\PageGuide\Http\Controllers\Me;
 
+use Illuminate\Support\Facades\Auth;
+
 class MenuController
 {
     public static function boot()
     {
-        // inappropriated handled in routes/web.php
-//        $isLoggedIn = (\Illuminate\Support\Facades\Auth::user()) ? true : false;
-//        assert($isLoggedIn);
-//
-//        \TallAndSassy\PageGuide\PageGuideMenuWranglerBack::wrangleMe(
-//            "admin",
-//            [
-//                'name' => __('tassy::PageGuide.AdminLinkText'),
-//                "url" => "/admin",
-//                "classes" => "",
-//                "routeIs" => "admin*",
-//            ]
-//        );
-//
-//        \TallAndSassy\PageGuide\PageGuideMenuWranglerBack::wrangleMe(
-//            "me",
-//            [
-//                'name' => __('tassy::PageGuide.MeLinkText'),
-//                "url" => "/me",
-//                "classes" => "",
-//                "routeIs" => "me*",
-//
-//            ]
-//        );
+        $isLoggedIn = (Auth::user()) ? true : false;
+        $isWebmaster = $isLoggedIn && Auth::user()->can('access admin tools');
+        if ($isLoggedIn) {
+//            dd(Auth::user());
+            if ($isWebmaster){
+                \TallAndSassy\PageGuide\PageGuideMenuWranglerFront::wrangleMe(
+                    "admin",
+                    [
+                        'name' => __('tassy::PageGuide.AdminLinkText'),
+                        "url" => "/admin",
+                        "classes" => "",
+                        "routeIs" => "admin*",
+                    ]
+                );
+            }
+
+            \TallAndSassy\PageGuide\PageGuideMenuWranglerFront::wrangleMe(
+                "me",
+                [
+                    'name' => __('tassy::PageGuide.MeLinkText'),
+                    "url" => "/me",
+                    "classes" => "",
+                    "routeIs" => "me*",
+                ]
+            );
+
+            // Doesn't seem to show up, not sure why - oh well 5/21'
+            // But we really do want the top nav for front and my pages to be the same
+//            \TallAndSassy\PageGuide\PageGuideMenuWranglerBack::wrangleMe(
+//                "admin",
+//                [
+//                    'name' => __('tassy::PageGuide.AdminLinkText'),
+//                    "url" => "/admin",
+//                    "classes" => "",
+//                    "routeIs" => fn () => 0,
+//                ]
+//            );
 
 
-//        \TallAndSassy\PageGuide\PageGuideMenuWranglerFront::wrangleMe(
-//            "log-out",
-//            [
-//                'name' => "Log Out",
-//                "url" => route('logout'),
-//                "classes" => "",
-//                "routeIs" => "logout*"
-//            ]
-//        );
+            // FYI: 10/20' -
+
+            //            \TallAndSassy\PageGuide\PageGuideMenuWranglerFront::wrangleMe(
+            //                "log-out",
+            //                [
+            //                    'name' => "Log Out",
+            //                    "url" => route('logout'),
+            //                    "classes" => "",
+            //                    "routeIs" => "logout*"
+            //                ]
+            //            );
+        } else {
+            dd('we should never get here');
+        }
     }
 }

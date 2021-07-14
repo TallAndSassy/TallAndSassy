@@ -3,6 +3,8 @@
         // =========================== Boot Stuff  =============================================================================
         /*  Build back-end menu entries
            This should almost definitely live somewhere else
+
+            2021-07-14 Gavin: Yes. Yes it should.
         */
         \TallAndSassy\PageGuide\PageGuideMenuWranglerBack::wrangleMe(
            "home",
@@ -14,15 +16,22 @@
            ]
         );
 
-        \TallAndSassy\PageGuide\PageGuideMenuWranglerBack::wrangleMe(
-           "admin",
-           [
-               'name' => __('tassy::PageGuide.AdminLinkText'),
-               "url" => "/admin",
-               "classes" => "",
-               "routeIs" => fn () => 0,
-           ]
-        );
+        $isLoggedIn = (Auth::user()) ? true : false;
+        $isWebmaster = $isLoggedIn && Auth::user()->can('access admin tools');
+        if ($isLoggedIn) {
+            if ($isWebmaster){
+                \TallAndSassy\PageGuide\PageGuideMenuWranglerBack::wrangleMe(
+                   "admin",
+                   [
+                       'name' => __('tassy::PageGuide.AdminLinkText'),
+                       "url" => "/admin",
+                       "classes" => "",
+                       "routeIs" => fn () => 0,
+                   ]
+                );
+            }
+        }
+
 
         \TallAndSassy\PageGuide\PageGuideMenuWranglerBack::wrangleMe(
            "me",

@@ -2,21 +2,27 @@
 
 namespace TallAndSassy\PageGuide\Http\Controllers\Front;
 
+use Illuminate\Support\Facades\Auth;
+
 class MenuController
 {
     public static function boot()
     {
-        $isLoggedIn = (\Illuminate\Support\Facades\Auth::user()) ? true : false;
+        $isLoggedIn = (Auth::user()) ? true : false;
+        $isWebmaster = $isLoggedIn && Auth::user()->can('access admin tools');
         if ($isLoggedIn) {
-            \TallAndSassy\PageGuide\PageGuideMenuWranglerFront::wrangleMe(
-                "admin",
-                [
-                    'name' => __('tassy::PageGuide.AdminLinkText'),
-                    "url" => "/admin",
-                    "classes" => "",
-                    "routeIs" => "admin*",
-                ]
-            );
+//            dd(Auth::user());
+            if ($isWebmaster){
+                \TallAndSassy\PageGuide\PageGuideMenuWranglerFront::wrangleMe(
+                    "admin",
+                    [
+                        'name' => __('tassy::PageGuide.AdminLinkText'),
+                        "url" => "/admin",
+                        "classes" => "",
+                        "routeIs" => "admin*",
+                    ]
+                );
+            }
 
             \TallAndSassy\PageGuide\PageGuideMenuWranglerFront::wrangleMe(
                 "me",
