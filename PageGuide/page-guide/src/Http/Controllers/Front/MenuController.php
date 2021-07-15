@@ -70,6 +70,7 @@ class MenuController
             );
 
             if (config('page-guide.canSelfRegister')) {
+            if (config('tassy.page-guide.canSelfRegister')) {
                 \TallAndSassy\PageGuide\PageGuideMenuWranglerFront::wrangleMe(
                     "register",
                     [
