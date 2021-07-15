@@ -1,11 +1,17 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use \TallAndSassy\RolesAndPermissions\BaseTassyPermissions;
 Route::get('/admin', fn() => redirect('/admin/'.config('tassy.admin.DefaultSubSlug')));
 
 //Route::group(['middleware' => ['can:publish articles']], function () {
 //    //
 //});
-Route::middleware(['auth:sanctum', 'verified', 'can:access admin tools'])->group(function() {
+Route::middleware([
+    'auth:sanctum',
+    'verified',
+//    'can:access admin tools'
+    'can:'.BaseTassyPermissions::ACCESS_ADMIN_TOOLS
+])->group(function() {
     Route::get(
         '/admin/dashboard/{sublevels?}',
         [

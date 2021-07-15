@@ -9,7 +9,7 @@ class MenuController
     public static function boot()
     {
         $isLoggedIn = (Auth::user()) ? true : false;
-        $isWebmaster = $isLoggedIn && Auth::user()->can('access admin tools');
+        $isWebmaster = $isLoggedIn && Auth::user()->can(\TallAndSassy\RolesAndPermissions\BaseTassyPermissions::ACCESS_ADMIN_TOOLS);
         if ($isLoggedIn) {
 //            dd(Auth::user());
             if ($isWebmaster){
