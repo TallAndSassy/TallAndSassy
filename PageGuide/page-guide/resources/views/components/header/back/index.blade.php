@@ -23,7 +23,7 @@
 
     @else
         <div class=" flex items-center justify-center bg-gray-100">
-            <x-tassy::header.back.title class="text-center bg-blue-300">{{$title}}</x-tassy::header.back.title>
+            <x-tassy::header.back.title class="text-center ">{{$title}}</x-tassy::header.back.title>
         </div>
     @endif
 </div>
