@@ -6,7 +6,7 @@
 Route::get(
     '/',
     function () {
-        \TallAndSassy\PageGuide\Http\Controllers\Front\MenuController::boot();
+        #\TallAndSassy\PageGuide\Http\Controllers\MenuController::boot();
 
         return view('tassy::front/index');
     }
@@ -26,7 +26,7 @@ if (0) {
     Route::middleware(['auth:sanctum', 'verified'])->get(
         '/admin/{sublevels?}',
         function (\TallAndSassy\PageGuide\Http\Controllers\Admin\AdminController $AdminController, string $sublevels) {
-            \TallAndSassy\PageGuide\Http\Controllers\Admin\MenuController::boot(); //10/22 no-op
+            #\TallAndSassy\PageGuide\Http\Controllers\MenuController::boot(); //10/22 no-op
             #dd($AdminController);
 
             return $AdminController->showAdminFronts($sublevels);
@@ -38,7 +38,7 @@ if (0) {
 Route::middleware(['auth:sanctum', 'verified'])->get(
     '/me',
     function () {
-        \TallAndSassy\PageGuide\Http\Controllers\Me\MenuController::boot();
+        #\TallAndSassy\PageGuide\Http\Controllers\MenuController::boot();
 
         return view('tassy::me/index');
     }
@@ -52,7 +52,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get(
 //*/
 //$isBackPage = \TallAndSassy\PageGuide\Http\Controllers\PageGuideController::isABackPage();
 //if ($isBackPage) {
-//    \TallAndSassy\PageGuide\PageGuideMenuWranglerBack::wrangleMe(
+//    \TallAndSassy\PageGuide\PageGuideMenuWranglerUser::wrangleMe(
 //        "home",
 //        [
 //            'name' => __('tassy::PageGuide.FrontLinkText'),
@@ -62,7 +62,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get(
 //        ]
 //    );
 //
-//    \TallAndSassy\PageGuide\PageGuideMenuWranglerBack::wrangleMe(
+//    \TallAndSassy\PageGuide\PageGuideMenuWranglerUser::wrangleMe(
 //        "admin",
 //        [
 //            'name' => __('tassy::PageGuide.AdminLinkText'),
@@ -72,7 +72,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get(
 //        ]
 //    );
 //
-//    \TallAndSassy\PageGuide\PageGuideMenuWranglerBack::wrangleMe(
+//    \TallAndSassy\PageGuide\PageGuideMenuWranglerUser::wrangleMe(
 //        "me",
 //        [
 //            'name' => __('tassy::PageGuide.MeLinkText'),

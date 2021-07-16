@@ -3,7 +3,7 @@
 
 namespace TallAndSassy\PageGuide;
 
-class PageGuideMenuWranglerFront extends PageGuideMenuWrangler
+class PageGuideMenuWranglerUser extends PageGuideMenuWrangler
 {
     use RenderWranglerTrait;
 }

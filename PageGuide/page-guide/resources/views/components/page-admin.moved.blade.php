@@ -178,7 +178,7 @@
                             <x-tassy::header.back.title>{{$title}}  </x-tassy::header.back.title>
                         </div>
 
-                        <x-tassy::header.back.menu class="lg:pt-1"/>
+                        <x-tassy::header.menu_for_users class="lg:pt-1"/>
 
                     </div>
                     <x-tassy::header.back.title class="sm:hidden">{{$title}}  </x-tassy::header.back.title>
