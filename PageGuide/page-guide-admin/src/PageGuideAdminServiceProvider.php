@@ -5,6 +5,9 @@ namespace TallAndSassy\PageGuideAdmin;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use TallAndSassy\PageGuide\Components\Sidenav;
+use TallAndSassy\PageGuideAdmin\Components\SuperAdmin\SuperAdminTenantDirectory;
+use TallAndSassy\PageGuideAdmin\Components\SuperAdmin\TenantCount;
 use TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base;
 use TallAndSassy\PageGuideAdmin\Http\Controllers\Bob_outputByBlade_Controller;
 
@@ -163,6 +166,8 @@ class PageGuideAdminServiceProvider extends ServiceProvider
 
         // TODO: Register your livewire components that live in this package here:
         # \Livewire\Livewire::component('tassygroklivewirejet::a-a-nothing',  \TallAndSassy\GrokLivewireJet\Components\DemoUiChunks\AANothing::class);
+        \Livewire\Livewire::component('tassy:super-admin.tenant-directory',  SuperAdminTenantDirectory::class); // usage: <livewire:tassy:super-admin.tenant-directory :tabName="'SuperAdminTenantDirectory'"/>
+        \Livewire\Livewire::component('tassy:super-admin.tenant-count',  TenantCount::class);
         // TODO: Add your own other boot related stuff here...
 
         // Add Top Admin Menus

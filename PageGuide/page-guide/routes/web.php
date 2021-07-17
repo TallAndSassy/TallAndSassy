@@ -10,7 +10,7 @@ Route::get(
 
         return view('tassy::front/index');
     }
-);
+)->name('tenant.home');;
 
 Route::get('/admin', fn () => redirect('/admin/default'));
 

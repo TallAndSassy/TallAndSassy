@@ -1,0 +1,1 @@
+<span>{{$tenantCount}}</span>

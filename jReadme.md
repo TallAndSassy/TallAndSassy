@@ -17,7 +17,11 @@ concern
 composer.json
     [ ] add to psr4
         "TallAndSassy\\PageGuide\\": "submodules/TallAndSassy/PageGuide/page-guide/src",
-        "TallAndSassy\\PageGuideAdmin\\": "submodules/TallAndSassy/PageGuide/page-guide-admin/src"
+        "TallAndSassy\\PageGuideAdmin\\": "submodules/TallAndSassy/PageGuide/page-guide-admin/src",
+        "TallAndSassy\\Ui\\Glances\\": "submodules/TallAndSassy/Ui/Glances/src",
+        "TallAndSassy\\Strings\\": "submodules/TallAndSassy/Strings/src",
+        "TallAndSassy\\RolesAndPermissions\\": "submodules/TallAndSassy/RolesAndPermissions/src",
+        "TallAndSassy\\Tenancy\\": "submodules/TallAndSassy/Tenancy/src"
         ...
     [ ] composer require blade-ui-kit/blade-heroicons
     [ ] composer require blade-ui-kit/blade-zondicons
