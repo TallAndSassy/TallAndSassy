@@ -14,17 +14,24 @@ Route::middleware([
 ])->group(function() {
 
     // ---------------------- superadmin -BEGIN- -----------------------------------------------------------------------
-    Route::get(
-        '/superadmin/dashboard/{sublevels?}', fn() => \App\Http\Controllers\SuperAdminIndexController::getThisView()
-    )
-        ->where('sublevels', '.*')
-        ->name('superadmin');
+//    Route::get(
+//        '/superadmin/dashboard/{sublevels?}', fn() => \App\Http\Controllers\SuperAdminIndexController::getThisView()
+//    )
+//        ->where('sublevels', '.*')
+//        ->name('superadmin');
 
-    Route::get('/superadmin', function () {
-        return redirect('/superadmin/dashboard');
-    });
+
     // ---------------------- superadmin -END- -------------------------------------------------------------------------
+Route::middleware(['can:'.BaseTassyPermissions::ACCESS_SUPERADMIN_DASHBOARD])->group(function() {
+        Route::get('/superadmin/dashboard',
+            fn() => \App\Http\Controllers\SuperAdminIndexController::getThisView()
+        ) ->name('superadmin');
 
+        Route::get('/superadmin', function () {
+            return redirect('/superadmin/dashboard');
+        });
+    }
+);
 
 
     Route::get(

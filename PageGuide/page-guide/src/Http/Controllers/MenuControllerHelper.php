@@ -12,7 +12,7 @@ class MenuControllerHelper {
         $isWebmaster = $isLoggedIn && Auth::user()->can(\TallAndSassy\RolesAndPermissions\BaseTassyPermissions::ACCESS_ADMIN_TOOLS);
 
         \TallAndSassy\PageGuide\PageGuideMenuWranglerUser::wrangleMe(
-            "hom",
+            "home",
             [
                 'name' => 'Home',
                 "url" => "/",
@@ -21,12 +21,12 @@ class MenuControllerHelper {
             ]
         );
         // --- Super Admin Menu Item
-        if (Auth::user()->hasRole('superuser')) {
+        if (Auth::user()->can(\TallAndSassy\RolesAndPermissions\BaseTassyPermissions::ACCESS_SUPERADMIN_DASHBOARD)) {
             \TallAndSassy\PageGuide\PageGuideMenuWranglerUser::wrangleMe(
                 "superadmin",
                 [
-                    'name' => "SuperAdmin",
-                    "url" => route('superadmin'),
+                    'name' => "Super-Admin",
+                    "url" =>"/superadmin",
                     "classes" => "",
                     "routeIs" => "superadmin*",
                 ]
