@@ -4,6 +4,7 @@ namespace TallAndSassy\PageGuide\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use TallAndSassy\PageGuide\Http\Controllers\MenuControllerHelper;
+use TallAndSassy\Tenancy\TenantUtils;
 
 class MenuControllerForUsers
 {
@@ -15,27 +16,33 @@ class MenuControllerForUsers
         } else {
 
 
+            $tenantSlugOrNull = TenantUtils::GetTenantSlugElseNull();
+
             if (config('tassy.page-guide.canSelfRegister')) {
+                if  ($tenantSlugOrNull  && $tenantSlugOrNull != env('HQ_SUBDOMAIN') ) {
+                    \TallAndSassy\PageGuide\PageGuideMenuWranglerUser::wrangleMe(
+                        "register",
+                        [
+                            'name' => "Create Account",
+                            "url" => route('register'),
+                            "classes" => "",
+                            "routeIs" => "register*",
+                        ]
+                    );
+                }
+            }
+
+            if ($tenantSlugOrNull) {
                 \TallAndSassy\PageGuide\PageGuideMenuWranglerUser::wrangleMe(
-                    "register",
+                    "log-in",
                     [
-                        'name' => "Create Account",
-                        "url" => route('register'),
+                        'name' => "Log In",
+                        "url" => route('login'),
                         "classes" => "",
-                        "routeIs" => "register*",
+                        "routeIs" => "login*",
                     ]
                 );
             }
-
-            \TallAndSassy\PageGuide\PageGuideMenuWranglerUser::wrangleMe(
-                "log-in",
-                [
-                    'name' => "Log In",
-                    "url" => route('login'),
-                    "classes" => "",
-                    "routeIs" => "login*",
-                ]
-            );
         }
         return \TallAndSassy\PageGuide\PageGuideMenuWranglerUser::wranglees();
     }
