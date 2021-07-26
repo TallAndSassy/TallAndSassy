@@ -147,18 +147,21 @@ class Lepage extends Component
         // 8/20' Known Issue: Calls close() twice.  Everything is always getting closed twice.
         # wire:click="\$emit('pageRoute','$url')"
         # Livewire.emit('universalHandle_butActuallyForPollingCard','10')
+        $h = '';
+        if(config('tassy.admin.DoAjaxAdminPages')) {
 
-        $cm = $closeModal ? " close(); " : '';  // this closes the modal (twice, for some reason). which, for some reason calls resources/views/livewire/the-modal-box.blade.php theModal.close().  Not sure why
-        $h =<<<EOD
-        x-on:click.prevent="
-            maybeCloseAdminMenu();
-            $cm
+            $cm = $closeModal ? " close(); " : '';  // this closes the modal (twice, for some reason). which, for some reason calls resources/views/livewire/the-modal-box.blade.php theModal.close().  Not sure why
+            $h = <<<EOD
+            x-on:click.prevent="
+                maybeCloseAdminMenu();
+                $cm
 
-            urlChange('$url');
-            Livewire.emit('pageRoute','$url');
-            //TODO: De-Activiate any previous page, activate this page
-            "
-        EOD;
+                urlChange('$url');
+                Livewire.emit('pageRoute','$url');
+                //TODO: De-Activiate any previous page, activate this page
+                "
+            EOD;
+        }
         if ($includeHref) {
             $h .=<<< EOD
             href="{$url}"

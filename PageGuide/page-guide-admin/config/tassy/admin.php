@@ -9,4 +9,5 @@ return [
     'DoSampleLibraryMaybePremature' => false,
     'DoHelp' => false,
     'DefaultSubSlug' => 'config',
+    'DoAjaxAdminPages' => true,
 ];
