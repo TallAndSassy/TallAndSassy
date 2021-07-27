@@ -23,6 +23,11 @@
                @include('tassy-ui::samples/TechBase/Status__')
             </div>
         </x-tassy-ui::tab>
+        <x-tassy-ui::tab name="UI">
+            <div class="border shadow mt-2 p-2 ">
+                @include(('tassy-ui::samples/UI/UISample__Page'))
+            </div>
+        </x-tassy-ui::tab>
     </x-tassy-ui::tabs>
 
 
