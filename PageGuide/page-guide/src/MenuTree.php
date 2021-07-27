@@ -153,6 +153,10 @@ class MenuTree # implements #\Iterator
 
         return (strpos(request()->getPathInfo(), $asrMenu['Url']) === 0);
     }
+    public static function IsSubUrlMeOrBelow(string $suburl) : bool
+    {
+        return str_starts_with(request()->getPathInfo(), $suburl);
+    }
 
     public function isActiveRouteUnderMe(array $asrMenu) : bool
     {
