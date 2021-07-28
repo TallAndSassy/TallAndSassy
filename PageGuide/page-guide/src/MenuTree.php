@@ -5,6 +5,9 @@ namespace TallAndSassy\PageGuide;
     Future: Allow for insertion
     Future: Move to overridable components
 */
+
+use JetBrains\PhpStorm\Pure;
+
 class MenuTree # implements #\Iterator
 {
     #private $topMenu = [];
@@ -157,6 +160,32 @@ class MenuTree # implements #\Iterator
     {
         return str_starts_with(request()->getPathInfo(), $suburl);
     }
+
+    //--- Brute Force expanding of tree -begin- ------------------------------------------------------------------------
+    /* So, This whole menus being dynamic isn't great. This is to help brute create a new menu via simple blade
+        But, it needs to know if we are rendering the current menu tree.  This is pretty much going against
+        the other menu tree stuff.  But I think this all got too complicated. Many alpine.js v3 is the future?
+
+        Usage: call this in your blade that generates a bunch of menu items. That is where you will know if where
+        you are rendering.
+        Know/expected limitatin: When you go back to ajax page rendering.. it won't(?) know?  Hmm, livewire maybe?
+    */
+    static private string $_CurrentMenuHandle_forRouteWeAreVisiting = 'tbd';
+    public static function SetMenuHandle_forRouteWeAreVisiting(string $menuHandleForCurrentRoute): void {
+        static::$_CurrentMenuHandle_forRouteWeAreVisiting = $menuHandleForCurrentRoute;
+    }
+    
+    #[Pure]
+    public static function GetMenuHandle_forRouteWeAreVisiting(): string {
+        return static::$_CurrentMenuHandle_forRouteWeAreVisiting;
+    }
+
+    #[Pure]
+    public static function IsThisTheSameMenuHandle_asRouteWeAreVisiting(string $menuHandleThatWeAreWonderingIfMatchesRouteWeAreVisiting): bool {
+        return static::GetMenuHandle_forRouteWeAreVisiting() == $menuHandleThatWeAreWonderingIfMatchesRouteWeAreVisiting;
+    }
+    //--- Brute Force expanding of tree -END- ------------------------------------------------------------------------
+
 
     public function isActiveRouteUnderMe(array $asrMenu) : bool
     {

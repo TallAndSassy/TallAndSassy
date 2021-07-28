@@ -26,7 +26,7 @@ composer.json
     [ ] composer require blade-ui-kit/blade-heroicons
     [ ] composer require blade-ui-kit/blade-zondicons
     [ ] composer require owenvoke/blade-fontawesome
-
+    ( ) composer require --dev jetbrains/phpstorm-attributes
     ( ) composer require barryvdh/laravel-debugbar --dev
 
 composer dump-autoload
