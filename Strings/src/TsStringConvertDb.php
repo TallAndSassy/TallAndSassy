@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace TallAndSassy\Strings;
 
+use Illuminate\Support\Facades\DB;
+
 class TsStringConvertDb {
     public static function array2sqlCsv($arr, $delimiter = "'"): string {
         $arrSqlReady = [];
@@ -20,8 +22,9 @@ class TsStringConvertDb {
 
     public static function pure2sql($pure, $maxLength = false) : string
     {
-        global $wpdb;
-        $strSql = mysqli_real_escape_string( $wpdb->dbh, $pure );
+        #global $wpdb;
+        #$strSql = mysqli_real_escape_string( $wpdb->dbh, $pure );
+        $strSql = DB::connection()->getPdo()->quote($pure); //https://stackoverflow.com/a/20969571/93933
         return $strSql;
     }
 }
