@@ -56,7 +56,29 @@ class Lepage extends Component
             $route = app('router')->getRoutes()->match($request);
             unset($request);
         } else {
-            $route = app('router')->getRoutes()->match(app('request')->create($this->pageRoute, 'GET')); // Maybe be more dynamic about GET vs, say, POST
+            // We're being called via livewire Livewire.emit('pageRoute','$url');
+            // from public static function wireSwaplinkInA(
+            //  Which is probably called when making the side menu
+            //
+            // We want to create a fake route from that suburl so we can devolve to normal routing
+            // In pre-tenant days, it was easier
+
+            // Protocal: Hack - not sure how to do this via Laravel... wrote on a plane
+            $http_s = 'http';
+            if (isset($_SERVER["HTTPS"])) {
+                if ($_SERVER["HTTPS"] == "on") {
+                    $http_s .= "s";
+                }
+            }
+
+            // Host
+            $host = app('request')->getHost();
+
+            // Route
+            $testRoute = $http_s.'://'.$host.$this->pageRoute;  // MaybeTodo: should we save this?
+            
+            $route = app('router')->getRoutes()->match(app('request')->create($testRoute, 'GET')); // Maybe be more dynamic about GET vs, say, POST
+            //#$route = app('router')->getRoutes()->match(app('request')->create($this->pageRoute, 'GET')); // Maybe be more dynamic about GET vs, say, POST
         }
         # FYI: $tailingUrl = $request->path(); //http://domain.com/foo/bar, the path method will return foo/bar
         // If refreshing, the params need to be put back into the url.  Probably should have just stored it. oh well.
@@ -169,4 +191,9 @@ class Lepage extends Component
         }
         return $h;
     }
+
+    public static function SelfRegister(): void {
+        \Livewire\Livewire::component('tassy::lepage',  self::class);
+    }
+
 }
