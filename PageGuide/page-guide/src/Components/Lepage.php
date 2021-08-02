@@ -76,7 +76,7 @@ class Lepage extends Component
 
             // Route
             $testRoute = $http_s.'://'.$host.$this->pageRoute;  // MaybeTodo: should we save this?
-            
+
             $route = app('router')->getRoutes()->match(app('request')->create($testRoute, 'GET')); // Maybe be more dynamic about GET vs, say, POST
             //#$route = app('router')->getRoutes()->match(app('request')->create($this->pageRoute, 'GET')); // Maybe be more dynamic about GET vs, say, POST
         }
@@ -193,7 +193,7 @@ class Lepage extends Component
     }
 
     public static function SelfRegister(): void {
-        \Livewire\Livewire::component('tassy::lepage',  self::class);
+        \Livewire\Livewire::component('tassy::livewire.lepage',  self::class);
     }
 
 }
