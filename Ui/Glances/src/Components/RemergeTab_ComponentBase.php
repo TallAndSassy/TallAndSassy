@@ -6,7 +6,7 @@ trait RemergeTab_Implementation {
     public bool $contentIsVisible = false;
     public string $tabName;
 
-    public function mount(string $tabName) {
+    public function mount_RemergeTab_Implementation(string $tabName) {
         $this->tabName = $tabName;
         //$this->listeners['iSeeTab'] =  'maybeShowContent';
     }
