@@ -5,10 +5,12 @@ namespace TallAndSassy\PageGuideAdmin;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use TallAndSassy\PageGuide\Components\Sidenav;
+#use LaravelFrontendPresets\Tall\TassyCommand;
+//use LaravelFrontendPresets\Tall\TassyMenuCommands;
+
 use TallAndSassy\PageGuideAdmin\Components\SuperAdmin\SuperAdminTenantDirectory;
 use TallAndSassy\PageGuideAdmin\Components\SuperAdmin\TenantCount;
-use TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base;
+#use TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base;
 use TallAndSassy\PageGuideAdmin\Http\Controllers\Bob_outputByBlade_Controller;
 
 #use TallAndSassy\PageGuideAdmin\Commands\PageGuideAdminCommand;
@@ -21,6 +23,9 @@ class PageGuideAdminServiceProvider extends ServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole()) {
+            $this->commands([
+                \TallAndSassy\PageGuideAdmin\Commands\TassyMenuCommands::class,
+            ]);
             $this->publishes(
                 [
                     __DIR__ . '/../config/page-guide-admin.php' => config_path('page-guide-admin.php'),
