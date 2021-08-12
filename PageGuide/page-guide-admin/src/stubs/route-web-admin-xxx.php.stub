@@ -1,0 +1,4 @@
+Route::get(
+    'ReplaceableSubUrl',
+    [\App\Http\Controllers\ReplaceableControllerName::class, 'getFrontView']
+);

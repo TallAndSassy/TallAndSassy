@@ -1,0 +1,29 @@
+<?php
+declare(strict_types=1);
+
+namespace ReplaceableNamespace;
+
+class ReplaceableControllerName extends \TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base
+{
+    public const viewRef = "ReplaceableSubUrl";
+    public static string $title = 'Parents';
+    private static array $mes;
+
+    public static function singleton(string $handle): self
+    {
+        if (!isset(static::$mes[$handle])) {
+            static::$mes[$handle] = new self();
+        }
+
+        return static::$mes[$handle];
+    }
+
+    public function getBodyView(string $subLevels): \Illuminate\View\View
+    {
+        return view(static::viewRef);
+    }
+
+};
+
+
+
