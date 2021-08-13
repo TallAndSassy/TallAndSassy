@@ -109,7 +109,7 @@ class TassyMenuCommands extends Command
         $replacementMap['ReplaceableHtml'] = $ReplaceableHtml;
 
         // Make the link show something useful
-        $enumOutputScheme = $this->choice('How should the page be generated ', ['b' => 'Embedded Blade w/ controller', 'c' => 'straight html via controller'], 'c');//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
+        $enumOutputScheme = $this->choice('How should the page be generated ', [ 'c' => 'Embedded Blade w/ controller'], 'c');//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
         $replacementMap['enumOutputScheme'] = $enumOutputScheme;
 
         if ($enumOutputScheme == 'c') {
@@ -126,9 +126,10 @@ class TassyMenuCommands extends Command
 
             // Route
             $web_admin_routes_filepath = base_path('routes/web-admin--routes.php');
-            static::LoadBackupModifyUpdate($web_admin_routes_filepath, function (string $route_web) use ($replacementMap) {
+            static::LoadBackupModifyUpdate($web_admin_routes_filepath, function (string $route_web, string $ReplaceableTimestamp) use ($replacementMap) {
                 $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route-web-admin-xxx.php.stub';
                 $route_SnippetSource_filepath = $route_SnippetSource_filepath_rel;
+                $replacementMap['ReplaceableTimestamp'] = $ReplaceableTimestamp;
                 $routeSnippet_hydrated = static::HydrateStub( file_get_contents($route_SnippetSource_filepath), $replacementMap);
                 return $route_web.$routeSnippet_hydrated;
             });
@@ -153,8 +154,9 @@ class TassyMenuCommands extends Command
         if ($enumAccessScheme == 'menu') {
             static::LoadBackupModifyUpdate(
                 base_path(static::getMenuBladeFileName($enumUpperLower)),
-                function ($existingMenuFile) use ($replacementMap) {
+                function ($existingMenuFile, $ReplaceableTimestamp) use ($replacementMap) {
                     $menuSnippet_withEnclosedVars = file_get_contents(__DIR__ . '/../stubs/menu-side-treerootleaf.blade.php.stub');
+                    $replacementMap['ReplaceableTimestamp'] = $ReplaceableTimestamp;
                     $menuSnippet_hydrated = static::HydrateStub($menuSnippet_withEnclosedVars, $replacementMap);
                     $existingMenuFile .= $menuSnippet_hydrated;
                     return $existingMenuFile;
@@ -172,7 +174,7 @@ class TassyMenuCommands extends Command
         return $stub;
     }
 
-    private static function LoadBackupModifyUpdate(string $full_filepathWithContentWeWillPervert, \Closure $modifyingClosure_gettingContent): void
+    private static function LoadBackupModifyUpdate(string $full_filepathWithContentWeWillPervert, \Closure $modifyingClosure_gettingContent_stringTimestamp): void
     {
         // make a backup of the file
         $filepathWithContentWeWillPervert = $full_filepathWithContentWeWillPervert;
@@ -189,7 +191,7 @@ class TassyMenuCommands extends Command
         $stub_withEnclosedVars = file_get_contents($filepathWithContentWeWillPervert);
 
         // Pervert the file
-        $hydrated_content = $modifyingClosure_gettingContent($stub_withEnclosedVars);//static::HydrateStub($stub_withEnclosedVars, $replacementMap);
+        $hydrated_content = $modifyingClosure_gettingContent_stringTimestamp($stub_withEnclosedVars, $filenameTimestampStub);//static::HydrateStub($stub_withEnclosedVars, $replacementMap);
 
         // Update the file
         $ret = file_put_contents($filepathWithContentWeWillPervert, $hydrated_content);

@@ -6,7 +6,7 @@ namespace ReplaceableNamespace;
 class ReplaceableControllerName extends \TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base
 {
     public const viewRef = "ReplaceableSubUrl";
-    public static string $title = 'Parents';
+    public static string $title = 'ReplaceablePageTitle';
     private static array $mes;
 
     public static function singleton(string $handle): self
