@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 #use LaravelFrontendPresets\Tall\TassyCommand;
 //use LaravelFrontendPresets\Tall\TassyMenuCommands;
 
+use TallAndSassy\PageGuideAdmin\Commands\TassyGroupCommands;
 use TallAndSassy\PageGuideAdmin\Components\SuperAdmin\SuperAdminTenantDirectory;
 use TallAndSassy\PageGuideAdmin\Components\SuperAdmin\TenantCount;
 #use TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base;
@@ -25,6 +26,7 @@ class PageGuideAdminServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 \TallAndSassy\PageGuideAdmin\Commands\TassyMenuCommands::class,
+                TassyGroupCommands::class
             ]);
             $this->publishes(
                 [
