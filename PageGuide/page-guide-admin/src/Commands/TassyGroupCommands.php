@@ -49,6 +49,7 @@ class TassyGroupCommands extends Command
         return 'app/Http/Livewire';
     }
 
+    /* You can pass a subgroup, like 'Admin' */
     public function getGroupNames(?string $_baseGroup = null, array $groupNames_soFar = [] ): array {
         $_baseGroupPrefix = ($_baseGroup ? $_baseGroup.DIRECTORY_SEPARATOR : '');
         #print "\n_baseGroupPrefix($_baseGroupPrefix)\n";
