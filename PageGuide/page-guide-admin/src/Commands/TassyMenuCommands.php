@@ -15,18 +15,17 @@ use Illuminate\Support\Facades\Artisan;
 class TassyMenuCommands extends Command
 {
 
-    protected $signature = 'tassy-page:add
-     { --location=* : "(upper|lower)"  }
-     { --suburl=* : "a relative url"  }
-     { --label=* : "A quoted label for the menu item."  }';
-    protected $description = 'Add an admin menu. usage: php artisan tassy-menu:add (upper|lower) --label="People Stuff"';
+    protected $signature = 'tassy-page:add';
+    //     { --location=* : "(upper|lower)"  }
+    //     { --suburl=* : "a relative url"  }
+    //     { --label=* : "A quoted label for the menu item."  }';
+    protected $description = 'Interactively Add an admin menu with a corresponding page. usage: php artisan tassy-menu:add (upper|lower) --label="People Stuff"';
 
     // Future: Add --blade="" optino
     public function __construct()
     {
         parent::__construct();
     }
-
 
 
     /**
@@ -42,8 +41,6 @@ class TassyMenuCommands extends Command
         $defaultJunk = 'E_' . uniqid();
         $ReplaceableDomain = $defaultJunk;
         $replacementMap['ReplaceableDomain'] = $ReplaceableDomain;
-
-
 
 
         // Gather all the data....
@@ -63,22 +60,7 @@ class TassyMenuCommands extends Command
 
 
         if ($enumAdminMeFront == 'admin') {
-            $enumAccessScheme = match (
-            $this->choice('How will this page be accessed?', ['m' => 'menu', 't' => 'tab', 'd' => 'direct link'], 'm')
-            ) {
-                'm' => 'menu',
-                't' => 'tab',
-                'd' => 'direct'
-            };
-            assert($enumAccessScheme == 'menu', "Not yet implemented, try 'menu'");
-            $replacementMap['enumAccessScheme'] = $enumAccessScheme;
-
-            if ($enumAccessScheme == 'tab') {
-                assert(0, 'tbd');
-            } elseif ($enumAccessScheme == 'direct') {
-                assert(0, 'tbd');
-            } elseif ($enumAccessScheme == 'menu') {
-                $enumUpperLower = match (
+                        $enumUpperLower = match (
                 $this->choice('Where should this menu go? ', ['u' => 'Upper Menu', 'l' => 'Lower Menu'], 'u')
                 ) {
                     'u' => 'upper',
@@ -88,18 +70,8 @@ class TassyMenuCommands extends Command
                 $replacementMap['enumUpperLower'] = $enumUpperLower;
 
                 // Label
-                if (!$this->option('label')) {
-                    $ReplaceableLabel = $this->ask('What is the menu text?', $defaultJunk);//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
-                } else {
-                    $ReplaceableLabel = $this->option('label')[0];
-                }
-                // output: $ReplaceableLabel
+                $ReplaceableLabel = $this->ask('What is the menu text?', $defaultJunk);//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
                 $replacementMap['ReplaceableLabel'] = $ReplaceableLabel;
-
-
-            } else {
-                assert(0, 'logic');
-            }
         }
 
         $ReplaceableNamespace = 'App\Http\Controllers';
@@ -109,49 +81,82 @@ class TassyMenuCommands extends Command
         $replacementMap['ReplaceableHtml'] = $ReplaceableHtml;
 
         // Make the link show something useful
-        $enumOutputScheme = $this->choice('How should the page be generated ', [ 'c' => 'Embedded Blade w/ controller'], 'c');//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
+        $enumOutputScheme = $this->choice('Is page a single top-level page, or a tabbed paged.', ['s' => 'Single Page', 't' => 'Tabbed Page'], 't');//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
         $replacementMap['enumOutputScheme'] = $enumOutputScheme;
 
-        if ($enumOutputScheme == 'c') {
+        // Populate the path the blade via view ref
+        $ReplaceableViewRef = 'admin/' . $ReplaceableDomain;
+        $replacementMap['ReplaceableViewRef'] = $ReplaceableViewRef;
+
+        // Title of the page (please make smarter)
+        $replacementMap['ReplaceableTitle'] = "ReplaceableTitle for $ReplaceableDomain";
+
+        if ($enumOutputScheme == 's') {
             // Controller
+            // For a simple end page - not livewire based, not tabbed
             $ReplaceableControllerName = $defaultJunk . 'Controller';
             $replacementMap['ReplaceableControllerName'] = $ReplaceableControllerName;
 
             $controller_StubSource_filepath = __DIR__ . '/../stubs/Controller.php.stub';
             $controller_Destination_filepath = base_path("app/Http/Controllers/$ReplaceableControllerName.php");
-            static::LoadModifyPut($controller_StubSource_filepath, function (string $stub) use ($replacementMap) {
-                return static::HydrateStub($stub, $replacementMap);
-            }, $controller_Destination_filepath);
 
 
-            // Route
-            $web_admin_routes_filepath = base_path('routes/web-admin--routes.php');
-            static::LoadBackupModifyUpdate($web_admin_routes_filepath, function (string $route_web, string $ReplaceableTimestamp) use ($replacementMap) {
-                $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route-web-admin-xxx.php.stub';
-                $route_SnippetSource_filepath = $route_SnippetSource_filepath_rel;
-                $replacementMap['ReplaceableTimestamp'] = $ReplaceableTimestamp;
-                $routeSnippet_hydrated = static::HydrateStub( file_get_contents($route_SnippetSource_filepath), $replacementMap);
-                return $route_web.$routeSnippet_hydrated;
-            });
+        } elseif ($enumOutputScheme == 't') {
+                // Controller
+                $ReplaceableControllerName = $defaultJunk . 'TabbedPageController';
+                $replacementMap['ReplaceableControllerName'] = $ReplaceableControllerName;
 
-            // Put the view into place
+                $controller_StubSource_filepath = __DIR__ . '/../stubs/TabbedPageController.php.stub';
+                $controller_Destination_filepath = base_path("app/Http/Controllers/$ReplaceableControllerName.php");
+        } elseif ($enumOutputScheme == 'b') {
+            assert(0, 'have not yet implemented blade mode');
+        }
+
+        static::LoadModifyPut($controller_StubSource_filepath, function (string $stub) use ($replacementMap) {
+            return static::HydrateStub($stub, $replacementMap);
+        }, $controller_Destination_filepath);
+
+
+        // Route
+        $web_admin_routes_filepath = base_path('routes/web-admin--routes.php');
+        static::LoadBackupModifyUpdate($web_admin_routes_filepath, function (string $route_web, string $ReplaceableTimestamp) use ($replacementMap) {
+            $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route-web-admin-xxx.php.stub';
+            $route_SnippetSource_filepath = $route_SnippetSource_filepath_rel;
+            $replacementMap['ReplaceableTimestamp'] = $ReplaceableTimestamp;
+            $routeSnippet_hydrated = static::HydrateStub(file_get_contents($route_SnippetSource_filepath), $replacementMap);
+            return $route_web . $routeSnippet_hydrated;
+        });
+
+
+
+
+        // Put the view into place
+        if ($enumOutputScheme == 's') {
             $blade_StubSource_filepath = __DIR__ . '/../stubs/page.blade.php.stub';
-            $ReplaceableBladePath = 'views/admin/'.$ReplaceableDomain.'.blade.php';
+            $ReplaceableBladePath = 'views/admin/' . $ReplaceableDomain . '.blade.php';
             $blade_Destination_filepath_full = resource_path($ReplaceableBladePath);
             $replacementMap['ReplaceableBladePath'] = $ReplaceableBladePath;
             static::LoadModifyPut($blade_StubSource_filepath, function (string $stub) use ($replacementMap) {
                 return static::HydrateStub($stub, $replacementMap);
             }, $blade_Destination_filepath_full);
-
-            // Make the routes visible
-            Artisan::call('optimize');
-
-        } elseif ($enumOutputScheme == 'b') {
-            assert(0, 'have not yet implemented blade mode');
+        } elseif ($enumOutputScheme == 't') {
+            $blade_StubSource_filepath = __DIR__ . '/../stubs/pageThatIsTabbed.blade.php.stub';
+            $ReplaceableBladePath = 'views/admin/' . $ReplaceableDomain . '.blade.php';
+            $blade_Destination_filepath_full = resource_path($ReplaceableBladePath);
+            $replacementMap['ReplaceableBladePath'] = $ReplaceableBladePath;
+            static::LoadModifyPut($blade_StubSource_filepath, function (string $stub) use ($replacementMap) {
+                return static::HydrateStub($stub, $replacementMap);
+            }, $blade_Destination_filepath_full);
         }
 
+
+
+        // Make the routes visible
+        Artisan::call('optimize');
+
+
         // Menu Blade
-        if ($enumAccessScheme == 'menu') {
+
             static::LoadBackupModifyUpdate(
                 base_path(static::getMenuBladeFileName($enumUpperLower)),
                 function ($existingMenuFile, $ReplaceableTimestamp) use ($replacementMap) {
@@ -162,7 +167,7 @@ class TassyMenuCommands extends Command
                     return $existingMenuFile;
                 }
             );
-        }
+
 
     }
 
@@ -181,7 +186,7 @@ class TassyMenuCommands extends Command
         assert(file_exists($filepathWithContentWeWillPervert), $filepathWithContentWeWillPervert);
         $filenameTimestampStub = date('Y_d_m G:i:s');//.YYY_dd_mm HH:mm.php
         $virginalFileNameBackup = $filepathWithContentWeWillPervert . " origAsOf $filenameTimestampStub";
-        assert(! file_exists($virginalFileNameBackup));
+        assert(!file_exists($virginalFileNameBackup));
 
         $ret = copy($filepathWithContentWeWillPervert, $virginalFileNameBackup);
         assert($ret);
@@ -209,7 +214,7 @@ class TassyMenuCommands extends Command
     private static function LoadModifyPut(string $full_filepathOfStub, \Closure $modifyingClosure_gettingContent, string $full_filepath_newFile_forHydratedStub): void
     {
         // make a backup of the file
-        $filepathWithContentWeWillPervert =$full_filepathOfStub;
+        $filepathWithContentWeWillPervert = $full_filepathOfStub;
 
         // Load the File
         assert(file_exists($filepathWithContentWeWillPervert), $filepathWithContentWeWillPervert);
@@ -220,7 +225,7 @@ class TassyMenuCommands extends Command
 
         // write the file to new location
         $filepathWithContent_mustNotExist = $full_filepath_newFile_forHydratedStub;
-        assert(! file_exists($filepathWithContent_mustNotExist));
+        assert(!file_exists($filepathWithContent_mustNotExist));
         $ret = file_put_contents($filepathWithContent_mustNotExist, $hydrated_content);
         assert($ret);
         unset($stub_withEnclosedVars);

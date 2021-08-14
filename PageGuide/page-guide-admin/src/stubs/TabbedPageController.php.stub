@@ -1,0 +1,28 @@
+<?php
+
+namespace ReplaceableNamespace;
+
+use Illuminate\Http\Request;
+use TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\DashboardController;
+
+class ReplaceableControllerName  extends \TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base
+{
+
+    public const viewRef = "ReplaceableViewRef";
+    public static string $title = 'ReplaceableTitle';
+    public function getBodyView(string $subLevels) : \Illuminate\View\View
+    {
+        return view(static::viewRef);
+    }
+
+    private static array $mes;
+    public static function singleton(string $handle) : self
+    {
+        if (! isset(static::$mes[$handle])) {
+            static::$mes[$handle] = new self();
+        }
+
+        return static::$mes[$handle];
+    }
+
+}
