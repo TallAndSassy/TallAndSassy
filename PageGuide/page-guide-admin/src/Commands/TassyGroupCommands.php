@@ -11,6 +11,7 @@ namespace TallAndSassy\PageGuideAdmin\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use function PHPUnit\Framework\directoryExists;
+use function PHPUnit\Framework\throwException;
 
 
 class TassyGroupCommands extends Command
@@ -31,39 +32,62 @@ class TassyGroupCommands extends Command
         if ($this->option('subgroup')) {
             $subgroup = $this->option('subgroup')[0];
         }
-        print "These are the groups found in ".static::GetGroupDir_offsetFromBasePath($subgroup)."\n";
+        print "These are the groups found in ".static::GetOffsetPathToGroup($subgroup)."\n";
         $dir = base_path(static::GetGroupDir_offsetFromBasePath().DIRECTORY_SEPARATOR.$subgroup);
         if (! is_dir($dir)) {
             print "\n The dir does not exist.  Zero group here: $dir \n";
             return 0;
         }
 
-        foreach (static::getGroupNames($subgroup) as $name) {
+        foreach (static::GetGroupNames($subgroup) as $name) {
             print $name;
             print "\n";
         }
 
     }
 
-    public static function GetGroupDir_offsetFromBasePath(): string {
+    public static function InitializeGroup(string $groupName): void {
+        $gfp = static::GetAbsolutePathToGroup($groupName);
+        if (file_exists($gfp)) {
+            print "\n The group($groupName) seems to already exist. ".static::GetOffsetPathToGroup($groupName)."\n\n (at: $gfp)";
+            die(-1);
+        }
+        mkdir($gfp);
+
+    }
+
+//    private static function GetGroupFilePath_byGroupName(string $groupName): string {
+//        $_baseGroupSuffix = ($groupName ? $groupName.DIRECTORY_SEPARATOR : '');
+//        $_baseDir = static::GetGroupDir_offsetFromBasePath().DIRECTORY_SEPARATOR.$_baseGroupSuffix;
+//        return base_path($_baseDir);
+//    }
+
+    private static function GetAbsolutePathToGroup(?string $_baseGroup = null): string {
+        return base_path(static::GetOffsetPathToGroup($_baseGroup));
+    }
+
+    private static function GetOffsetPathToGroup(?string $_baseGroup = null): string {
+        $_baseGroupPrefix = ($_baseGroup ? $_baseGroup.DIRECTORY_SEPARATOR : '');
+        #print "\n_baseGroupPrefix($_baseGroupPrefix)\n";
+        $_baseDir = static::GetGroupDir_offsetFromBasePath().DIRECTORY_SEPARATOR.$_baseGroupPrefix;
+        return $_baseDir;
+    }
+
+    private static function GetGroupDir_offsetFromBasePath(): string {
         return 'app/Http/Livewire';
     }
 
     /* You can pass a subgroup, like 'Admin' */
-    public function getGroupNames(?string $_baseGroup = null, array $groupNames_soFar = [] ): array {
-        $_baseGroupPrefix = ($_baseGroup ? $_baseGroup.DIRECTORY_SEPARATOR : '');
-        #print "\n_baseGroupPrefix($_baseGroupPrefix)\n";
-        $_baseDir = static::GetGroupDir_offsetFromBasePath().DIRECTORY_SEPARATOR.$_baseGroupPrefix;
+    public static function GetGroupNames(?string $_baseGroup = null, array $groupNames_soFar = [] ): array {
+        $_baseGroupOffsetFromBase = static::GetOffsetPathToGroup($_baseGroup);
+        $_baseGroupAbsolutePath = static::GetAbsolutePathToGroup($_baseGroup);
 
-        foreach (scandir(base_path($_baseDir)) as $h) {
-            $filepath_to_file_orMaybeDir = base_path($_baseDir).DIRECTORY_SEPARATOR.$h;
+        foreach (scandir($_baseGroupAbsolutePath) as $h) {
+            $filepath_to_file_orMaybeDir = $_baseGroupAbsolutePath.DIRECTORY_SEPARATOR.$h;
             if (is_dir($filepath_to_file_orMaybeDir) and ! in_array($h, ['.','..','resources'])) {
-                $newGroupName = ($_baseGroupPrefix ? $_baseGroupPrefix : '').$h;
+                $newGroupName = $_baseGroup ? "$_baseGroup/$h" : $h;
                 $groupNames_soFar[] = $newGroupName;
-                #print "\n added $newGroupName";
-                $nextDeeperDir_offsetFromBasePath =$newGroupName;
-                #print "\n--- About to explore nextDeeperDir_offsetFromBasePath($nextDeeperDir_offsetFromBasePath)";
-                $groupNames_soFar = static::getGroupNames($nextDeeperDir_offsetFromBasePath, $groupNames_soFar);
+                $groupNames_soFar = static::GetGroupNames($newGroupName, $groupNames_soFar);
             }
         }
         return $groupNames_soFar;

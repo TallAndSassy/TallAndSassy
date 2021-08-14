@@ -45,21 +45,41 @@ class TassyMenuCommands extends Command
 
         // Gather all the data....
         $enumAdminMeFront = match (
-        $this->choice('You want to add a page, great! Where will it live?', ['f' => 'front', 'a' => 'admin', 'm' => 'me'], 'a')
+        $this->choice('You want to add a page, great! Where will it live?', ['f' => 'front', 'a' => 'Admin', 'm' => 'me'], 'a')
         ) {
-            'f' => 'front',
-            'a' => 'admin',
-            'm' => 'me'
+            'f' => 'Front',
+            'a' => 'Admin',
+            'm' => 'Me'
         };
-        assert($enumAdminMeFront == 'admin', "Me and Front are not yet implemented. Try 'Admin'");
+        assert($enumAdminMeFront == 'Admin', "Me and Front are not yet implemented. Try 'Admin'");
         $replacementMap['enumAdminMeFront'] = $enumAdminMeFront;
 
         // Sub Url
         $ReplaceableSubUrl = $this->ask('What is the relative path? Probably something like "/admin/help"', '/admin/' . $defaultJunk);//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
         $replacementMap['ReplaceableSubUrl'] = $ReplaceableSubUrl;
 
+        // Grouping?
+        $enumGroupScheme  = match (
+        $this->choice('You can group this into a logical directory, keeping the files geographically close to each other. Or, you can keep everything global, like default laravel. Grouping is like a lightweight package', ['g' => 'Group it', 'd' => 'Default Global behavior'], 'g')
+        ) {
+            'g' => 'group',
+            'd' => 'global',
 
-        if ($enumAdminMeFront == 'admin') {
+        };
+        if ($enumGroupScheme == 'global') {
+            $groupName = '';
+        } else {
+            $existingGroups_plusNew = ['n'=>'New Group (Chose this to create a new grouping)', ...TassyGroupCommands::GetGroupNames()];
+            $groupName = $this->choice('These are the existing groups', $existingGroups_plusNew, 'Admin');
+            if ($groupName == 'n') {
+                $groupName = $this->ask("Type the name of your new grouping, like 'Admin/Tasks', or 'Stuff' ");
+                TassyGroupCommands::InitializeGroup($groupName);
+            }
+        }
+
+
+
+        if ($enumAdminMeFront == 'Admin') {
                         $enumUpperLower = match (
                 $this->choice('Where should this menu go? ', ['u' => 'Upper Menu', 'l' => 'Lower Menu'], 'u')
                 ) {
@@ -242,4 +262,5 @@ class TassyMenuCommands extends Command
         }
         return $filename;
     }
+
 }
