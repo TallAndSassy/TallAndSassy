@@ -29,7 +29,11 @@ class TassyMenuCommands extends Command
 
 
     /**
-     * Execute the console command.
+     * Group = AKA Domains
+     * Key = Our current focus.
+     * Admin/Planning = Domain
+     * HomePage = Key
+     * enumHoming_ControllersLivewire
      *
      * @return int
      */
@@ -38,48 +42,87 @@ class TassyMenuCommands extends Command
         $replacementMap = [];
 
         // ReplaceableDomain
-        $defaultJunk = 'E_' . uniqid();
-        $ReplaceableDomain = $defaultJunk;
-        $replacementMap['ReplaceableDomain'] = $ReplaceableDomain;
+        $defaultJunk = 'E_' . time();
+        #$ReplaceableDomain = $defaultJunk;
+       # $replacementMap['ReplaceableDomain'] = $ReplaceableDomain;
 
 
         // Gather all the data....
-        $enumAdminMeFront = match (
-        $this->choice('You want to add a page, great! Where will it live?', ['f' => 'front', 'a' => 'Admin', 'm' => 'me'], 'a')
+        $shortNodeName = $this->ask("Give more name for what you are make, like 'Page', or 'Home', 'or 'EnrichmentCalendar'.",$defaultJunk);
+
+        $enumHoming_ControllersLivewire = match (
+        $this->choice('How do you want to store the page info',['c' => 'app/Http/Controllers', 'l' => 'app/Http/Livewire'], 'l')
         ) {
-            'f' => 'Front',
-            'a' => 'Admin',
-            'm' => 'Me'
+            'c' => 'Controllers',
+            'l' => 'Livewire',
         };
-        assert($enumAdminMeFront == 'Admin', "Me and Front are not yet implemented. Try 'Admin'");
+
+
+        $enumAdminMeFront = match (
+        $this->choice('You want to add a page, great! Where will it live?', ['f' => '/ (user facing)', 'a' => '/admin', 'm' => '/me'], 'a')
+        ) {
+            'f' => 'front',
+            'a' => 'admin',
+            'm' => 'me'
+        };
+        //assert($enumAdminMeFront == 'admin', "Me and Front are not yet implemented. Try 'admin'");
         $replacementMap['enumAdminMeFront'] = $enumAdminMeFront;
 
-        // Sub Url
-        $ReplaceableSubUrl = $this->ask('What is the relative path? Probably something like "/admin/help"', '/admin/' . $defaultJunk);//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
-        $replacementMap['ReplaceableSubUrl'] = $ReplaceableSubUrl;
+
 
         // Grouping?
         $enumGroupScheme  = match (
-        $this->choice('You can group this into a logical directory, keeping the files geographically close to each other. Or, you can keep everything global, like default laravel. Grouping is like a lightweight package', ['g' => 'Group it', 'd' => 'Default Global behavior'], 'g')
+        $this->choice('You can group this into a logical directory, keeping the files geographically close to each other. Or, you can keep everything global, like default laravel. Grouping is like a lightweight package', ['g' => 'Group it', 'd' => 'Default Global behavior'], 'd')
         ) {
             'g' => 'group',
             'd' => 'global',
 
         };
+        $boolShopLocal_elseNullOnNa = null;
         if ($enumGroupScheme == 'global') {
             $groupName = '';
         } else {
-            $existingGroups_plusNew = ['n'=>'New Group (Chose this to create a new grouping)', ...TassyGroupCommands::GetGroupNames()];
-            $groupName = $this->choice('These are the existing groups', $existingGroups_plusNew, 'Admin');
-            if ($groupName == 'n') {
+            $existingGroups_plusNew = ['n'=>'New Group (Chose this to create a new grouping)', ...TassyDomainCommands::GetDomainNames()];
+            $groupName_c = $this->choice('These are the existing groups', $existingGroups_plusNew, 'Admin');
+            if ($groupName_c == 'n') {
                 $groupName = $this->ask("Type the name of your new grouping, like 'Admin/Tasks', or 'Stuff' ");
-                TassyGroupCommands::InitializeGroup($groupName);
+                if ($enumGroupScheme != 'global') {
+                    $boolShopLocal_elseNullOnNa = match($this->choice('You have a group, you can choose to also shop locally so the your view files site right there. If local, it will set up a new local "resources/views" directory for your blade files.', ['l' => 'Shop Local', 'g' => 'Default Global behavior'], 'l')) {
+                        'l'=>true,
+                        'g'=>false,
+                    };
+                }
+                TassyDomainCommands::InitializeGroup($groupName, $boolShopLocal_elseNullOnNa);
+            } else {
+                $groupName = TassyDomainCommands::GetDomainNames()[$groupName_c];
             }
         }
 
+        // Sub Url
+        $_urlPrefix = '';
+        if ($enumAdminMeFront == 'admin' && !str_starts_with($groupName, 'admin')) {
+            $_urlPrefix = 'admin';
+        } elseif ($enumAdminMeFront == 'me' && !str_starts_with($groupName, 'me')) {
+            $_urlPrefix = 'me';
+        } elseif ($enumAdminMeFront == 'front' && !( str_starts_with($groupName, '/') || empty($groupName) )) {
+            $_urlPrefix = '';
+        } else {
+            assert(0);
+        }
+        $_a = [$_urlPrefix,$groupName,$shortNodeName];
+        $_a = array_filter($_a);//https://stackoverflow.com/questions/3654295/remove-empty-array-elements
+
+        $ReplaceableSubUrl = $this->ask('What is the relative path? Probably something like "/admin/help"', '/'.implode('/', $_a) );//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
+        $replacementMap['ReplaceableSubUrl'] = $ReplaceableSubUrl;
 
 
-        if ($enumAdminMeFront == 'Admin') {
+
+
+
+        /* Rule: Name groups are shunted into Livewire to avoid infinite file scattering
+        */
+
+        if ($enumAdminMeFront == 'admin') {
                         $enumUpperLower = match (
                 $this->choice('Where should this menu go? ', ['u' => 'Upper Menu', 'l' => 'Lower Menu'], 'u')
                 ) {
@@ -90,54 +133,64 @@ class TassyMenuCommands extends Command
                 $replacementMap['enumUpperLower'] = $enumUpperLower;
 
                 // Label
-                $ReplaceableLabel = $this->ask('What is the menu text?', $defaultJunk);//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
+                $ReplaceableLabel = $this->ask('What is the menu text?', $shortNodeName);//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
                 $replacementMap['ReplaceableLabel'] = $ReplaceableLabel;
         }
 
-        $ReplaceableNamespace = 'App\Http\Controllers';
-        $replacementMap['ReplaceableNamespace'] = $ReplaceableNamespace;
+        // Namespace ReplaceableNamespace
+        if ($enumHoming_ControllersLivewire == 'Controllers') {
+            $ReplaceableNamespace = 'App\Http\Controllers';
+            $replacementMap['ReplaceableNamespace'] = $ReplaceableNamespace;
 
-        $ReplaceableHtml = $this->ask("Give me starting html. Leave blank for lorem ipsem", "Fill with whatever you want. ($defaultJunk)");
-        $replacementMap['ReplaceableHtml'] = $ReplaceableHtml;
-
-        // Make the link show something useful
-        $enumOutputScheme = $this->choice('Is page a single top-level page, or a tabbed paged.', ['s' => 'Single Page', 't' => 'Tabbed Page'], 't');//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
-        $replacementMap['enumOutputScheme'] = $enumOutputScheme;
-
-        // Populate the path the blade via view ref
-        $ReplaceableViewRef = 'admin/' . $ReplaceableDomain;
-        $replacementMap['ReplaceableViewRef'] = $ReplaceableViewRef;
-
-        // Title of the page (please make smarter)
-        $replacementMap['ReplaceableTitle'] = "ReplaceableTitle for $ReplaceableDomain";
-
-        if ($enumOutputScheme == 's') {
-            // Controller
-            // For a simple end page - not livewire based, not tabbed
-            $ReplaceableControllerName = $defaultJunk . 'Controller';
-            $replacementMap['ReplaceableControllerName'] = $ReplaceableControllerName;
-
-            $controller_StubSource_filepath = __DIR__ . '/../stubs/Controller.php.stub';
-            $controller_Destination_filepath = base_path("app/Http/Controllers/$ReplaceableControllerName.php");
-
-
-        } elseif ($enumOutputScheme == 't') {
-                // Controller
-                $ReplaceableControllerName = $defaultJunk . 'TabbedPageController';
-                $replacementMap['ReplaceableControllerName'] = $ReplaceableControllerName;
-
-                $controller_StubSource_filepath = __DIR__ . '/../stubs/TabbedPageController.php.stub';
-                $controller_Destination_filepath = base_path("app/Http/Controllers/$ReplaceableControllerName.php");
-        } elseif ($enumOutputScheme == 'b') {
-            assert(0, 'have not yet implemented blade mode');
+        } elseif ($enumHoming_ControllersLivewire == 'Livewire') {
+            $ReplaceableNamespace = 'App\Http\Livewire\\'.str_replace('/','\\',$groupName);
+            $ReplaceableNamespace = trim($ReplaceableNamespace,'/\\');
+            $replacementMap['ReplaceableNamespace'] = $ReplaceableNamespace;
         }
 
-        static::LoadModifyPut($controller_StubSource_filepath, function (string $stub) use ($replacementMap) {
-            return static::HydrateStub($stub, $replacementMap);
-        }, $controller_Destination_filepath);
+        // Which Page Controller - Single, or Tabbed
+
+        // Is Page controller a tabbed page?
+        $enumTopPageScheme_single_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['s' => 'Single Page', 't' => 'Tabbed Page'], 's')) {
+            's'=>'single',
+            't'=>'tabbed',
+        };//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
+        $replacementMap['enumTopPageScheme'] = $enumTopPageScheme_single_tabbed;
+
+        if ($enumTopPageScheme_single_tabbed == 'tabbed') {
+            $ReplaceableControllerName = $shortNodeName . 'TabbedPageController';
+            $controller_StubSource_filepath = __DIR__ . '/../stubs/TabbedPageController.php.stub';
+
+        } else {
+            $ReplaceableControllerName = $shortNodeName . 'Controller';
+            $controller_StubSource_filepath = __DIR__ . '/../stubs/Controller.php.stub';
+        }
+        $replacementMap['ReplaceableControllerName'] = $ReplaceableControllerName;
+
+        // Where to put the controller?
+        if ($enumHoming_ControllersLivewire == 'Controllers') {
+            $controller_Destination_filepath = base_path("app/Http/Controllers/$ReplaceableControllerName.php");
+
+        } elseif ($enumHoming_ControllersLivewire == 'Livewire') {
+            $controller_Destination_filepath = base_path("app/Http/Livewire{$groupName}/$ReplaceableControllerName.php");
+        }
 
 
-        // Route
+        // Default HTML
+        $ReplaceableHtml = $this->ask("Give me starting html. Leave blank for lorem ipsem", "Fill with whatever you want. ($groupName $shortNodeName)");
+        $replacementMap['ReplaceableHtml'] = $ReplaceableHtml;
+
+
+        // Populate the path the blade via view ref
+        // FunFact: GroupName and veiwRef will be the same
+        $ReplaceableViewRef = $groupName.DIRECTORY_SEPARATOR.$shortNodeName;
+        $replacementMap['ReplaceableViewRef'] = trim($ReplaceableViewRef,'/\\');
+
+        // Title of the page (please make smarter)
+        $replacementMap['ReplaceableTitle'] = "ReplaceableTitle for $shortNodeName";
+
+
+        // Do Route
         $web_admin_routes_filepath = base_path('routes/web-admin--routes.php');
         static::LoadBackupModifyUpdate($web_admin_routes_filepath, function (string $route_web, string $ReplaceableTimestamp) use ($replacementMap) {
             $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route-web-admin-xxx.php.stub';
@@ -147,36 +200,30 @@ class TassyMenuCommands extends Command
             return $route_web . $routeSnippet_hydrated;
         });
 
+        // Do Controller
+        static::LoadModifyPut($controller_StubSource_filepath, function (string $stub) use ($replacementMap) {
+            return static::HydrateStub($stub, $replacementMap);
+        }, $controller_Destination_filepath);
 
 
-
-        // Put the view into place
-        if ($enumOutputScheme == 's') {
+        // Do $enumTopPageScheme
+        if ($enumTopPageScheme_single_tabbed == 'single') {
             $blade_StubSource_filepath = __DIR__ . '/../stubs/page.blade.php.stub';
-            $ReplaceableBladePath = 'views/admin/' . $ReplaceableDomain . '.blade.php';
-            $blade_Destination_filepath_full = resource_path($ReplaceableBladePath);
-            $replacementMap['ReplaceableBladePath'] = $ReplaceableBladePath;
-            static::LoadModifyPut($blade_StubSource_filepath, function (string $stub) use ($replacementMap) {
-                return static::HydrateStub($stub, $replacementMap);
-            }, $blade_Destination_filepath_full);
-        } elseif ($enumOutputScheme == 't') {
+        }elseif ($enumTopPageScheme_single_tabbed == 'tabbed') {
             $blade_StubSource_filepath = __DIR__ . '/../stubs/pageThatIsTabbed.blade.php.stub';
-            $ReplaceableBladePath = 'views/admin/' . $ReplaceableDomain . '.blade.php';
-            $blade_Destination_filepath_full = resource_path($ReplaceableBladePath);
-            $replacementMap['ReplaceableBladePath'] = $ReplaceableBladePath;
-            static::LoadModifyPut($blade_StubSource_filepath, function (string $stub) use ($replacementMap) {
-                return static::HydrateStub($stub, $replacementMap);
-            }, $blade_Destination_filepath_full);
+        } else {
+            assert(0);
         }
+        $ReplaceableBladePath_offsetFromResource = 'views/' . $ReplaceableViewRef . '.blade.php';
+        $blade_Destination_filepath_full = resource_path($ReplaceableBladePath_offsetFromResource);
+        $replacementMap['ReplaceableBladePath'] = $ReplaceableBladePath_offsetFromResource;
 
+        static::LoadModifyPut($blade_StubSource_filepath, function (string $stub) use ($replacementMap) {
+            return static::HydrateStub($stub, $replacementMap);
+        }, $blade_Destination_filepath_full);
 
-
-        // Make the routes visible
-        Artisan::call('optimize');
-
-
-        // Menu Blade
-
+        // Do Menu Blade
+        if ($enumAdminMeFront == 'admin') {
             static::LoadBackupModifyUpdate(
                 base_path(static::getMenuBladeFileName($enumUpperLower)),
                 function ($existingMenuFile, $ReplaceableTimestamp) use ($replacementMap) {
@@ -187,6 +234,11 @@ class TassyMenuCommands extends Command
                     return $existingMenuFile;
                 }
             );
+        }
+
+
+        // Make the routes visible
+        Artisan::call('optimize');
 
 
     }
@@ -239,12 +291,15 @@ class TassyMenuCommands extends Command
         // Load the File
         assert(file_exists($filepathWithContentWeWillPervert), $filepathWithContentWeWillPervert);
         $stub_withEnclosedVars = file_get_contents($filepathWithContentWeWillPervert);
+        print "\n$filepathWithContentWeWillPervert";
+        print "\n ==> ";
 
         // Pervert the file
         $hydrated_content = $modifyingClosure_gettingContent($stub_withEnclosedVars);//static::HydrateStub($stub_withEnclosedVars, $replacementMap);
 
         // write the file to new location
         $filepathWithContent_mustNotExist = $full_filepath_newFile_forHydratedStub;
+        print "\n$filepathWithContent_mustNotExist ";
         assert(!file_exists($filepathWithContent_mustNotExist));
         $ret = file_put_contents($filepathWithContent_mustNotExist, $hydrated_content);
         assert($ret);
