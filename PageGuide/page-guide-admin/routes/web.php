@@ -24,7 +24,7 @@ Route::middleware([
     // ---------------------- superadmin -END- -------------------------------------------------------------------------
 Route::middleware(['can:'.BaseTassyPermissions::ACCESS_SUPERADMIN_DASHBOARD])->group(function() {
         Route::get('/superadmin/dashboard',
-            fn() => \App\Http\Controllers\SuperAdminIndexController::getThisView()
+            fn() => \TallAndSassy\Tenancy\Http\Controllers\SuperAdminIndexController::getThisView()
         ) ->name('superadmin');
 
         Route::get('/superadmin', function () {
