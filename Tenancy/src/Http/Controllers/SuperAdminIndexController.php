@@ -16,7 +16,7 @@ class SuperAdminIndexController extends Controller
 {
     public static function getThisView(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
-        return view('superadmin/index', ['blah'=>'A']);
+        return view('tassy::superadmin/index', ['blah'=>'A']);
     }
 
 }
