@@ -46,7 +46,7 @@
                             @php
                             $i = 0;
                             @endphp
-                            @foreach (\App\Models\Tenant::all() as $tenant)
+                            @foreach (\TallAndSassy\Tenancy\Models\Tenant::all() as $tenant)
                                 @php $i = $i + 1; @endphp
                                 <tr class="bg-white">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">

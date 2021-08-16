@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace TallAndSassy\Tenancy;
 
-use App\Models\Tenant;
+use TallAndSassy\Tenancy\Models\Tenant;
 
 class TenantUtils
 {

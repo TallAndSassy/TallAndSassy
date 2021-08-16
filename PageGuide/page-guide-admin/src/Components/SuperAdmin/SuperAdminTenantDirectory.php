@@ -2,7 +2,7 @@
 
 namespace TallAndSassy\PageGuideAdmin\Components\SuperAdmin;
 
-use App\Models\Tenant;
+use TallAndSassy\Tenancy\Models\Tenant;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
