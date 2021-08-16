@@ -2,9 +2,11 @@
 
 namespace TallAndSassy\Tenancy\Models;
 
+use App\Models\User;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use TallAndSassy\Tenancy\database\factories\TenantFactory;
 
 
 class Tenant extends Model
@@ -27,5 +29,14 @@ class Tenant extends Model
                 $new_admin->assignRole('webmaster');
             }
         });
+    }
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return new TenantFactory();
     }
 }
