@@ -83,7 +83,7 @@ class TassyMenuCommands extends Command
             $groupName = '';
         } else {
             $existingGroups_plusNew = ['n'=>'New Group (Chose this to create a new grouping)', ...TassyDomainCommands::GetDomainNames($enumHoming_ControllersLivewire)];
-            $groupName_c = $this->choice('These are the existing groups', $existingGroups_plusNew, 'n');
+            $groupName_c = $this->choice('These are the existing groups', $existingGroups_plusNew, 'Admin');
             if ($groupName_c == 'n') {
                 $groupName = $this->ask("Type the name of your new grouping, like 'Admin/Tasks', or 'Stuff' ");
                 if ($enumGroupScheme != 'global') {
@@ -100,7 +100,7 @@ class TassyMenuCommands extends Command
                 if ($isAlreadyShoppingLocal) {
                     $boolShopLocal = true;
                 } else {
-                    $boolShopLocal = match($this->choice('You have an existing group, but it is not yet set up for local shopping. You can start using local shopping.  You can choose to also shop locally so the your view files site right there. If local, it will set up a new local "resources/views" directory for your blade files.', ['l' => 'Shop Local', 'g' => 'Default Global behavior'], 'g')) {
+                    $boolShopLocal = match($this->choice('You have an existing group, but it is not yet set up for local shopping. You can start using local shopping.  You can choose to also shop locally so the your view files site right there. If local, it will set up a new local "resources/views" directory for your blade files.', ['l' => 'Shop Local', 'g' => 'Default Global behavior'], 'l')) {
                         'l'=>true,
                         'g'=>false,
                     };
@@ -166,7 +166,7 @@ class TassyMenuCommands extends Command
         // Which Page Controller - Single, or Tabbed
 
         // Is Page controller a tabbed page?
-        $enumTopPageScheme_single_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['s' => 'Single Page', 't' => 'Tabbed Page'], 's')) {
+        $enumTopPageScheme_single_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['s' => 'Single Page', 't' => 'Tabbed Page'], 't')) {
             's'=>'single',
             't'=>'tabbed',
         };//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
