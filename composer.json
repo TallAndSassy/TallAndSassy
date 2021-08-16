@@ -64,7 +64,13 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [],
+            "providers": [
+                "TallAndSassy\\PageGuide\\PageGuideServiceProvider",
+                "TallAndSassy\\PageGuideAdmin\\PageGuideAdminServiceProvider",
+                "TallAndSassy\\Ui\\Glances\\UiGlances_ServiceProvider",
+                "TallAndSassy\\Tenancy\\TenancyServiceProvider"
+            ]
         }
     },
     "config": {
