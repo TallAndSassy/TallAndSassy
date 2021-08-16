@@ -72,43 +72,58 @@ class TassyMenuCommands extends Command
 
         // Grouping?
         $enumGroupScheme  = match (
-        $this->choice('You can group this into a logical directory, keeping the files geographically close to each other. Or, you can keep everything global, like default laravel. Grouping is like a lightweight package', ['g' => 'Group it', 'd' => 'Default Global behavior'], 'd')
+        $this->choice('You can group this into a logical directory, keeping the files geographically close to each other. Or, you can keep everything global, like default laravel. Grouping is like a lightweight package', ['g' => 'Group it', 'd' => 'Default Global behavior'], 'g')
         ) {
             'g' => 'group',
             'd' => 'global',
 
         };
-        $boolShopLocal_elseNullOnNa = null;
+        $boolShopLocal = false;
         if ($enumGroupScheme == 'global') {
             $groupName = '';
         } else {
-            $existingGroups_plusNew = ['n'=>'New Group (Chose this to create a new grouping)', ...TassyDomainCommands::GetDomainNames()];
-            $groupName_c = $this->choice('These are the existing groups', $existingGroups_plusNew, 'Admin');
+            $existingGroups_plusNew = ['n'=>'New Group (Chose this to create a new grouping)', ...TassyDomainCommands::GetDomainNames($enumHoming_ControllersLivewire)];
+            $groupName_c = $this->choice('These are the existing groups', $existingGroups_plusNew, 'n');
             if ($groupName_c == 'n') {
                 $groupName = $this->ask("Type the name of your new grouping, like 'Admin/Tasks', or 'Stuff' ");
                 if ($enumGroupScheme != 'global') {
-                    $boolShopLocal_elseNullOnNa = match($this->choice('You have a group, you can choose to also shop locally so the your view files site right there. If local, it will set up a new local "resources/views" directory for your blade files.', ['l' => 'Shop Local', 'g' => 'Default Global behavior'], 'l')) {
+                    $boolShopLocal = match($this->choice('You have a group, you can choose to also shop locally so the your view files site right there. If local, it will set up a new local "resources/views" directory for your blade files.', ['l' => 'Shop Local', 'g' => 'Default Global behavior'], 'l')) {
                         'l'=>true,
                         'g'=>false,
                     };
                 }
-                TassyDomainCommands::InitializeGroup($groupName, $boolShopLocal_elseNullOnNa);
+                TassyDomainCommands::InitializeGroup($enumHoming_ControllersLivewire, $groupName, $boolShopLocal);
             } else {
-                $groupName = TassyDomainCommands::GetDomainNames()[$groupName_c];
+                $groupName = TassyDomainCommands::GetDomainNames($enumHoming_ControllersLivewire)[$groupName_c];
+
+                $isAlreadyShoppingLocal = TassyDomainCommands::IsAlreadyShoppingLocal($enumHoming_ControllersLivewire, $groupName);
+                if ($isAlreadyShoppingLocal) {
+                    $boolShopLocal = true;
+                } else {
+                    $boolShopLocal = match($this->choice('You have an existing group, but it is not yet set up for local shopping. You can start using local shopping.  You can choose to also shop locally so the your view files site right there. If local, it will set up a new local "resources/views" directory for your blade files.', ['l' => 'Shop Local', 'g' => 'Default Global behavior'], 'g')) {
+                        'l'=>true,
+                        'g'=>false,
+                    };
+                    if ($boolShopLocal) {
+                        TassyDomainCommands::InitializeGroup($enumHoming_ControllersLivewire, $groupName, $boolShopLocal);
+                    }
+                }
             }
         }
+        $replacementMap['ReplaceableBool_IsShoppingLocal'] = $boolShopLocal ;
+
 
         // Sub Url
         $_urlPrefix = '';
-        if ($enumAdminMeFront == 'admin' && !str_starts_with($groupName, 'admin')) {
-            $_urlPrefix = 'admin';
-        } elseif ($enumAdminMeFront == 'me' && !str_starts_with($groupName, 'me')) {
-            $_urlPrefix = 'me';
-        } elseif ($enumAdminMeFront == 'front' && !( str_starts_with($groupName, '/') || empty($groupName) )) {
-            $_urlPrefix = '';
-        } else {
-            assert(0);
-        }
+        //        if ($enumAdminMeFront == 'admin' && !str_starts_with($groupName, 'admin')) {
+        //            $_urlPrefix = 'admin';
+        //        } elseif ($enumAdminMeFront == 'me' && !str_starts_with($groupName, 'me')) {
+        //            $_urlPrefix = 'me';
+        //        } elseif ($enumAdminMeFront == 'front' && !( str_starts_with($groupName, '/') || empty($groupName) )) {
+        //            $_urlPrefix = '';
+        //        } else {
+        //            assert(0);
+        //        }
         $_a = [$_urlPrefix,$groupName,$shortNodeName];
         $_a = array_filter($_a);//https://stackoverflow.com/questions/3654295/remove-empty-array-elements
 
@@ -169,10 +184,17 @@ class TassyMenuCommands extends Command
 
         // Where to put the controller?
         if ($enumHoming_ControllersLivewire == 'Controllers') {
-            $controller_Destination_filepath = base_path("app/Http/Controllers/$ReplaceableControllerName.php");
+            $path = 'app/Http/Controllers';
+            $path .= (! empty($groupName)) ? "/$groupName" : '';
+            $path .=  "/{$ReplaceableControllerName}.php";
+            dd($path);
+            $controller_Destination_filepath = base_path($path);
 
         } elseif ($enumHoming_ControllersLivewire == 'Livewire') {
-            $controller_Destination_filepath = base_path("app/Http/Livewire{$groupName}/$ReplaceableControllerName.php");
+            $path = 'app/Http/Livewire';
+            $path .= (! empty($groupName)) ? "/$groupName" : '';
+            $path .=  "/{$ReplaceableControllerName}.php";
+            $controller_Destination_filepath = base_path($path);
         }
 
 
@@ -215,7 +237,8 @@ class TassyMenuCommands extends Command
             assert(0);
         }
         $ReplaceableBladePath_offsetFromResource = 'views/' . $ReplaceableViewRef . '.blade.php';
-        $blade_Destination_filepath_full = resource_path($ReplaceableBladePath_offsetFromResource);
+        $blade_Destination_filepath_full = TassyDomainCommands::GetDomainResourceAbsolutePath($enumHoming_ControllersLivewire, $groupName, $boolShopLocal).DIRECTORY_SEPARATOR.$shortNodeName.'.blade.php';;//resource_path($ReplaceableBladePath_offsetFromResource);
+        #dd($blade_Destination_filepath_full);
         $replacementMap['ReplaceableBladePath'] = $ReplaceableBladePath_offsetFromResource;
 
         static::LoadModifyPut($blade_StubSource_filepath, function (string $stub) use ($replacementMap) {

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ReplaceableNamespace;
 
+
 class ReplaceableControllerName extends \TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base
 {
     public const viewRef = "ReplaceableViewRef";
@@ -20,6 +21,11 @@ class ReplaceableControllerName extends \TallAndSassy\PageGuideAdmin\Http\Contro
 
     public function getBodyView(string $subLevels): \Illuminate\View\View
     {
+
+        if (ReplaceableBool_IsShoppingLocal) { // Let's tell Laravel to look for files right next to us, not in the /app/resources/views dir.  FYI: Once out of stub phpase, this 'if' statement is clearly stooopid.
+            \Illuminate\Support\Facades\View::getFinder()->addLocation( __DIR__ . '/resources/views'); // Shop Local for your blade files  https://stackoverflow.com/a/27461966/93933
+        }
+
         return view(static::viewRef);
     }
 
