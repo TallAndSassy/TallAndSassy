@@ -5,8 +5,6 @@ namespace TallAndSassy\PageGuide;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use TallAndSassy\PageGuide\Commands\PageGuideCommand;
-#use TallAndSassy\PageGuide\Components\Bobby;
 use TallAndSassy\PageGuide\Components\Lowernav;
 use TallAndSassy\PageGuide\Components\Sidenav;
 use TallAndSassy\PageGuide\Http\Controllers\PageGuideController;
@@ -22,6 +20,11 @@ class PageGuideServiceProvider extends ServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole()) {
+            $this->commands([
+                \TallAndSassy\PageGuide\Commands\TassyPageGuideCommands::class
+            ]);
+
+
             $this->publishes(
                 [   // todo: add the stub
                     __DIR__ . '/../config/tassy/app-branding.stub.php' => config_path('/tassy/app-branding.php'),
@@ -66,12 +69,7 @@ class PageGuideServiceProvider extends ServiceProvider
 
 
 
-            // Registering package commands.
-            $this->commands(
-                [
-                    PageGuideCommand::class,
-                ]
-            );
+
         }
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'tassy');

@@ -40,6 +40,10 @@ public/img/logos
     In 'tailwind.config.js' disable jit like this: // mode: 'jit'
 
 [ ] Big webpack.mix.js stuff (TODO)
+[ ] php artisan tassy-cms:install
+[ ] php artisan tassy-page-guide:install
+[ ]    npm install
+[ ]    npm run watch --or-- npm run prod
 ------------------------------------------------------------------------------------------------------------------------
 [ ] Install this into /submodules
 -- In Sourtree

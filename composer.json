@@ -46,7 +46,8 @@
             "TallAndSassy\\Ui\\Glances\\": "Ui/Glances/src",
             "TallAndSassy\\Strings\\": "Strings/src",
             "TallAndSassy\\RolesAndPermissions\\": "RolesAndPermissions/src",
-            "TallAndSassy\\Tenancy\\": "Tenancy/src"
+            "TallAndSassy\\Tenancy\\": "Tenancy/src",
+            "TallAndSassy\\Cms\\": "Cms/src"
         }
     },
 
@@ -69,7 +70,8 @@
                 "TallAndSassy\\PageGuide\\PageGuideServiceProvider",
                 "TallAndSassy\\PageGuideAdmin\\PageGuideAdminServiceProvider",
                 "TallAndSassy\\Ui\\Glances\\UiGlances_ServiceProvider",
-                "TallAndSassy\\Tenancy\\TenancyServiceProvider"
+                "TallAndSassy\\Tenancy\\TenancyServiceProvider",
+                "TallAndSassy\\Cms\\CmsServiceProvider"
             ]
         }
     },
