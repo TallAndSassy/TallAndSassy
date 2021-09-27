@@ -1,6 +1,6 @@
 Motivation: The old tall and sassy was all over the place
 so difficult to maintain since so distributed.
-More importantly, difficult to refactor.
+More importantly, it was difficult to refactor.
 Trying to remerge and maybe get into a tight copy-able module
 Try to keep it segregated and eventually move back into a package
 and definitely to keep the core poking around a separate area of
