@@ -4,7 +4,7 @@ More importantly, it was difficult to refactor.
 Trying to remerge and maybe get into a tight copy-able module
 Try to keep it segregated and eventually move back into a package
 and definitely to keep the core poking around a separate area of
-concern
+concern.
 ============
 Tweak .env
 [ ] insert into .env
