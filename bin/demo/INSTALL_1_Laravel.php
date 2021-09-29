@@ -75,7 +75,7 @@ echo $c->getColoredString("\n   composer require tallandsassy/tallandsassy:dev-m
 echo "\n";
 echo "\n";
 echo $c->getColoredString("\n   Now continue with Tall & Sassy installation by running",'red');
-echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/Demo/INSTALL_2_Tassy.php",'green');
+echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_2_Tassy.php --HQ_SUBDOMAIN=st",'green');
 echo "\n";
 echo "\n";
 echo "\n";

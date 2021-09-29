@@ -20,5 +20,7 @@ helpful reminders.
 
 ## Continue on...
 You have a working laravel install ready for Tassy play.  ...
+    composer require tallandsassy/tallandsassy:dev-main
+    php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_2_Tassy.php --HQ_SUBDOMAIN=st
 
 (1) citation needed.
