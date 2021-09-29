@@ -81,6 +81,9 @@ jcmd(cmd:'cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/
 //
 
 
+# public/img/logos ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+jcmd(cmd:'cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/public/img public/img', bForceEcho: true);
+
 
 // ------------ After this - it is just some utilities that help us install laravel ------
 function getOptionalOption(string $optionName, mixed $default, Closure $doesValidate, Closure $transformInputToInternal): mixed {

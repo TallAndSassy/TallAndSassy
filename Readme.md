@@ -28,13 +28,14 @@ Tweak .env
     cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/profile resources/views
     cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/teams resources/views
     cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/layouts/app.blade.php resources/views/layouts
+public/img/logos
+cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/public/img public/img
+
 
 [ ] Totally refactor web.php (BIG TODO)
 [ ] add file
     routes/web-admin--routes.php
 
-public/img/logos
-    cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/public/img public/img
 
 [ ] This is not compatible with tail/jit Beta (6/30/21')
     In 'tailwind.config.js' disable jit like this: // mode: 'jit'
