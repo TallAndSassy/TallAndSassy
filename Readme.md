@@ -32,13 +32,13 @@ public/img/logos
 cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/public/img public/img
 
 
+[ ] This is not compatible with tail/jit Beta (6/30/21')
+In 'tailwind.config.js' disable jit like this: // mode: 'jit'
+
 [ ] Totally refactor web.php (BIG TODO)
 [ ] add file
     routes/web-admin--routes.php
 
-
-[ ] This is not compatible with tail/jit Beta (6/30/21')
-    In 'tailwind.config.js' disable jit like this: // mode: 'jit'
 
 [ ] Big webpack.mix.js stuff (TODO)
 [ ] php artisan tassy-cms:install

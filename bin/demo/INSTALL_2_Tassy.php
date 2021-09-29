@@ -81,9 +81,19 @@ jcmd(cmd:'cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/
 //
 
 
-# public/img/logos ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# public/img/logos -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 jcmd(cmd:'cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/public/img public/img', bForceEcho: true);
 
+
+# fix tail/jit beta  ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+// [ ] This is not compatible with tail/jit Beta (6/30/21')
+//    In 'tailwind.config.js' disable jit like this--> // mode: 'jit'
+$cmd =<<<EOF
+sed -i'.orig' "s/\mode: 'jit'/\/\/mode: 'jit' /" tailwind.config.js
+EOF;
+
+jcmd(cmd:$cmd, bForceEcho: true);
+jcmd(cmd:'cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/public/img public/img', bForceEcho: true);
 
 // ------------ After this - it is just some utilities that help us install laravel ------
 function getOptionalOption(string $optionName, mixed $default, Closure $doesValidate, Closure $transformInputToInternal): mixed {
