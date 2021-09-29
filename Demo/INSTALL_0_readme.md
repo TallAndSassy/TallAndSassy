@@ -4,14 +4,16 @@ and play around with it. You'll want to run `INSTALL_1_laravel.sh` once to get a
 laravel installed. Or feel free to make your own, standard, virgin laravel installation, but see
 the guts of the .sh file to look for specifics.
 
-Do something like this ()
+# Install baseline Laravel w/ jet, no teams 
+If you don't already have this package installed in a simple laravel app, you can quickly do here:
 
 
     git clone https://github.com/TallAndSassy/TallAndSassy
-    chmod +x TallAndSassy/INSTALL_1_Laravel.sh
-    chmod +x TallAndSassy/INSTALL_2_Tassy.sh
+    chmod +x TallAndSassy/Demo/INSTALL_1_Laravel.sh
+    TallAndSassy/Demo/INSTALL_1_Laravel.sh
 
-    TallAndSassy/INSTALL_1_Laravel.sh
+    TallAndSassy/Demo/INSTALL_2_Tassy.sh
+
 
 ## start the web server (probably in a new tab)
     php artisan serve
