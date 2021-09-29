@@ -7,7 +7,7 @@ Goal #2: Make this happen automatically during the package installation. sheesh.
 */
 // Init Tall & Sassy
 
-# Add HQ (we need an HQ subdomain)
+# Add HQ (we need an HQ subdomain) -------------------------------------------------------------------------------------------------------------------------------------------------
 $HQ_SUBDOMAIN = getOptionalOption(
     optionName:'HQ_SUBDOMAIN',
     default:'hq',
@@ -20,6 +20,9 @@ jcmd("sed -i'.orig' '/HQ_SUBDOMAIN=.*$/d' .env");
 # add new HQ_SUBDOMAIN to .env
 jcmd("sed -i'.orig' '1s/^/HQ_SUBDOMAIN={$HQ_SUBDOMAIN}\\n/' .env");
 
+
+
+# Tenant Middleware ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*
 [ ] append to app/Http/Kernel.php' #WIP - was trying to get to autoregister
@@ -37,6 +40,20 @@ foreach ($asrLines as $slot=>$lineContent) {
         break;
     }
 }
+
+
+# Custom Homepage ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Make homepage for users default to /me instead of /dashboard
+$cmd =<<<EOF
+sed -i'.orig' 's/\/dashboard/\/me/g' app/Providers/RouteServiceProvider.php
+EOF;
+
+jcmd(cmd:$cmd, bForceEcho: true);
+/*// Change default home page
+    app/Providers/RouteServiceProvider.php
+    'str_replace("HOME = '/dashboard';", "HOME = '/me';", $file);
+    (this might be better: https://laravel-news.com/override-login-redirects-in-jetstream-fortify)
+*/
 
 
 
