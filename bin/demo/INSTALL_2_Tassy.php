@@ -95,6 +95,28 @@ EOF;
 jcmd(cmd:$cmd, bForceEcho: true);
 jcmd(cmd:'cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/public/img public/img', bForceEcho: true);
 
+
+// Smoother routing  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+// nix the original
+jcmd(cmd:'mv routes/web.php routes/web.php.orig', bForceEcho: true);
+// use our own web.php, which has a special web-admin--routes.php --- anything there is force to admin-only
+jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/web.php', bForceEcho: true);
+jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web-admin--routes.stub routes/web-admin--routes.php', bForceEcho: true);
+jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web-admin-people.stub routes/web-admin-people.php', bForceEcho: true);
+
+
+// js  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// [ ] Big webpack.mix.js stuff (TODO)\
+
+// Nudge the provider  -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+jcmd(cmd:'php artisan tassy-cms:install', bForceEcho: true);
+jcmd(cmd:'php artisan tassy-page-guide:install', bForceEcho: true);
+jcmd(cmd:'npm install', bForceEcho: true);
+jcmd(cmd:'npm run dev', bForceEcho: true);
+
+
+
+
 // ------------ After this - it is just some utilities that help us install laravel ------
 function getOptionalOption(string $optionName, mixed $default, Closure $doesValidate, Closure $transformInputToInternal): mixed {
     $options = getopt('', ["{$optionName}:"]);

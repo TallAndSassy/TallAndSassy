@@ -34,6 +34,14 @@ cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/public/img
 
 [ ] This is not compatible with tail/jit Beta (6/30/21')
 In 'tailwind.config.js' disable jit like this: // mode: 'jit'
+[ ] php artisan tassy-cms:install
+[ ] php artisan tassy-page-guide:install
+[ ]    npm install
+[ ]    npm run watch --or-- npm run prod
+
+
+
+
 
 [ ] Totally refactor web.php (BIG TODO)
 [ ] add file
@@ -41,10 +49,7 @@ In 'tailwind.config.js' disable jit like this: // mode: 'jit'
 
 
 [ ] Big webpack.mix.js stuff (TODO)
-[ ] php artisan tassy-cms:install
-[ ] php artisan tassy-page-guide:install
-[ ]    npm install
-[ ]    npm run watch --or-- npm run prod
+
 ------------------------------------------------------------------------------------------------------------------------
 [ ] Install this into /submodules
 -- In Sourtree

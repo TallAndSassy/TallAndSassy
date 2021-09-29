@@ -1,0 +1,62 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+Route::domain('{tenant:slug}.'.ENV('MEMCACHED_HOST'))
+    ->middleware('tenancy')
+    ->group( function () {
+
+        // Make work with TallAndSassy routes. This should be automatic (shrug)
+        require_once(__DIR__ . '/../vendor/tallandsassy/tallandsassy/PageGuide/page-guide/routes/web.php');
+        require_once(__DIR__ . '/../vendor/tallandsassy/tallandsassy/PageGuide/page-guide-admin/routes/web.php');
+        require_once(__DIR__ . '/../vendor/tallandsassy/tallandsassy/Ui/Glances/routes/web.php');
+
+        // --- ADMIN ---
+        Route::middleware([
+            'auth:sanctum',
+            'verified',
+            'can:'.\TallAndSassy\RolesAndPermissions\BaseTassyPermissions::ACCESS_ADMIN_TOOLS
+        ])->group(function() {
+            require_once(__DIR__.'/web-admin--routes.php');
+        });
+
+        Route::fallback(function () {
+            // we need this function because the route needs to
+            // be fully resolved before the tenants middleware can redirect
+            // to the tenant directory
+            // butler.localhost:8000/non_existent_page -> 404
+            // non_existent_school.localhost:8000/home -> tenant directory
+            abort(404);
+        });
+    }
+    );
+
+Route::domain(ENV('MEMCACHED_HOST'))
+    ->group( function () {
+
+        Route::get('/', function() {
+            return redirect('/tenants_directory');
+        });
+
+        Route::get('/tenants_directory', function(\TallAndSassy\Tenancy\Http\Controllers\TenantsDirectory $tenantsDirectory) {
+            return $tenantsDirectory->render();
+        })->name('tenant.directory');
+
+    }
+    );
+
+Route::get('/temp', function () {
+    return route('tenant.directory');
+});
+
+
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+
+
+
+
+
+
