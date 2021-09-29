@@ -55,6 +55,31 @@ jcmd(cmd:$cmd, bForceEcho: true);
     (this might be better: https://laravel-news.com/override-login-redirects-in-jetstream-fortify)
 */
 
+# Nix jetstreams unwanted UI ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Keep the old stuff, for reference.  You could safely delete them
+jcmd(cmd:'mkdir resources/views/jorig', bForceEcho: true);
+jcmd(cmd:'mv resources/views/auth resources/views/jorig', bForceEcho: true);
+jcmd(cmd:'mv resources/views/profile resources/views/jorig', bForceEcho: true);
+jcmd(cmd:'mv resources/views/teams resources/views/jorig', bForceEcho: true);
+
+
+jcmd(cmd:'cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/auth resources/views', bForceEcho:true);
+jcmd(cmd:'cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/profile resources/views', bForceEcho:true);
+jcmd(cmd:'cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/teams resources/views', bForceEcho:true);
+jcmd(cmd:'cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/layouts/app.blade.php resources/views/layouts', bForceEcho:true);
+
+//[] replace resources/view/auth,profile,team ????
+//    mkdir resources/views/jorig
+//    mv resources/views/auth resources/views/jorig
+//    mv resources/views/profile resources/views/jorig
+//    mv resources/views/teams resources/views/jorig
+//
+//    cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/auth resources/views
+//    cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/profile resources/views
+//    cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/teams resources/views
+//    cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/layouts/app.blade.php resources/views/layouts
+//
+
 
 
 // ------------ After this - it is just some utilities that help us install laravel ------
@@ -126,7 +151,11 @@ function jcmd(string $cmd, bool $bForceEcho = false)
 {
     exec($cmd, $output, $return);
     if ($bForceEcho) {
-        print_r($output);
+        if (!empty($output)) {
+            print_r($output);
+        } else {
+            print "\n--- $cmd";
+        }
     }
 
     if ($return != 0) {
