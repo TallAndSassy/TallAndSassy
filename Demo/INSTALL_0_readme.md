@@ -6,21 +6,19 @@ the guts of the .sh file to look for specifics.
 
 # Install baseline Laravel w/ jet, no teams 
 If you don't already have this package installed in a simple laravel app, you can quickly do here:
+    # get this file locally
+    curl -H 'Authorization: token INSERTACCESSTOKENHERE' -H 'Accept: application/vnd.github.v3.raw' -O -L  https://raw.githubusercontent.com/TallAndSassy/TallAndSassy/v0.1.020wip-InstallStuff/Demo/INSTALL_1_Laravel.php
+    php INSTALL_1_Laravel.php --DB_USERNAME=root --DB_PASSWORD=ofallevil --APP_NAME=MyTest4 --DO_FORCE_REINSTALL=1
 
 
-    git clone https://github.com/TallAndSassy/TallAndSassy
-    chmod +x TallAndSassy/Demo/INSTALL_1_Laravel.sh
-    TallAndSassy/Demo/INSTALL_1_Laravel.sh
 
-    TallAndSassy/Demo/INSTALL_2_Tassy.sh
+## Is it working?
+    
+After running the 'INSTALL_1_Laravel', look at the output in the terminal for hints
+on how to start your webserver and visit it the browser.  There aren't any tricks there, just
+helpful reminders.
 
-
-## start the web server (probably in a new tab)
-    php artisan serve
-
-## visit your page in the browser (maybe change the port, if needed, to match your instance)
-    cd MyTassyTest
-    ../TallAndSassy/INSTALL_2_Tassy.sh
-
+## Continue on...
+You have a working laravel install ready for Tassy play.  ...
 
 (1) citation needed.
