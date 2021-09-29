@@ -69,7 +69,16 @@ echo $c->getColoredString("\nand then visiting, in your browser (but tweak as ne
 echo $c->getColoredString("\n   http://127.0.0.1:8000",'green');
 echo "\n";
 echo "\n";
-
+echo $c->getColoredString("\n  Next steps: Get the Tassy package",'blue');
+echo $c->getColoredString("\n   cd {$DIR_NAME}",'green');
+echo $c->getColoredString("\n   composer require tallandsassy/tallandsassy:dev-main",'green');
+echo "\n";
+echo "\n";
+echo $c->getColoredString("\n   Now continue with Tall & Sassy installation by running",'red');
+echo $c->getColoredString("\n   php INSTALL_2_Tassy.php",'green');
+echo "\n";
+echo "\n";
+echo "\n";
 
 
 # At this point, laravel should be installed and basically working.

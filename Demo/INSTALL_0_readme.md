@@ -8,7 +8,7 @@ the guts of the .sh file to look for specifics.
 If you don't already have this package installed in a simple laravel app, you can quickly do here:
     # get this file locally
     curl -H 'Authorization: token INSERTACCESSTOKENHERE' -H 'Accept: application/vnd.github.v3.raw' -O -L  https://raw.githubusercontent.com/TallAndSassy/TallAndSassy/v0.1.020wip-InstallStuff/Demo/INSTALL_1_Laravel.php
-    php INSTALL_1_Laravel.php --DB_USERNAME=root --DB_PASSWORD=ofallevil --APP_NAME=MyTest4 --DO_FORCE_REINSTALL=1
+    php INSTALL_1_Laravel.php --DB_USERNAME=root --DB_PASSWORD=ofallevil --APP_NAME=MyTassyTest --DO_FORCE_REINSTALL=1
 
 
 
