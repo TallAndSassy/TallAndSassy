@@ -29,17 +29,12 @@ jcmd("sed -i'.orig' '1s/^/HQ_SUBDOMAIN={$HQ_SUBDOMAIN}\\n/' .env");
     protected $routeMiddleware = [...
         'tenancy' => Middleware\SubdomainTenancy::class
 */
-$filePath = 'app/Http/Kernel.php';
-$asrLines = file($filePath);
-$newLineContent = "        'tenancy' => Middleware\SubdomainTenancy::class, // Added programmatically by Tall & Sassy \n";
-foreach ($asrLines as $slot=>$lineContent) {
-    if (str_contains($lineContent, 'protected $routeMiddleware = [')) {
-        array_splice( $asrLines, $slot+1, 0, $newLineContent );
-        $ret = file_put_contents($filePath, $asrLines);
-        assert($ret);
-        break;
-    }
-}
+insertAfter(
+    filePath:'app/Http/Kernel.php',
+    contentToFindInALine: 'protected $routeMiddleware = [',
+    contentToInsertAfterFoundLine: "        'tenancy' => Middleware\SubdomainTenancy::class, // Added programmatically by Tall & Sassy \n",
+    bForceEcho: true
+);
 
 
 # Custom Homepage ------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -118,8 +113,24 @@ jcmd(cmd:'php artisan tassy-page-guide:install', bForceEcho: true);
 jcmd(cmd:'npm install', bForceEcho: true);
 jcmd(cmd:'npm run dev', bForceEcho: true);
 
+// Nudge Use to use HasRoles; -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Find  'namespace App\Models;' and insert 'use Spatie\Permission\Traits\HasRoles;' aft
+$ret = insertAfter(
+    filePath:'app/Models/User.php',
+    contentToFindInALine: 'namespace App\Models;',
+    contentToInsertAfterFoundLine: 'use Spatie\Permission\Traits\HasRoles; // Added by INSTALL_2_Tassy.php',
+    bForceEcho: true
+);
+assert($ret);
 
-
+// Find  'namespace App\Models;' and insert 'use Spatie\Permission\Traits\HasRoles;' aft
+$ret = insertAfter(
+    filePath:'app/Models/User.php',
+    contentToFindInALine: 'use TwoFactorAuthenticatable;',
+    contentToInsertAfterFoundLine: '     use HasRoles; // Added by INSTALL_2_Tassy.php',
+    bForceEcho: true
+);
+assert($ret);
 
 // ------------ After this - it is just some utilities that help us install laravel ------
 function getOptionalOption(string $optionName, mixed $default, Closure $doesValidate, Closure $transformInputToInternal): mixed {
@@ -214,6 +225,29 @@ and output: $output
 ";
     }
 }
+
+
+function insertAfter(string $filePath, string $contentToFindInALine, string $contentToInsertAfterFoundLine, bool $bForceEcho): bool {
+    if ($bForceEcho) {
+        print "\ninsertAfter in file '$filePath'";
+        print "\n  Looking for '$contentToFindInALine'";
+        print "\n  So can add '$contentToInsertAfterFoundLine'";
+    }
+    $asrLines = file($filePath);
+    foreach ($asrLines as $slot=>$lineContent) {
+        if (str_contains($lineContent, $contentToFindInALine)) {
+            array_splice( $asrLines, $slot+1, 0, $contentToInsertAfterFoundLine."\n" );
+            $ret = file_put_contents($filePath, $asrLines);
+            assert($ret);
+            print " Success: Inserted after line $slot";
+            return true;
+            break;
+        }
+    }
+    print " FAILED: Did not find the content";
+    return false;
+}
+
 class Colors
 { //http://www.if-not-true-then-false.com/2010/php-class-for-coloring-php-command-line-cli-scripts-output-php-output-colorizing-using-bash-shell-colors/
     private $foreground_colors = array();
