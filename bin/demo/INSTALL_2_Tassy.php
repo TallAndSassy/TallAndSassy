@@ -110,7 +110,7 @@ jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web-admin-people.s
 // [ ] Big webpack.mix.js stuff (TODO)\
 jcmd(cmd:'mv webpack.mix.js webpack.mix.js.orig', bForceEcho: true);
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/Ui/webpack.mix.js webpack.mix.js', bForceEcho: true);
-jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/Cms/resources/js/jckeditor.js jckeditor.js', bForceEcho: true);
+jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/Cms/resources/js/jckeditor.js resources/js/jckeditor.js', bForceEcho: true);
 
 // Nudge the provider  -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 jcmd(cmd:'php artisan tassy-cms:install', bForceEcho: true);
