@@ -5,6 +5,7 @@ namespace TallAndSassy\PageGuide;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use TallAndSassy\PageGuide\Components\EditableContentBlock;
 use TallAndSassy\PageGuide\Components\Lowernav;
 use TallAndSassy\PageGuide\Components\Sidenav;
 use TallAndSassy\PageGuide\Http\Controllers\PageGuideController;
@@ -158,6 +159,7 @@ class PageGuideServiceProvider extends ServiceProvider
         \Livewire\Livewire::component('tassy::livewire.lowernav', Lowernav::class);
 
         #\Livewire\Livewire::component('tassy::livewire.lepage',   Lepage::class);
+        EditableContentBlock::SelfRegister();
         Lepage::SelfRegister(); // Start migrating to SelfRegister, which feels more contained
         \Livewire\Livewire::component('tassy::livewire.le-swappable-chunk', LeSwappableChunk::class);
         \Livewire\Livewire::component('tassy::livewire.bobby',  Bobby::class);
