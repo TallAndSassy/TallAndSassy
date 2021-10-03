@@ -49,6 +49,9 @@ print "\n";
     # DB password: modify to your approprite password
     jcmd(cmd:"sed -i'.orig' 's/DB_PASSWORD=.*$/DB_PASSWORD={$DB_PASSWORD}/' {$DIR_NAME}/.env", bForceEcho: true);
 
+## reparse the .env
+    jcmd(cmd:"php artisan config:clear", bForceEcho: true);
+
 ## Quick Start: Create DB
 # fix up database. Tweak as needed
     jcmd(cmd:"mysql -u {$DB_USERNAME} -p{$DB_PASSWORD} -e 'DROP DATABASE IF EXISTS `$DB_NAME`; CREATE DATABASE `$DB_NAME`;'", bForceEcho: true);
@@ -75,7 +78,7 @@ echo $c->getColoredString("\n   composer require tallandsassy/tallandsassy:dev-m
 echo "\n";
 echo "\n";
 echo $c->getColoredString("\n   Now continue with Tall & Sassy installation by running",'red');
-echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_2_Tassy.php --HQ_SUBDOMAIN=st",'green');
+echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/INSTALL_Tassy.php --HQ_SUBDOMAIN=st",'green');
 echo "\n";
 echo "\n";
 echo "\n";

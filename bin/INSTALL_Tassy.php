@@ -15,10 +15,13 @@ $HQ_SUBDOMAIN = getOptionalOption(
     transformInputToInternal:fn($passedValidatedValue) => strtolower($passedValidatedValue)
 );
 // delete if already there
-jcmd("sed -i'.orig' '/HQ_SUBDOMAIN=.*$/d' .env");
+jcmd(cmd:"sed -i'.orig' '/HQ_SUBDOMAIN=.*$/d' .env", bForceEcho: true);
 
 # add new HQ_SUBDOMAIN to .env
-jcmd("sed -i'.orig' '1s/^/HQ_SUBDOMAIN={$HQ_SUBDOMAIN}\\n/' .env");
+jcmd(cmd:"sed -i'.orig' '1s/^/HQ_SUBDOMAIN={$HQ_SUBDOMAIN}\\n/' .env", bForceEcho: true);
+
+# reparse .env
+jcmd(cmd:"php artisan config:clear", bForceEcho: true);
 
 
 
@@ -95,7 +98,7 @@ jcmd(cmd:'cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/
 $ret = insertAfter(
     filePath:'app/Models/User.php',
     contentToFindInALine: 'namespace App\Models;',
-    contentToInsertAfterFoundLine: 'use Spatie\Permission\Traits\HasRoles; // Added by INSTALL_2_Tassy.php',
+    contentToInsertAfterFoundLine: 'use Spatie\Permission\Traits\HasRoles; // Added by INSTALL_Tassy.php',
     bForceEcho: true
 );
 assert($ret);
@@ -104,7 +107,7 @@ assert($ret);
 $ret = insertAfter(
     filePath:'app/Models/User.php',
     contentToFindInALine: 'use TwoFactorAuthenticatable;',
-    contentToInsertAfterFoundLine: '     use HasRoles; // Added by INSTALL_2_Tassy.php',
+    contentToInsertAfterFoundLine: '     use HasRoles; // Added by INSTALL_Tassy.php',
     bForceEcho: true
 );
 assert($ret);
