@@ -3,6 +3,10 @@ A: Visit localhost:8000
 
 You'll see the 'Tenants' page. It helps you find existing sites.
 
+Q: Hey, I like 127.0.0.1 better - can I do that?
+
+A: Well, no. Maybe later. 
+
 ## Q: How do I log in the very first time?
 A: Try visiting st2.localhost:8000
 
