@@ -20,8 +20,10 @@ class PopulateInitalData extends Migration
         // Make HQ tenant
         //$tenant_id = Tenant::factory()->create(['name'=>'HQ', 'slug'=>env('HQ_SUBDOMAIN')])->id;
         #dd(\Illuminate\Support\Env::getRepository());
-
-        $tenant_id = Tenant::create(['name'=>'HQ', 'slug'=>env('HQ_SUBDOMAIN')])->id;
+        # Dying here because the $hq is null
+        $hq = env('HQ_SUBDOMAIN');
+        assert(!is_null($hq), "HQ_SUBDOMAIN is null. If you don't see HQ_SUBDOMAIN in .env, try adding it. If you see HQ_SUBDOMAIN in the .env file, try `php artisan config:clear` ");
+        $tenant_id = Tenant::create(['name'=>'HQ', 'slug'=>$hq])->id;
         session()->put('tenant_id',$tenant_id);
 
 
