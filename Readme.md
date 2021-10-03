@@ -4,7 +4,7 @@ More importantly, it was difficult to refactor.
 Trying to remerge and maybe get into a tight copy-able module
 Try to keep it segregated and eventually move back into a package
 and definitely to keep the core poking around a separate area of
-concern
+concern.
 ============
 Tweak .env
 [ ] insert into .env
@@ -28,22 +28,28 @@ Tweak .env
     cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/profile resources/views
     cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/teams resources/views
     cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/layouts/app.blade.php resources/views/layouts
+public/img/logos
+cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/public/img public/img
+
+
+[ ] This is not compatible with tail/jit Beta (6/30/21')
+In 'tailwind.config.js' disable jit like this: // mode: 'jit'
+[ ] php artisan tassy-cms:install
+[ ] php artisan tassy-page-guide:install
+[ ]    npm install
+[ ]    npm run watch --or-- npm run prod
+
+
+
+
 
 [ ] Totally refactor web.php (BIG TODO)
 [ ] add file
     routes/web-admin--routes.php
 
-public/img/logos
-    cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/public/img public/img
-
-[ ] This is not compatible with tail/jit Beta (6/30/21')
-    In 'tailwind.config.js' disable jit like this: // mode: 'jit'
 
 [ ] Big webpack.mix.js stuff (TODO)
-[ ] php artisan tassy-cms:install
-[ ] php artisan tassy-page-guide:install
-[ ]    npm install
-[ ]    npm run watch --or-- npm run prod
+
 ------------------------------------------------------------------------------------------------------------------------
 [ ] Install this into /submodules
 -- In Sourtree

@@ -85,4 +85,8 @@ class EditableContentBlock extends Component
     {
         return view('tassy::livewire.editable-content-block');
     }
+
+    public static function SelfRegister(): void {
+        \Livewire\Livewire::component('tassy::livewire.editable-content-block',  self::class);
+    }
 }

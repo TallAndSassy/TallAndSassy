@@ -3,10 +3,10 @@
 namespace TallAndSassy\Tenancy\Models;
 
 use App\Models\User;
-use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use TallAndSassy\Tenancy\database\factories\TenantFactory;
+use TallAndSassy\Tenancy\Traits\Uuids;
 
 
 class Tenant extends Model

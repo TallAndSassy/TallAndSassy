@@ -70,7 +70,8 @@
                 "TallAndSassy\\PageGuide\\PageGuideServiceProvider",
                 "TallAndSassy\\PageGuideAdmin\\PageGuideAdminServiceProvider",
                 "TallAndSassy\\Ui\\Glances\\UiGlances_ServiceProvider",
-                "TallAndSassy\\Tenancy\\TenancyServiceProvider",
+                "TallAndSassy\\Tenancy\\Tenancy2ServiceProvider",
+                "TallAndSassy\\Tenancy\\RolesServiceProvider",
                 "TallAndSassy\\Cms\\CmsServiceProvider"
             ]
         }

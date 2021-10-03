@@ -1,0 +1,11 @@
+<?php
+require_once(__DIR__ . '/web-admin-people.php');
+/* You can add future routes here, and be confident the user is authorized, like:
+Route::get(
+    '/admin/E_61179600bfd38',
+    [\App\Http\Controllers\E_61179600bfd38Controller::class, 'getFrontView']
+);
+
+// -or this-
+require_once(__DIR__ . '/web-admin-planning.php');
+*/

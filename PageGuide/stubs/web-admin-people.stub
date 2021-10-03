@@ -1,0 +1,22 @@
+<?php
+// People
+Route::get(
+    '/admin/people/home',
+    [\App\Http\Controllers\PeopleHomeController::class, 'getFrontView'] // syntax works w/ use Statement
+)
+    ->where('sublevels', '.*')
+    ->name('admin-people-home');
+
+Route::get(
+    '/admin/people/webmasters',
+    [\App\Http\Controllers\PeopleWebmastersController::class, 'getFrontView'] // syntax works w/ use Statement
+)
+    ->where('sublevels', '.*')
+    ->name('admin-people-webmasters');
+
+Route::get(
+    '/admin/people/bookers',
+    [\App\Http\Controllers\PeopleBookersController::class, 'getFrontView'] // syntax works w/ use Statement
+)
+    ->where('sublevels', '.*')
+    ->name('admin-people-bookers');
