@@ -12,7 +12,6 @@ class Tenancy2ServiceProvider extends ServiceProvider
 //        $d = __DIR__ . '/../resources/views';
 //        $this->loadViewsFrom($d, 'tassy');
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations'); //https://laravelpackage.com/08-models-and-migrations.html#migrations
-        $this->loadMigrationsFrom(__DIR__ . '/../../RolesAndPermissions/src/database/migrations'); //https://laravelpackage.com/08-models-and-migrations.html#migrations
     }
 
     public function register()
