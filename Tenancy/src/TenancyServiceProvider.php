@@ -3,7 +3,7 @@
 namespace TallAndSassy\Tenancy;
 use Illuminate\Support\ServiceProvider;
 
-class Tenancy2ServiceProvider extends ServiceProvider
+class TenancyServiceProvider extends ServiceProvider
 {
 
     public function boot()
