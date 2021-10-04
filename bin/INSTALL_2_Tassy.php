@@ -111,6 +111,16 @@ $ret = insertAfter(
     bForceEcho: true
 );
 assert($ret);
+
+// Old User seeder dies without a tenant. Let's just comment it out
+$ret = commentOutLineWithStuff(
+    filePath:'database/seeders/DatabaseSeeder.php',
+    contentToFindInALine: '\App\Models\User::factory(10)->create();',
+    doDieOnNoMatch: true,
+    bForceEcho: true
+);
+assert($ret);
+
 // Init DB --------- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/web.php', bForceEcho: true);
 
