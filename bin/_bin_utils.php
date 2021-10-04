@@ -1,92 +1,6 @@
 <?php
 
 
-$DB_USERNAME = getRequiredOption(optionName:'DB_USERNAME');
-$DB_PASSWORD = getRequiredOption(optionName:'DB_PASSWORD');
-$APP_NAME = getRequiredOption(optionName:'APP_NAME');
-$DO_FORCE_REINSTALL = getOptionalOption(
-    optionName:'DO_FORCE_REINSTALL',
-    default:0,
-    doesValidate:fn($passedValueToBeValidated) => in_array($passedValueToBeValidated,['0','1']),
-    transformInputToInternal:fn($passedValidatedValue) => $passedValidatedValue
-);
-
-$DIR_NAME = $APP_NAME;
-$DB_NAME = $APP_NAME;
-$DB_NAME_LowerCased = strtolower($DB_NAME); // cuz laravel install lowers the incoming name, whether we like that, or not
-
-print "\nDIR_NAME={$DIR_NAME}";
-print "\nAPP_NAME={$APP_NAME}";
-print "\nDO_FORCE_REINSTALL={$DO_FORCE_REINSTALL}";
-print "\nDB_NAME={$DB_NAME}";
-print "\nDB_USERNAME={$DB_USERNAME}";
-print "\nDB_PASSWORD={$DB_PASSWORD}";
-print "\n";
-
-
-# Quick Start
-# Let's assume you have `mysql` and `php` available from the command line.
-
-## Quick Start: Install Laravel
-    # install laravel
-    $maybeTrailingForceFlag = $DO_FORCE_REINSTALL ? ' -f' : '';
-    jcmd(cmd:"laravel new '{$APP_NAME}' --jet --no-interaction --stack=livewire --git {$maybeTrailingForceFlag}");
-    jcmd(cmd:"cd {$APP_NAME}");
-    jcmd("pwd");
-
-
-
-
-## Quick Start: Config base laravel    
-    # Which Database: uncomment and modify, if desired 
-    # sed -i".orig" 's/DB_DATABASE=MyTassyTest/DB_DATABASE=YourDatabaseName/' .env
-    jcmd(cmd:"sed -i'.orig' 's/DB_DATABASE=.*$/DB_DATABASE={$DB_NAME}/' {$DIR_NAME}/.env", bForceEcho: true);
-    
-    # Which DB username: uncomment and modify, if desired
-    # sed -i".orig" 's/DB_s/DB_USERNAME=root/DB_USERNAME=YourDbUserName/USERNAME=root/DB_USERNAME=YourDbUserName/' .env
-    jcmd(cmd:"sed -i'.orig' 's/DB_USERNAME=.*$/DB_USERNAME={$DB_USERNAME}/' {$DIR_NAME}/.env", bForceEcho: true);
-
-    # DB password: modify to your approprite password
-    jcmd(cmd:"sed -i'.orig' 's/DB_PASSWORD=.*$/DB_PASSWORD={$DB_PASSWORD}/' {$DIR_NAME}/.env", bForceEcho: true);
-
-## reparse the .env
-    jcmd(cmd:"php artisan config:clear", bForceEcho: true);
-
-## Quick Start: Create DB
-# fix up database. Tweak as needed
-    jcmd(cmd:"mysql -u {$DB_USERNAME} -p{$DB_PASSWORD} -e 'DROP DATABASE IF EXISTS `$DB_NAME`; CREATE DATABASE `$DB_NAME`;'", bForceEcho: true);
-
-    # setup the database so far
-    jcmd(cmd:"php {$DIR_NAME}/artisan migrate", bForceEcho: true);
-
-
-    # get the javascript all set up
-    jcmd(cmd:"npm install --prefix '{$DIR_NAME}'", bForceEcho: true);
-    jcmd(cmd:"npm run dev --prefix '{$DIR_NAME}'", bForceEcho: true);
-
-$c = new Colors();
-echo "\n";
-echo $c->getColoredString("\n\nInstalled. Please start your web server by running  ",'red');
-echo $c->getColoredString("\n   php {$DIR_NAME}/artisan serve   ",'green');
-echo $c->getColoredString("\nand then visiting, in your browser (but tweak as needed, according the port actually used) ",'red');
-echo $c->getColoredString("\n   http://127.0.0.1:8000",'green');
-echo "\n";
-echo "\n";
-echo $c->getColoredString("\n  Next steps: Get the Tassy package",'blue');
-echo $c->getColoredString("\n   cd {$DIR_NAME}",'green');
-echo $c->getColoredString("\n   composer require tallandsassy/tallandsassy:dev-main",'green');
-echo "\n";
-echo "\n";
-echo $c->getColoredString("\n   Now continue with Tall & Sassy installation by running",'red');
-echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --HQ_SUBDOMAIN=st",'green');
-echo "\n";
-echo "\n";
-echo "\n";
-
-
-# At this point, laravel should be installed and basically working.
-# Nothing before this line should be different than a typical laravel project
-
 // ------------ After this - it is just some utilities that help us install laravel ------
 function getOptionalOption(string $optionName, mixed $default, Closure $doesValidate, Closure $transformInputToInternal): mixed {
     $options = getopt('', ["{$optionName}:"]);
@@ -156,7 +70,11 @@ function jcmd(string $cmd, bool $bForceEcho = false)
 {
     exec($cmd, $output, $return);
     if ($bForceEcho) {
-        print_r($output);
+        if (!empty($output)) {
+            print_r($output);
+        } else {
+            print "\n--- $cmd";
+        }
     }
 
     if ($return != 0) {
@@ -176,6 +94,35 @@ and output: $output
 ";
     }
 }
+
+
+function insertAfter(string $filePath, string $contentToFindInALine, string $contentToInsertAfterFoundLine, bool $bForceEcho): bool {
+    if ($bForceEcho) {
+        print "\ninsertAfter in file '$filePath'";
+        print "\n  Looking for '$contentToFindInALine'";
+        print "\n  So can add '$contentToInsertAfterFoundLine'";
+    }
+    $asrLines = file($filePath);
+    foreach ($asrLines as $slot=>$lineContent) {
+        if (str_contains($lineContent, $contentToFindInALine)) {
+            // Don't add it twice (maybe make an option if needed in the future)
+            $offsetForInsert = $slot + 1;
+            if (isset($asrLines[$offsetForInsert]) &&  str_starts_with(trim($asrLines[$offsetForInsert]), trim($contentToInsertAfterFoundLine))) {
+                print "\n  Good-Enough: The content already existed after line $offsetForInsert";
+            } else {
+                array_splice($asrLines, $offsetForInsert, 0, $contentToInsertAfterFoundLine . "\n");
+                $ret = file_put_contents($filePath, $asrLines);
+                assert($ret);
+                print "\n  Success: Inserted after line $slot";
+            }
+            return true;
+            break;
+        }
+    }
+    print "\n  FAILED: Did not find the content";
+    return false;
+}
+
 class Colors
 { //http://www.if-not-true-then-false.com/2010/php-class-for-coloring-php-command-line-cli-scripts-output-php-output-colorizing-using-bash-shell-colors/
     private $foreground_colors = array();
