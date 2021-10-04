@@ -95,6 +95,36 @@ and output: $output
     }
 }
 
+/* it would be easy to combine these with appendLine, replaceLine enum, but meh */
+function commentOutLineWithStuff(string $filePath, string $contentToFindInALine,  bool $doDieOnNoMatch, bool $bForceEcho): bool
+{
+    $contentToInsertAfterFoundLine = '// '.$contentToFindInALine;
+    if ($bForceEcho) {
+        print "\ncommentOutLineWithStuff in file '$filePath'";
+        print "\n  Looking for '$contentToFindInALine'";
+
+    }
+    $asrLines = file($filePath);
+    assert($asrLines !== false, "Could not open needed file: $filePath");
+    foreach ($asrLines as $slot=>$lineContent) {
+        if (str_contains($lineContent, $contentToFindInALine)) {
+            // Don't add it twice (maybe make an option if needed in the future)
+            $offsetForInsert = $slot + 0;
+            if (isset($asrLines[$offsetForInsert]) &&  str_starts_with(trim($asrLines[$offsetForInsert]), '//')) {
+                print "\n  Good-Enough: The content already commented out at line $offsetForInsert";
+            } else {
+                array_splice($asrLines, $offsetForInsert, 0, $contentToInsertAfterFoundLine . "\n");
+                $ret = file_put_contents($filePath, $asrLines);
+                assert($ret);
+                print "\n  Success: Inserted after line $slot";
+            }
+            return true;
+            break;
+        }
+    }
+    print "\n  FAILED: Did not find the content";
+    return false;
+}
 
 function insertAfter(string $filePath, string $contentToFindInALine, string $contentToInsertAfterFoundLine, bool $bForceEcho): bool {
     if ($bForceEcho) {
