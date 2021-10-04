@@ -66,7 +66,7 @@ print "\n";
 
 $c = new Colors();
 echo "\n";
-echo $c->getColoredString("\n\nInstalled. Please start your web server by running  ",'red');
+echo $c->getColoredString("\n\nPlease start your web server by running  ",'red');
 echo $c->getColoredString("\n   php {$DIR_NAME}/artisan serve   ",'green');
 echo $c->getColoredString("\nand then visiting, in your browser (but tweak as needed, according the port actually used) ",'red');
 echo $c->getColoredString("\n   http://127.0.0.1:8000",'green');
@@ -82,7 +82,13 @@ echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/INSTALL
 echo "\n";
 echo "\n";
 echo "\n";
-
+echo $c->getColoredString("\n  Feeling Ambitious?: Try contributing to the project.",'blue');
+echo $c->getColoredString("\n   git clone https://github.com/TallAndSassy/TallAndSassy ",'green');
+echo $c->getColoredString("\n   cd  {$DIR_NAME}/vendor/tallandsassy",'green');
+echo $c->getColoredString("\n   rm -rf tallandsassy",'green');
+echo $c->getColoredString("\n   ln -s ../../../TallAndSassy tallandsassy",'green');
+echo "\n";
+echo "\n";
 
 # At this point, laravel should be installed and basically working.
 # Nothing before this line should be different than a typical laravel project

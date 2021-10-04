@@ -53,6 +53,9 @@ jcmd(cmd:$cmd, bForceEcho: true);
     (this might be better: https://laravel-news.com/override-login-redirects-in-jetstream-fortify)
 */
 
+// Init the db ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+jcmd(cmd:'php artisan migrate:fresh', bForceEcho: true);
+
 # Nix jetstreams unwanted UI ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Keep the old stuff, for reference.  You could safely delete them
 jcmd(cmd:'mkdir resources/views/jorig', bForceEcho: true);
@@ -196,3 +199,12 @@ jcmd(cmd:'php artisan tassy-page-guide:install', bForceEcho: true);
 jcmd(cmd:'npm install', bForceEcho: true);
 jcmd(cmd:'npm run dev', bForceEcho: true);
 
+
+$c = new Colors();
+echo "\n";
+echo $c->getColoredString("\n\nPlease the user's guide at:  ",'red');
+echo $c->getColoredString("\n   USERS_GUIDE.md   ",'green');
+echo "\n";
+echo "\n";
+echo $c->getColoredString("\n\nRun the demo seeder:  ",'red');
+echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php   ",'green');
