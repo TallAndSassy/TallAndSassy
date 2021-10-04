@@ -19,11 +19,19 @@ class Tenant extends Model
         static::created(function ($model) {
             if ($model->slug != ENV('HQ_SUBDOMAIN')) {
                 // create schooltwist admin for new tenant
-                $new_admin = User::create(['name' => 'School Twist Admin', 'password' => bcrypt('password'), 'email' => 'admin_'.$model->slug.'@rohrer.org']);
+                $tenant_id = $model->id;
+                
+                $new_admin = User::create([
+                    'name' => 'School Twist Admin',
+                    'password' => bcrypt('password'),
+                    'email' => 'admin_'.$model->slug.'@rohrer.org',
+                    'tenant_id' => $tenant_id,
+                ]);
 
-                $new_admin->tenant_id = $model->id;
+                $new_admin->tenant_id = $tenant_id;
                 $new_admin->email_verified_at = now();
 
+                
                 $new_admin->save();
 
                 $new_admin->assignRole('webmaster');
