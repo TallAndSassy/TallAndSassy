@@ -159,7 +159,21 @@ $ret = insertAfter(
     contentToInsertAfterFoundLine: $newMethods,
     bForceEcho: true
 );
+print "\n";
 assert($ret);
+
+
+// Get our factories up and available.
+// There are definitily ways to do this, but I couldn't make it work.
+// So, we'll just copy over...
+// https://twitter.com/wylesone/status/1303610973736128512
+// https://gist.github.com/fourstacks/9cc6a68ed25fbbf00aa016da34f9a8be
+//jcmd(cmd:'mkdir -p database/factories/TallAndSassy/Cms/Models', bForceEcho: true);
+//jcmd(cmd:'cp -r vendor/tallandsassy/tallandsassy/Cms/src/database/factories/* database/factories/TallAndSassy/Cms/Models', bForceEcho: true);
+//
+//jcmd(cmd:'mkdir -p database/factories/TallAndSassy/Tenancy/Models', bForceEcho: true);
+//jcmd(cmd:'cp -r vendor/tallandsassy/tallandsassy/Tenancy/src/database/factories/* database/factories/TallAndSassy/Tenancy/Models', bForceEcho: true);
+
 // Smoother routing  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 // nix the original
 jcmd(cmd:'mv routes/web.php routes/web.php.orig', bForceEcho: true);

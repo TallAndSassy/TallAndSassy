@@ -1,9 +1,12 @@
 <?php
+//namespace Database\Factories\TallAndSassy\Cms\Models;
 namespace TallAndSassy\Cms\database\factories;
 //https://twitter.com/wylesone/status/1303610973736128512
 //https://gist.github.com/fourstacks/9cc6a68ed25fbbf00aa016da34f9a8be
 use Illuminate\Database\Eloquent\Factories\Factory;
-class Page extends Factory
+use TallAndSassy\Cms\Models\Page;
+
+class PageFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

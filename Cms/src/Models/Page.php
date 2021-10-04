@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace TallAndSassy\Cms\Models;
 
+#use TallAndSassy\Cms\database\factories\PageFactory;
 use TallAndSassy\Tenancy\Scopes\TenantScope;
-use App\Traits\Uuids;
+#use App\Traits\Uuids;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+use TallAndSassy\Tenancy\Traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
@@ -42,4 +45,15 @@ class Page extends Model
         });
     }
 
+    /**
+     * Get a new factory instance for the model.
+     *
+     * @param  mixed  $parameters
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        $a = \TallAndSassy\Cms\database\factories\PageFactory::new();
+        return $a;
+    }
 }
