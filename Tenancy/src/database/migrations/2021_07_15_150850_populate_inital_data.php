@@ -33,7 +33,7 @@ class PopulateInitalData extends Migration
             'email' => 'admin_'.ENV('MEMCACHED_HOST').'@rohrer.org',
             'password' => bcrypt('password'),
             'email_verified_at' => Date::now(),
-            //'tenant_id' => $tenant_id, 7/21' wouldn't work
+            'tenant_id' => $tenant_id, //7/21' wouldn't work, but maybe does in october cuz of ordering
 
         ]);
         User::reguard();
