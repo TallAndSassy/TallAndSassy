@@ -113,7 +113,8 @@ function commentOutLineWithStuff(string $filePath, string $contentToFindInALine,
             if (isset($asrLines[$offsetForInsert]) &&  str_starts_with(trim($asrLines[$offsetForInsert]), '//')) {
                 print "\n  Good-Enough: The content already commented out at line $offsetForInsert";
             } else {
-                array_splice($asrLines, $offsetForInsert, 0, $contentToInsertAfterFoundLine . "\n");
+                $asrLines[$offsetForInsert] = '// removed by commentOutLineWithStuff '.$asrLines[$offsetForInsert];
+
                 $ret = file_put_contents($filePath, $asrLines);
                 assert($ret);
                 print "\n  Success: Inserted after line $slot";
