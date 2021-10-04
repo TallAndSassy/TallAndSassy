@@ -125,6 +125,42 @@ assert($ret);
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/web.php', bForceEcho: true);
 
 
+// Big changes to model/User.php ... (good candidate for Rector?)
+$newMethods = '
+    protected static function booted()
+    {
+        static::addGlobalScope(new TenantScope());
+        static::creating(function($model){            
+            if ($model->tenant_id) {
+                // no-op $model->tenant_id =  $model->tenant_id;
+            } elseif(session()->has("tenant_id")) {
+                $model->tenant_id = session()->get("tenant_id");
+            } else {
+                $superadminpattern = "admin_".ENV("MEMCACHED_HOST")."@rohrer.org";
+                if ($model->email == $superadminpattern) {
+                    $model->tenant_id = null;
+                } else {
+                    #dd(session()->getContainer());
+                    dd( $model->email, ENV("MEMCACHED_HOST"), $superadminpattern, __METHOD__, __FILE__, __LINE__);
+                    abort(500);
+                }
+
+            }
+        });
+
+        // I can not find where to add that in registration. Everyone is now gonna be a booker unless we say explicitly otherwise
+        static::created(function($model) {
+            $model->assignRole("booker");
+        });
+    }
+';
+$ret = insertAfter(
+    filePath:'app/Models/User.php',
+    contentToFindInALine: '];', // hmm, looks fragile
+    contentToInsertAfterFoundLine: $newMethods,
+    bForceEcho: true
+);
+assert($ret);
 // Smoother routing  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 // nix the original
 jcmd(cmd:'mv routes/web.php routes/web.php.orig', bForceEcho: true);
