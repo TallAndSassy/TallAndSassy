@@ -127,24 +127,30 @@ function commentOutLineWithStuff(string $filePath, string $contentToFindInALine,
     return false;
 }
 
+/*  it won't re-insert if the first line of $contentToInsertAfterFoundLine matches the first line after $contentToFindInALine (trimmed)
+    It will trim  $contentToInsertAfterFoundLine cuz it otherwise makes it a hassle to detect duplication
+*/
 function insertAfter(string $filePath, string $contentToFindInALine, string $contentToInsertAfterFoundLine, bool $bForceEcho): bool {
+    $contentToInsertAfterFoundLine = trim($contentToInsertAfterFoundLine);
     if ($bForceEcho) {
         print "\ninsertAfter in file '$filePath'";
         print "\n  Looking for '$contentToFindInALine'";
         print "\n  So can add '$contentToInsertAfterFoundLine'";
     }
     $asrLines = file($filePath);
+    $matchAsDuplicate = trim($contentToInsertAfterFoundLine);
     foreach ($asrLines as $slot=>$lineContent) {
         if (str_contains($lineContent, $contentToFindInALine)) {
             // Don't add it twice (maybe make an option if needed in the future)
             $offsetForInsert = $slot + 1;
-            if (isset($asrLines[$offsetForInsert]) &&  str_starts_with(trim($asrLines[$offsetForInsert]), trim($contentToInsertAfterFoundLine))) {
-                print "\n  Good-Enough: The content already existed after line $offsetForInsert";
+            $trimmedNextLine = trim($asrLines[$offsetForInsert]);
+            if (isset($asrLines[$offsetForInsert]) &&  ($trimmedNextLine != '') && str_starts_with( $matchAsDuplicate, $trimmedNextLine)) {
+                print "\n  Good-Enough: The content already existed after line $offsetForInsert. '$matchAsDuplicate' starts`$trimmedNextLine` ";
             } else {
                 array_splice($asrLines, $offsetForInsert, 0, $contentToInsertAfterFoundLine . "\n");
                 $ret = file_put_contents($filePath, $asrLines);
                 assert($ret);
-                print "\n  Success: Inserted after line $slot";
+                print "\n  Success: Inserted after line $slot. matchAsDuplicate($matchAsDuplicate), trimmedNextLine($trimmedNextLine)";
             }
             return true;
             break;
