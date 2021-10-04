@@ -126,8 +126,8 @@ jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/we
 
 
 // Big changes to model/User.php ... (good candidate for Rector?)
-$newMethods = '
-    protected static function booted()
+$newMethods = '  
+ protected static function booted()
     {
         static::addGlobalScope(new TenantScope());
         static::creating(function($model){            
@@ -152,8 +152,7 @@ $newMethods = '
         static::created(function($model) {
             $model->assignRole("booker");
         });
-    }
-';
+    }';
 $ret = insertAfter(
     filePath:'app/Models/User.php',
     contentToFindInALine: '];', // hmm, looks fragile
