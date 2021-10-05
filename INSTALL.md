@@ -5,11 +5,7 @@ laravel installed. Or feel free to make your own, standard, virgin laravel insta
 the guts of the .sh file to look for specifics.
 
 # Super quick install for demo purposes
-You can use our two-step `download` & `run` script. It will install a new laravel install and completely configure a Tassy demo.
-
-    curl -LJO  https://raw.githubusercontent.com/TallAndSassy/TallAndSassy/main/bin/demo/INSTALL_FULL_DEMO.php
-    
-    php INSTALL_FULL_DEMO.php --DB_USERNAME=root --DB_PASSWORD=ofallevil  --APP_NAME=TassyTest001
+You can use our two-step `download` & `run` script. See the Quick Demo section of [Readme](./ReadMe.md) for instructions.
 
 
 
