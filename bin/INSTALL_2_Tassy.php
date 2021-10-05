@@ -5,7 +5,7 @@ $localhostName = 'localhost';// INPUT (uncommon)
 $dirParts = explode('/',realpath(dirname(__DIR__.'/../..')));
 $APP_NAME = $dirParts[count($dirParts)-1];
 $APP_URL = "http://{$APP_NAME}";
-
+print_r($dirParts);
 /*
 # Now, let's get TallAndSassy working so we can see what a minimum installation looks like.
 # Goal: Be able to run this multiple times, within the same Laravel installation.
