@@ -2,15 +2,30 @@
 
 
 // ------------ After this - it is just some utilities that help us install laravel ------
-function getOptionalOption(string $optionName, mixed $default, Closure $doesValidate, Closure $transformInputToInternal): mixed {
+function getOptionalOption(string $optionName, mixed $default, Closure $doesValidate, Closure $transformInputToInternal, bool $doEcho): mixed {
     $options = getopt('', ["{$optionName}:"]);
+    $isDefaulting = false;
     if (empty($options)) {
-        return $default;
+        $native_value = $default;
+        $isDefaulting = true;
+    } else {
+        $isDefaulting = false;
+        assert(count($options) == 1, "You must specify --{$optionName}=blah");
+        $input_value = $options[$optionName];
+        assert($doesValidate($input_value));
+        $native_value = $transformInputToInternal($input_value);
     }
-    assert(count($options)==1,"You must specify --{$optionName}=blah");
-    $input_value = $options[$optionName];
-    assert($doesValidate($input_value));
-    $native_value = $transformInputToInternal($input_value);
+    if ($doEcho) {
+        if ($isDefaulting) {
+            print "\n option --'$optionName' defaulted to '$default'";
+        } else {
+            print "\n option --'$optionName' set to '$input_value'";
+            if ($input_value != $native_value) {
+                print " and transformed to: '$native_value";
+            }
+        }
+        print "\n";
+    }
     return $native_value;
 }
 function getRequiredOption(string $optionName): string {

@@ -1,101 +1,52 @@
 <?php
-if (! (isSettableOptionSet('DB_USERNAME') && isSettableOptionSet('DB_PASSWORD') &&  isSettableOptionSet('APP_NAME') )) {
-    $c = new Colors();
+$c = new Colors();
+if (!(isSettableOptionSet('DB_USERNAME') && isSettableOptionSet('DB_PASSWORD') && isSettableOptionSet('APP_NAME'))) {
+
     echo "\n";
-    echo $c->getColoredString("\n\nYou are missing stuff. Try something like this  ",'red');
-    echo $c->getColoredString("\n   php INSTALL_1_Laravel.php --DB_USERNAME=root --DB_PASSWORD=ofallevil  --APP_NAME=TassyTest001  ",'green');
+    echo $c->getColoredString("\n\nYou are missing stuff. Try something like this  ", 'red');
+    echo $c->getColoredString("\n   php INSTALL_FULL_DEMO.php --DB_USERNAME=root --DB_PASSWORD=ofallevil  --APP_NAME=TassyTest001  ", 'green');
     echo "\n";
     echo "\n";
     exit(-1);
 }
 
-$DB_USERNAME = getRequiredOption(optionName:'DB_USERNAME');
-$DB_PASSWORD = getRequiredOption(optionName:'DB_PASSWORD');
-$APP_NAME = getRequiredOption(optionName:'APP_NAME');
+$DB_USERNAME = getRequiredOption(optionName: 'DB_USERNAME');
+$DB_PASSWORD = getRequiredOption(optionName: 'DB_PASSWORD');
+$APP_NAME = getRequiredOption(optionName: 'APP_NAME');
 $DO_FORCE_REINSTALL = getOptionalOption(
-    optionName:'DO_FORCE_REINSTALL',
-    default:0,
-    doesValidate:fn($passedValueToBeValidated) => in_array($passedValueToBeValidated,['0','1']),
-    transformInputToInternal:fn($passedValidatedValue) => $passedValidatedValue,
+    optionName: 'DO_FORCE_REINSTALL',
+    default: 0,
+    doesValidate: fn($passedValueToBeValidated) => in_array($passedValueToBeValidated, ['0', '1']),
+    transformInputToInternal: fn($passedValidatedValue) => $passedValidatedValue,
 
 );
-
-$DIR_NAME = $APP_NAME;
-$DB_NAME = $APP_NAME;
-$DB_NAME_LowerCased = strtolower($DB_NAME); // cuz laravel install lowers the incoming name, whether we like that, or not
-
-print "\nDIR_NAME={$DIR_NAME}";
-print "\nAPP_NAME={$APP_NAME}";
-print "\nDO_FORCE_REINSTALL={$DO_FORCE_REINSTALL}";
-print "\nDB_NAME={$DB_NAME}";
-print "\nDB_USERNAME={$DB_USERNAME}";
-print "\nDB_PASSWORD={$DB_PASSWORD}";
-print "\n";
+//jcmd(cmd:"php INSTALL_1_Laravel.php --DB_USERNAME='{$DB_USERNAME}' --DB_PASSWORD='$DB_PASSWORD' --APP_NAME='{$APP_NAME}' ", bForceEcho: true);
+//jcmd(cmd:"cd $APP_NAME; & php vendor/tallandsassy/tallandsassy/INSTALL_2_Tassy.php & vendor/tallandsassy/tallandsassy/demo/INSTALL_3_Demo.php", bForceEcho: true);
+jcmd(cmd:"php INSTALL_1_Laravel.php --DB_USERNAME='{$DB_USERNAME}' --DB_PASSWORD='$DB_PASSWORD' --APP_NAME='{$APP_NAME}' && cd {$APP_NAME} && ls -1 && composer require tallandsassy/tallandsassy:dev-main && php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php && php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php && php artisan serve --host=localhost", bForceEcho: true);
 
 
-# Quick Start
-# Let's assume you have `mysql` and `php` available from the command line.
-
-## Quick Start: Install Laravel
-    # install laravel
-    $maybeTrailingForceFlag = $DO_FORCE_REINSTALL ? ' -f' : '';
-    jcmd(cmd:"laravel new '{$APP_NAME}' --jet --no-interaction --stack=livewire --git {$maybeTrailingForceFlag}");
-    jcmd(cmd:"cd {$APP_NAME}");
-    jcmd("pwd");
-
-
-
-
-## Quick Start: Config base laravel    
-    # Which Database: uncomment and modify, if desired 
-    # sed -i".orig" 's/DB_DATABASE=MyTassyTest/DB_DATABASE=YourDatabaseName/' .env
-    jcmd(cmd:"sed -i'.orig' 's/DB_DATABASE=.*$/DB_DATABASE={$DB_NAME}/' {$DIR_NAME}/.env", bForceEcho: true);
-    
-    # Which DB username: uncomment and modify, if desired
-    # sed -i".orig" 's/DB_s/DB_USERNAME=root/DB_USERNAME=YourDbUserName/USERNAME=root/DB_USERNAME=YourDbUserName/' .env
-    jcmd(cmd:"sed -i'.orig' 's/DB_USERNAME=.*$/DB_USERNAME={$DB_USERNAME}/' {$DIR_NAME}/.env", bForceEcho: true);
-
-    # DB password: modify to your approprite password
-    jcmd(cmd:"sed -i'.orig' 's/DB_PASSWORD=.*$/DB_PASSWORD={$DB_PASSWORD}/' {$DIR_NAME}/.env", bForceEcho: true);
-
-## reparse the .env
-    jcmd(cmd:"php {$DIR_NAME}/artisan config:clear", bForceEcho: true);
-
-## Quick Start: Create DB
-# fix up database. Tweak as needed
-    jcmd(cmd:"mysql -u {$DB_USERNAME} -p{$DB_PASSWORD} -e 'DROP DATABASE IF EXISTS `$DB_NAME`; CREATE DATABASE `$DB_NAME`;'", bForceEcho: true);
-
-    # setup the database so far
-    jcmd(cmd:"php {$DIR_NAME}/artisan migrate", bForceEcho: true);
-
-
-    # get the javascript all set up
-    jcmd(cmd:"npm install --prefix '{$DIR_NAME}'", bForceEcho: true);
-    jcmd(cmd:"npm run dev --prefix '{$DIR_NAME}'", bForceEcho: true);
-
-$c = new Colors();
 echo "\n";
-echo $c->getColoredString("\n\nPlease start your web server by running  ",'red');
-echo $c->getColoredString("\n   php {$DIR_NAME}/artisan serve   ",'green');
-echo $c->getColoredString("\nand then visiting, in your browser (but tweak as needed, according the port actually used) ",'red');
-echo $c->getColoredString("\n   http://127.0.0.1:8000",'green');
+echo $c->getColoredString("\n\nPlease start your web server by running  ", 'red');
+echo $c->getColoredString("\n   php {$DIR_NAME}/artisan serve   ", 'green');
+echo $c->getColoredString("\nand then visiting, in your browser (but tweak as needed, according the port actually used) ", 'red');
+echo $c->getColoredString("\n   http://127.0.0.1:8000", 'green');
 echo "\n";
 echo "\n";
-echo $c->getColoredString("\n  Next steps: Get the Tassy package",'blue');
-echo $c->getColoredString("\n   cd {$DIR_NAME}",'green');
-echo $c->getColoredString("\n   composer require tallandsassy/tallandsassy:dev-main",'green');
+echo $c->getColoredString("\n  Next steps: Get the Tassy package", 'blue');
+echo $c->getColoredString("\n   cd {$DIR_NAME}", 'green');
+echo $c->getColoredString("\n   composer require tallandsassy/tallandsassy:dev-main", 'green');
 echo "\n";
 echo "\n";
-echo $c->getColoredString("\n   Now continue with Tall & Sassy installation by running",'red');
-echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --HQ_SUBDOMAIN=st",'green');
+echo $c->getColoredString("\n   Now continue with Tall & Sassy installation by running", 'red');
+echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --HQ_SUBDOMAIN=st", 'green');
 echo "\n";
 echo "\n";
 echo "\n";
-echo $c->getColoredString("\n  Feeling Ambitious?: Try contributing to the project.",'blue');
-echo $c->getColoredString("\n   git clone https://github.com/TallAndSassy/TallAndSassy ",'green');
-echo $c->getColoredString("\n   cd  {$DIR_NAME}/vendor/tallandsassy",'green');
-echo $c->getColoredString("\n   rm -rf tallandsassy",'green');
-echo $c->getColoredString("\n   ln -s ../../../TallAndSassy tallandsassy",'green');
+echo $c->getColoredString("\n  Feeling Ambitious?: Try contributing to the project.", 'blue');
+echo $c->getColoredString("\n   git clone https://github.com/TallAndSassy/TallAndSassy ", 'green');
+echo $c->getColoredString("\n   cd  {$DIR_NAME}/vendor/tallandsassy", 'green');
+echo $c->getColoredString("\n   rm -rf tallandsassy", 'green');
+echo $c->getColoredString("\n   ln -s ../../../TallAndSassy tallandsassy", 'green');
 echo "\n";
 echo "\n";
 
@@ -103,27 +54,33 @@ echo "\n";
 # Nothing before this line should be different than a typical laravel project
 
 // ------------ After this - it is just some utilities that help us install laravel ------
-function getOptionalOption(string $optionName, mixed $default, Closure $doesValidate, Closure $transformInputToInternal): mixed {
+function getOptionalOption(string $optionName, mixed $default, Closure $doesValidate, Closure $transformInputToInternal): mixed
+{
     $options = getopt('', ["{$optionName}:"]);
     if (empty($options)) {
         return $default;
     }
-    assert(count($options)==1,"You must specify --{$optionName}=blah");
+    assert(count($options) == 1, "You must specify --{$optionName}=blah");
     $input_value = $options[$optionName];
     assert($doesValidate($input_value));
     $native_value = $transformInputToInternal($input_value);
     return $native_value;
 }
-function isSettableOptionSet(string $optionName): bool {
+
+function isSettableOptionSet(string $optionName): bool
+{
     $options = getopt('', ["{$optionName}:"]);
     return (!empty($options) && count($options) == 1);
 }
-function getRequiredOption(string $optionName): string {
+
+function getRequiredOption(string $optionName): string
+{
     $options = getopt('', ["{$optionName}:"]);
-    assert(!empty($options),"You must specify --{$optionName}");
-    assert(count($options)==1,"You must specify --{$optionName}=blah");
+    assert(!empty($options), "You must specify --{$optionName}");
+    assert(count($options) == 1, "You must specify --{$optionName}=blah");
     return $options[$optionName];
 }
+
 function getMakeDirCmd(): string
 {
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
@@ -134,9 +91,10 @@ function getMakeDirCmd(): string
     return $mkdirExec;
 }
 
-function is_windows() {
-    $test_is_windows = getenv( 'WP_CLI_TEST_IS_WINDOWS' );
-    return false !== $test_is_windows ? (bool) $test_is_windows : strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN';
+function is_windows()
+{
+    $test_is_windows = getenv('WP_CLI_TEST_IS_WINDOWS');
+    return false !== $test_is_windows ? (bool)$test_is_windows : strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
 }
 
 function tempdir(int $mode = 0700, bool $auto_delete = true): string
@@ -195,6 +153,7 @@ and output: $output
 ";
     }
 }
+
 class Colors
 { //http://www.if-not-true-then-false.com/2010/php-class-for-coloring-php-command-line-cli-scripts-output-php-output-colorizing-using-bash-shell-colors/
     private $foreground_colors = array();

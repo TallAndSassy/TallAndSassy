@@ -18,7 +18,8 @@ $HQ_SUBDOMAIN = getOptionalOption(
     optionName:'HQ_SUBDOMAIN',
     default:'hq',
     doesValidate:fn($passedValueToBeValidated) => strlen($passedValueToBeValidated) < 32,
-    transformInputToInternal:fn($passedValidatedValue) => strtolower($passedValidatedValue)
+    transformInputToInternal:fn($passedValidatedValue) => strtolower($passedValidatedValue),
+    doEcho:  true
 );
 // delete if already there
 jcmd(cmd:"sed -i'.orig' '/HQ_SUBDOMAIN=.*$/d' .env", bForceEcho: true);
@@ -231,6 +232,11 @@ jcmd(cmd:'npm run dev', bForceEcho: true);
 
 
 $c = new Colors();
+echo "\n";
+echo $c->getColoredString("\n\nPlease start a server  ",'red');
+echo $c->getColoredString(" (hint: use something like 'localhost' and not IP cuz of tenancy stuff. It should normally match APP_URL in .env)  ",'dark_gray');
+echo $c->getColoredString("\n   php artisan serve --host=localhost   ",'green');
+echo "\n";
 echo "\n";
 echo $c->getColoredString("\n\nPlease the user's guide at:  ",'red');
 echo $c->getColoredString("\n   USERS_GUIDE.md   ",'green');
