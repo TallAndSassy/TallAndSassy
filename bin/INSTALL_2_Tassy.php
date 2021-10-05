@@ -1,11 +1,12 @@
 <?php
 require_once(__DIR__.'/_bin_utils.php');
 $localhostName = 'localhost';// INPUT (uncommon)
-
-$dirParts = explode('/',realpath(dirname(__DIR__.'/../..')));
+$dirParts = explode('/',getcwd());
 $APP_NAME = $dirParts[count($dirParts)-1];
-$APP_URL = "http://{$APP_NAME}";
-print_r($dirParts);
+$APP_URL = "http://{$localhostName}";
+print "\n localhostName=>$localhostName";
+print "\n APP_NAME=>$APP_NAME";
+print "\n APP_URL=>$APP_URL";
 /*
 # Now, let's get TallAndSassy working so we can see what a minimum installation looks like.
 # Goal: Be able to run this multiple times, within the same Laravel installation.
@@ -30,13 +31,14 @@ jcmd(cmd:"sed -i'.orig' '1s/^/HQ_SUBDOMAIN={$HQ_SUBDOMAIN}\\n/' .env", bForceEch
 # add new localhost (vs. 127.0.0.1 cuz we can only have subdomains on a top level domains, not IPs) to .env
 // MEMCACHED_HOST=127.0.0.1
 jcmd(cmd:"sed -i'.orig' '/MEMCACHED_HOST=.*$/d' .env", bForceEcho: true);
-jcmd(cmd:"sed -i'.orig' '1s/^/MEMCACHED_HOST={$localhostName}\\n/' .env", bForceEcho: true);
+jcmd(cmd:"sed -i'.orig' '1s/^/MEMCACHED_HOST='{$localhostName}'\\n/' .env", bForceEcho: true);
 
 jcmd(cmd:"sed -i'.orig' '/APP_URL=.*$/d' .env", bForceEcho: true);
-jcmd(cmd:"sed -i'.orig' '1s/^/APP_URL=={$APP_URL}//\\n/' .env", bForceEcho: true);
+jcmd(cmd:"sed -i'.orig' '1s/^/APP_URL='{$APP_URL}'//\\n/' .env", bForceEcho: true);
 
 jcmd(cmd:"sed -i'.orig' '/APP_NAME=.*$/d' .env", bForceEcho: true);
-jcmd(cmd:"sed -i'.orig' '1s/^/APP_NAME=={$APP_NAME}//\\n/' .env", bForceEcho: true);
+jcmd(cmd:"sed -i'.orig' '1s/^/APP_NAME='{$APP_NAME}'\\n/' .env", bForceEcho: true);
+//jcmd(cmd:"sed -i'.orig' '1s/^/APP_NAME={$APP_NAME}//\\n/' .env", bForceEcho: true);
 
 
 # reparse .env

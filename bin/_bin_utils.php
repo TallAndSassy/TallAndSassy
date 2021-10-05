@@ -80,8 +80,8 @@ function destroydir(string $dir): bool
     }
     return rmdir($dir);
 }
-
-function jcmd(string $cmd, bool $bForceEcho = false)
+/* $doDieOnFailure doesn't seem to be very impactful 10/21'*/
+function jcmd(string $cmd, bool $bForceEcho, bool $doDieOnFailure = true)
 {
     exec($cmd, $output, $return);
     if ($bForceEcho) {
@@ -107,7 +107,11 @@ with error code: $return
 and output: $output
 
 ";
+        if($doDieOnFailure && !$return) {
+            exit($return);
+        }
     }
+    return $return;
 }
 
 /* it would be easy to combine these with appendLine, replaceLine enum, but meh */
