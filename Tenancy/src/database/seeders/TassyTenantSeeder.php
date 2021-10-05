@@ -2,11 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Page;
+
+
+
+use TallAndSassy\Cms\Models\Page;
 use TallAndSassy\Tenancy\Models\Tenant;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-
 class TassyTenantSeeder extends Seeder
 {
     /**

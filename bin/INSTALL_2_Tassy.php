@@ -53,8 +53,6 @@ jcmd(cmd:$cmd, bForceEcho: true);
     (this might be better: https://laravel-news.com/override-login-redirects-in-jetstream-fortify)
 */
 
-// Init the db ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-jcmd(cmd:'php artisan migrate:fresh', bForceEcho: true);
 
 # Nix jetstreams unwanted UI ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Keep the old stuff, for reference.  You could safely delete them
@@ -115,6 +113,14 @@ $ret = insertAfter(
 );
 assert($ret);
 
+$ret = insertAfter(
+    filePath:'app/Models/User.php',
+    contentToFindInALine: 'use Spatie\Permission\Traits\HasRoles;',
+    contentToInsertAfterFoundLine: 'use TallAndSassy\Tenancy\Scopes\TenantScope;',
+    bForceEcho: true
+);
+print "\n";
+assert($ret);
 // Old User seeder dies without a tenant. Let's just comment it out
 $ret = commentOutLineWithStuff(
     filePath:'database/seeders/DatabaseSeeder.php',
@@ -125,6 +131,8 @@ $ret = commentOutLineWithStuff(
 assert($ret);
 
 // Init DB --------- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+jcmd(cmd:'php artisan vendor:publish --tag="tassy"', bForceEcho: true);
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/web.php', bForceEcho: true);
 
 
@@ -166,6 +174,8 @@ print "\n";
 assert($ret);
 
 
+
+
 // Get our factories up and available.
 // There are definitily ways to do this, but I couldn't make it work.
 // So, we'll just copy over...
@@ -185,6 +195,8 @@ jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/we
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web-admin--routes.stub routes/web-admin--routes.php', bForceEcho: true);
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web-admin-people.stub routes/web-admin-people.php', bForceEcho: true);
 
+// Init the db ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+jcmd(cmd:'php artisan migrate:fresh', bForceEcho: true);
 
 // js  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // ToDO: Make better by searching for  webpack.mix.js and seeing how livewire, etc. does this
@@ -208,3 +220,5 @@ echo "\n";
 echo "\n";
 echo $c->getColoredString("\n\nRun the demo seeder:  ",'red');
 echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php   ",'green');
+echo "\n";
+echo "\n";

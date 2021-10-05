@@ -73,8 +73,9 @@ function jcmd(string $cmd, bool $bForceEcho = false)
         if (!empty($output)) {
             print_r($output);
         } else {
-            print "\n--- $cmd";
+            print "--- $cmd\n";
         }
+
     }
 
     if ($return != 0) {
