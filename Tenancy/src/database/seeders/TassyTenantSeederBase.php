@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace TallAndSassy\Tenancy\database\seeders;
 
 
 
@@ -9,7 +9,7 @@ use TallAndSassy\Cms\Models\Page;
 use TallAndSassy\Tenancy\Models\Tenant;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-class TassyTenantSeeder extends Seeder
+class TassyTenantSeederBase extends Seeder
 {
     /**
      * Seed the application's database.
