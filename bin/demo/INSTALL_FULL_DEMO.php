@@ -24,8 +24,7 @@ $DO_FORCE_REINSTALL = getOptionalOption(
 //jcmd(cmd:"cd $APP_NAME; & php vendor/tallandsassy/tallandsassy/INSTALL_2_Tassy.php & vendor/tallandsassy/tallandsassy/demo/INSTALL_3_Demo.php", bForceEcho: true);
 // Get INSTALL_1_Laravel.php (https://stackoverflow.com/a/45514197/93933)
 jcmd(cmd:"curl -LJO  https://raw.githubusercontent.com/TallAndSassy/TallAndSassy/main/bin/demo/INSTALL_1_Laravel.php", bForceEcho: true, doDieOnFailure: true);
-#jcmd(cmd:"php INSTALL_FULL_DEMO.php --DB_USERNAME=root --DB_PASSWORD=ofallevil  --APP_NAME=TassyTest001", bForceEcho: true, doDieOnFailure: true);
-#jcmd(cmd:"php INSTALL_1_Laravel.php --DB_USERNAME='{$DB_USERNAME}' --DB_PASSWORD='$DB_PASSWORD' --APP_NAME='{$APP_NAME}' && cd {$APP_NAME} && ls -1 && composer require tallandsassy/tallandsassy:dev-main && php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php && php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php && php artisan serve --host=localhost", bForceEcho: true, doDieOnFailure: true);
+jcmd(cmd:"php INSTALL_1_Laravel.php --DB_USERNAME='{$DB_USERNAME}' --DB_PASSWORD='$DB_PASSWORD' --APP_NAME='{$APP_NAME}' && cd {$APP_NAME} && ls -1 && composer require tallandsassy/tallandsassy:dev-main && php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php && php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php && php artisan serve --host=localhost", bForceEcho: true, doDieOnFailure: true);
 
 
 echo "\n";
