@@ -70,12 +70,11 @@ function jcmd(string $cmd, bool $bForceEcho = false)
 {
     exec($cmd, $output, $return);
     if ($bForceEcho) {
+        print "--- $cmd\n";
         if (!empty($output)) {
             print_r($output);
-        } else {
             print "--- $cmd\n";
         }
-
     }
 
     if ($return != 0) {
@@ -133,10 +132,11 @@ function commentOutLineWithStuff(string $filePath, string $contentToFindInALine,
 */
 function insertAfter(string $filePath, string $contentToFindInALine, string $contentToInsertAfterFoundLine, bool $bForceEcho): bool {
     $contentToInsertAfterFoundLine = trim($contentToInsertAfterFoundLine);
+    $contentToInsertAfterFoundLine_Excerpt = preg_split("/\r\n|\n|\r/", trim($contentToInsertAfterFoundLine))[0];//https://stackoverflow.com/a/11165332/93933
     if ($bForceEcho) {
         print "\ninsertAfter in file '$filePath'";
         print "\n  Looking for '$contentToFindInALine'";
-        print "\n  So can add '$contentToInsertAfterFoundLine'";
+        print "\n  So can add '$contentToInsertAfterFoundLine_Excerpt'...";
     }
     $asrLines = file($filePath);
     $matchAsDuplicate = trim($contentToInsertAfterFoundLine);
@@ -146,12 +146,12 @@ function insertAfter(string $filePath, string $contentToFindInALine, string $con
             $offsetForInsert = $slot + 1;
             $trimmedNextLine = trim($asrLines[$offsetForInsert]);
             if (isset($asrLines[$offsetForInsert]) &&  ($trimmedNextLine != '') && str_starts_with( $matchAsDuplicate, $trimmedNextLine)) {
-                print "\n  Good-Enough: The content already existed after line $offsetForInsert. '$matchAsDuplicate' starts`$trimmedNextLine` ";
+                print "\n  Good-Enough: The content already existed after line $offsetForInsert. '$contentToInsertAfterFoundLine_Excerpt' starts`$trimmedNextLine` ";
             } else {
                 array_splice($asrLines, $offsetForInsert, 0, $contentToInsertAfterFoundLine . "\n");
                 $ret = file_put_contents($filePath, $asrLines);
                 assert($ret);
-                print "\n  Success: Inserted after line $slot. matchAsDuplicate($matchAsDuplicate), trimmedNextLine($trimmedNextLine)";
+                print "\n  Success: Inserted after line $slot. matchAsDuplicate($contentToInsertAfterFoundLine_Excerpt), trimmedNextLine($trimmedNextLine)";
             }
             return true;
             break;
