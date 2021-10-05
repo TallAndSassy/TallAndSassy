@@ -7,8 +7,9 @@ the guts of the .sh file to look for specifics.
 # Super quick install for demo purposes
 You can use our two-step `download` & `run` script. It will install a new laravel install and completely configure a Tassy demo.
 
-    curl -H 'Authorization: token INSERTACCESSTOKENHERE' -H 'Accept: application/vnd.github.v3.raw' -O -L  https://raw.githubusercontent.com/TallAndSassy/TallAndSassy/v0.1.020wip-InstallStuff/bin/demo/INSTALL_1_Laravel.php
-    php INSTALL_1_Laravel.php --DB_USERNAME=root --DB_PASSWORD=ofallevil --APP_NAME=MyTassyTest --DO_FORCE_REINSTALL=1
+    curl -H 'Authorization: token INSERTACCESSTOKENHERE' -H 'Accept: application/vnd.github.v3.raw' -O -L https://raw.githubusercontent.com/TallAndSassy/TallAndSassy/main/bin/demo/INSTALL_FULL_DEMO.php
+    
+    php INSTALL_FULL_DEMO.php --DB_USERNAME=root --DB_PASSWORD=ofallevil  --APP_NAME=TassyTest006
 
 
 

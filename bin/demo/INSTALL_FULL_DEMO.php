@@ -22,31 +22,16 @@ $DO_FORCE_REINSTALL = getOptionalOption(
 );
 //jcmd(cmd:"php INSTALL_1_Laravel.php --DB_USERNAME='{$DB_USERNAME}' --DB_PASSWORD='$DB_PASSWORD' --APP_NAME='{$APP_NAME}' ", bForceEcho: true);
 //jcmd(cmd:"cd $APP_NAME; & php vendor/tallandsassy/tallandsassy/INSTALL_2_Tassy.php & vendor/tallandsassy/tallandsassy/demo/INSTALL_3_Demo.php", bForceEcho: true);
-jcmd(cmd:"php INSTALL_1_Laravel.php --DB_USERNAME='{$DB_USERNAME}' --DB_PASSWORD='$DB_PASSWORD' --APP_NAME='{$APP_NAME}' && cd {$APP_NAME} && ls -1 && composer require tallandsassy/tallandsassy:dev-main && php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php && php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php && php artisan serve --host=localhost", bForceEcho: true);
+// Get INSTALL_1_Laravel.php (https://stackoverflow.com/a/45514197/93933)
+jcmd(cmd:"curl -LJO  https://raw.githubusercontent.com/TallAndSassy/TallAndSassy/main/bin/demo/INSTALL_1_Laravel.php", bForceEcho: true, doDieOnFailure: true);
+#jcmd(cmd:"php INSTALL_FULL_DEMO.php --DB_USERNAME=root --DB_PASSWORD=ofallevil  --APP_NAME=TassyTest001", bForceEcho: true, doDieOnFailure: true);
+#jcmd(cmd:"php INSTALL_1_Laravel.php --DB_USERNAME='{$DB_USERNAME}' --DB_PASSWORD='$DB_PASSWORD' --APP_NAME='{$APP_NAME}' && cd {$APP_NAME} && ls -1 && composer require tallandsassy/tallandsassy:dev-main && php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php && php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php && php artisan serve --host=localhost", bForceEcho: true, doDieOnFailure: true);
 
 
 echo "\n";
-echo $c->getColoredString("\n\nPlease start your web server by running  ", 'red');
-echo $c->getColoredString("\n   php {$DIR_NAME}/artisan serve   ", 'green');
-echo $c->getColoredString("\nand then visiting, in your browser (but tweak as needed, according the port actually used) ", 'red');
-echo $c->getColoredString("\n   http://127.0.0.1:8000", 'green');
-echo "\n";
-echo "\n";
-echo $c->getColoredString("\n  Next steps: Get the Tassy package", 'blue');
-echo $c->getColoredString("\n   cd {$DIR_NAME}", 'green');
-echo $c->getColoredString("\n   composer require tallandsassy/tallandsassy:dev-main", 'green');
-echo "\n";
-echo "\n";
-echo $c->getColoredString("\n   Now continue with Tall & Sassy installation by running", 'red');
-echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --HQ_SUBDOMAIN=st", 'green');
-echo "\n";
-echo "\n";
-echo "\n";
-echo $c->getColoredString("\n  Feeling Ambitious?: Try contributing to the project.", 'blue');
-echo $c->getColoredString("\n   git clone https://github.com/TallAndSassy/TallAndSassy ", 'green');
-echo $c->getColoredString("\n   cd  {$DIR_NAME}/vendor/tallandsassy", 'green');
-echo $c->getColoredString("\n   rm -rf tallandsassy", 'green');
-echo $c->getColoredString("\n   ln -s ../../../TallAndSassy tallandsassy", 'green');
+echo $c->getColoredString("\n\nPlease visit your site. Point to browser to something like  ", 'red');
+echo $c->getColoredString("\n   localhost:8000   ", 'green');
+echo " (Your port might change. See the output above.)";
 echo "\n";
 echo "\n";
 
@@ -129,7 +114,7 @@ function destroydir(string $dir): bool
     return rmdir($dir);
 }
 
-function jcmd(string $cmd, bool $bForceEcho = false)
+function jcmd(string $cmd, bool $bForceEcho = false, bool $doDieOnFailure)
 {
     exec($cmd, $output, $return);
     if ($bForceEcho) {
@@ -151,7 +136,9 @@ with error code: $return
 and output: $output
 
 ";
+        exit($return);
     }
+    return $return;
 }
 
 class Colors
