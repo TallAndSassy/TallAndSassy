@@ -1,5 +1,18 @@
 <?php
 require_once(__DIR__.'/_bin_utils.php');
+
+if (! (isSettableOptionSet('HQ_SUBDOMAIN') && isSettableOptionSet('ADMIN_EMAIL') )) {
+    $c = new Colors();
+    echo "\n";
+    echo $c->getColoredString("\n\nYou are missing stuff. Try something like this  ",'red');
+    echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --HQ_SUBDOMAIN=hq --ADMIN_EMAIL=bob@gmail.com",'green');
+    echo "\n";
+    echo "\n";
+    exit(-1);
+}
+
+
+
 $localhostName = 'localhost';// INPUT (uncommon)
 $dirParts = explode('/',getcwd());
 $APP_NAME = $dirParts[count($dirParts)-1];
@@ -22,11 +35,25 @@ $HQ_SUBDOMAIN = getOptionalOption(
     transformInputToInternal:fn($passedValidatedValue) => strtolower($passedValidatedValue),
     doEcho:  true
 );
+
+
+
+
 // delete if already there
 jcmd(cmd:"sed -i'.orig' '/HQ_SUBDOMAIN=.*$/d' .env", bForceEcho: true);
 
 # add new HQ_SUBDOMAIN to .env
 jcmd(cmd:"sed -i'.orig' '1s/^/HQ_SUBDOMAIN={$HQ_SUBDOMAIN}\\n/' .env", bForceEcho: true);
+# Add Admin Email (we need mostly for demos for now) -------------------------------------------------------------------------------------------------------------------------------
+$ADMIN_EMAIL = getRequiredOption(
+    optionName:'ADMIN_EMAIL',
+);
+// delete if already there
+jcmd(cmd:"sed -i'.orig' '/ADMIN_EMAIL=.*$/d' .env", bForceEcho: true);
+
+# add new HQ_SUBDOMAIN to .env
+jcmd(cmd:"sed -i'.orig' '1s/^/ADMIN_EMAIL={$ADMIN_EMAIL}\\n/' .env", bForceEcho: true);
+
 
 # add new localhost (vs. 127.0.0.1 cuz we can only have subdomains on a top level domains, not IPs) to .env
 // MEMCACHED_HOST=127.0.0.1
@@ -152,6 +179,9 @@ $ret = commentOutLineWithStuff(
 assert($ret);
 
 // Init DB --------- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Use our copy of the UserFactory
+jcmd(cmd:'mv database/factories/UserFactory.php database/factories/UserFactory.orig.eraseme', bForceEcho: true);
+jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/Tenancy/src/database/factories/UserFactory.php database/factories', bForceEcho: true);
 
 jcmd(cmd:'php artisan vendor:publish --tag="tassy"', bForceEcho: true);
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/web.php', bForceEcho: true);

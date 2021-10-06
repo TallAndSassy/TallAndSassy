@@ -247,3 +247,8 @@ class Colors
         return array_keys($this->background_colors);
     }
 }
+
+function isSettableOptionSet(string $optionName): bool {
+    $options = getopt('', ["{$optionName}:"]);
+    return (!empty($options) && count($options) == 1);
+}
