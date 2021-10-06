@@ -15,7 +15,8 @@ You might also want to
     php artisan optimze
     composer update
     composer install
-     php artisan migrate:refresh
+    php artisan migrate:refresh
+    php artisan config:clear
     
 For developing a package, removing the mirror and symlinking to the local install isn't so bad.  
 You can also play with local repositories via paths, but I'm convinced this helps much

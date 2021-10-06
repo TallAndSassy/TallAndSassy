@@ -181,7 +181,7 @@ assert($ret);
 // Init DB --------- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Use our copy of the UserFactory
 jcmd(cmd:'mv database/factories/UserFactory.php database/factories/UserFactory.orig.eraseme', bForceEcho: true);
-jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/Tenancy/src/database/factories/UserFactory.php database/factories', bForceEcho: true);
+jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/Tenancy/src/database/factories/stub/UserFactory.php database/factories', bForceEcho: true);
 
 jcmd(cmd:'php artisan vendor:publish --tag="tassy"', bForceEcho: true);
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/web.php', bForceEcho: true);
