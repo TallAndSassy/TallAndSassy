@@ -17,7 +17,7 @@ jcmd(cmd:'php artisan migrate:fresh', bForceEcho: true);
 
 jcmd(cmd:'php artisan vendor:publish --tag="tassy-seeders"', bForceEcho: true);
 
-jcmd(cmd:'php artisan db:see --class="Database\Seeders\TassyTenantSeeder"', bForceEcho: true);
+jcmd(cmd:'php artisan db:seed --class="Database\Seeders\TassyTenantSeeder"', bForceEcho: true);
 
 $c = new Colors();
 echo $c->getColoredString("\n\nPlease start a server (it not already running)  ",'red');
