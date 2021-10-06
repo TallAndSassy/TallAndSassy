@@ -31,7 +31,7 @@ Want to see a demo? Start by doing this:
    1. This script takes the TASSY_TENANCY_HQSUBDOMAIN and update your .env appropriately. The TASSY_TENANCY_HQSUBDOMAIN is a short field of your choosing for the superadmins
    
 
-    php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN=st
+    php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com
 
 4. Apply the demo script.
    1. Note: Instructions printed by the abovescript will be considered 'true'. This is just a guide to get you oriented.

@@ -198,12 +198,12 @@ $newMethods = '
             } elseif(session()->has("tenant_id")) {
                 $model->tenant_id = session()->get("tenant_id");
             } else {
-                $superadminpattern = env('TASSY_TENANCY_ADMINEMAIL');
+                $superadminpattern = env("TASSY_TENANCY_ADMINEMAIL");
                 if ($model->email == $superadminpattern) {
                     $model->tenant_id = null;
                 } else {
                     #dd(session()->getContainer());
-                    dd( $model->email, ENV("MEMCACHED_HOST"), $superadminpattern, __METHOD__, __FILE__, __LINE__);
+                    dd( $model->email, env("MEMCACHED_HOST"), $superadminpattern, __METHOD__, __FILE__, __LINE__);
                     abort(500);
                 }
 
