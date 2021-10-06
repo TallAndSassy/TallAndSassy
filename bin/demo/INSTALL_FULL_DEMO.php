@@ -1,16 +1,22 @@
 <?php
 $c = new Colors();
-if (!(isSettableOptionSet('DB_USERNAME') && isSettableOptionSet('DB_PASSWORD') && isSettableOptionSet('APP_NAME'))) {
+if (!(
+    isSettableOptionSet('DB_USERNAME') &&
+    isSettableOptionSet('DB_PASSWORD') &&
+    isSettableOptionSet('APP_NAME') &&
+    isSettableOptionSet('TASSY_TENANCY_HQSUBDOMAIN') &&
+    isSettableOptionSet('TASSY_TENANCY_ADMINEMAIL')
+)) {
 
     echo "\n";
     echo $c->getColoredString("\n\nYou are missing stuff. Try something like this  ", 'red');
-    echo $c->getColoredString("\n   php INSTALL_FULL_DEMO.php --DB_USERNAME=root --DB_PASSWORD=ofallevil  --APP_NAME=TassyTest001  ", 'green');
+    echo $c->getColoredString("\n   php INSTALL_FULL_DEMO.php --DB_USERNAME=root --DB_PASSWORD=ofallevil  --APP_NAME=TassyTest001  --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com", 'green');
     echo "\n";
     echo "\n";
     exit(-1);
 }
-$TASSY_TENANCY_HQSUBDOMAIN = 'hq';
-$TASSY_TENANCY_ADMINEMAIL = 'bob@gmail.com';
+$TASSY_TENANCY_HQSUBDOMAIN = getRequiredOption(optionName:'TASSY_TENANCY_HQSUBDOMAIN');
+$TASSY_TENANCY_ADMINEMAIL = getRequiredOption(optionName:'TASSY_TENANCY_ADMINEMAIL');
 
 $DB_USERNAME = getRequiredOption(optionName: 'DB_USERNAME');
 $DB_PASSWORD = getRequiredOption(optionName: 'DB_PASSWORD');
@@ -26,21 +32,8 @@ $DO_FORCE_REINSTALL = getOptionalOption(
 if (! file_exists('INSTALL_1_Laravel.php')) {
     jcmd(cmd: "curl -LJO  https://raw.githubusercontent.com/TallAndSassy/TallAndSassy/main/bin/demo/INSTALL_1_Laravel.php", bForceEcho: true, doDieOnFailure: true);
 }
-// Install Tassy & Demo & start server
-jcmd(cmd: " \
-    php INSTALL_1_Laravel.php --DB_USERNAME='{$DB_USERNAME}' --DB_PASSWORD='$DB_PASSWORD' --APP_NAME='{$APP_NAME}' \ 
-    && \ 
-    cd {$APP_NAME} \ 
-    && \ 
-    ls -1 \ 
-    && \ 
-    composer require tallandsassy/tallandsassy:dev-main \ 
-    && \ 
-    php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN={$TASSY_TENANCY_HQSUBDOMAIN} --TASSY_TENANCY_ADMINEMAIL={$TASSY_TENANCY_ADMINEMAIL} \
-    && \ 
-    php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php \
-    ", doDieOnFailure: true, bForceEcho: true);
-
+// Install Tassy & Demo & start server (let's put all on one line to it will halt if something doesn't work as anticipated)
+jcmd(cmd: "php INSTALL_1_Laravel.php --DB_USERNAME='{$DB_USERNAME}' --DB_PASSWORD='$DB_PASSWORD' --APP_NAME='{$APP_NAME}' && cd {$APP_NAME} && ls -1 && composer require tallandsassy/tallandsassy:dev-main  &&  php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN={$TASSY_TENANCY_HQSUBDOMAIN} --TASSY_TENANCY_ADMINEMAIL={$TASSY_TENANCY_ADMINEMAIL} &&  php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php ", doDieOnFailure: true, bForceEcho: true);
 
 echo "\n";
 
