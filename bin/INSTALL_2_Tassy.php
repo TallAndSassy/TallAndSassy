@@ -142,33 +142,33 @@ EOF;
 jcmd(cmd:$cmd, bForceEcho: true);
 jcmd(cmd:'cp -r vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/public/img public/img', bForceEcho: true);
 
-// Nudge Use to use HasRoles; -----------------------------------------------------------------------------------------------------------------------------------------------------------------
-// Find  'namespace App\Models;' and insert 'use Spatie\Permission\Traits\HasRoles;' aft
-$ret = insertAfter(
-    filePath:'app/Models/User.php',
-    contentToFindInALine: 'namespace App\Models;',
-    contentToInsertAfterFoundLine: 'use Spatie\Permission\Traits\HasRoles; // Added by INSTALL_2_Tassy.php',
-    bForceEcho: true
-);
-assert($ret);
-
-// Find  'namespace App\Models;' and insert 'use Spatie\Permission\Traits\HasRoles;' aft
-$ret = insertAfter(
-    filePath:'app/Models/User.php',
-    contentToFindInALine: 'use TwoFactorAuthenticatable;',
-    contentToInsertAfterFoundLine: '    use HasRoles; // Added by INSTALL_2_Tassy.php',
-    bForceEcho: true
-);
-assert($ret);
-
-$ret = insertAfter(
-    filePath:'app/Models/User.php',
-    contentToFindInALine: 'use Spatie\Permission\Traits\HasRoles;',
-    contentToInsertAfterFoundLine: 'use TallAndSassy\Tenancy\Scopes\TenantScope;',
-    bForceEcho: true
-);
-print "\n";
-assert($ret);
+//// Nudge Use to use HasRoles; -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+//// Find  'namespace App\Models;' and insert 'use Spatie\Permission\Traits\HasRoles;' aft
+//$ret = insertAfter(
+//    filePath:'app/Models/User.php',
+//    contentToFindInALine: 'namespace App\Models;',
+//    contentToInsertAfterFoundLine: 'use Spatie\Permission\Traits\HasRoles; // Added by INSTALL_2_Tassy.php',
+//    bForceEcho: true
+//);
+//assert($ret);
+//
+//// Find  'namespace App\Models;' and insert 'use Spatie\Permission\Traits\HasRoles;' aft
+//$ret = insertAfter(
+//    filePath:'app/Models/User.php',
+//    contentToFindInALine: 'use TwoFactorAuthenticatable;',
+//    contentToInsertAfterFoundLine: '    use HasRoles; // Added by INSTALL_2_Tassy.php',
+//    bForceEcho: true
+//);
+//assert($ret);
+//
+//$ret = insertAfter(
+//    filePath:'app/Models/User.php',
+//    contentToFindInALine: 'use Spatie\Permission\Traits\HasRoles;',
+//    contentToInsertAfterFoundLine: 'use TallAndSassy\Tenancy\Scopes\TenantScope;',
+//    bForceEcho: true
+//);
+//print "\n";
+//assert($ret);
 // Old User seeder dies without a tenant. Let's just comment it out
 $ret = commentOutLineWithStuff(
     filePath:'database/seeders/DatabaseSeeder.php',
@@ -188,41 +188,43 @@ jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/we
 
 
 // Big changes to model/User.php ... (good candidate for Rector?)
-$newMethods = '  
- protected static function booted()
-    {
-        static::addGlobalScope(new TenantScope());
-        static::creating(function($model){            
-            if ($model->tenant_id) {
-                // no-op $model->tenant_id =  $model->tenant_id;
-            } elseif(session()->has("tenant_id")) {
-                $model->tenant_id = session()->get("tenant_id");
-            } else {
-                $superadminpattern = env("TASSY_TENANCY_ADMINEMAIL");
-                if ($model->email == $superadminpattern) {
-                    $model->tenant_id = null;
-                } else {
-                    #dd(session()->getContainer());
-                    dd( $model->email, env("MEMCACHED_HOST"), $superadminpattern, __METHOD__, __FILE__, __LINE__);
-                    abort(500);
-                }
-
-            }
-        });
-
-        // I can not find where to add that in registration. Everyone is now gonna be a booker unless we say explicitly otherwise
-        static::created(function($model) {
-            $model->assignRole("booker");
-        });
-    }';
-$ret = insertAfter(
-    filePath:'app/Models/User.php',
-    contentToFindInALine: '];', // hmm, looks fragile
-    contentToInsertAfterFoundLine: $newMethods,
-    bForceEcho: true
-);
-print "\n";
-assert($ret);
+jcmd(cmd:'mv app/Models/User.php app/Models/User.php.eraseme', bForceEcho: true);
+jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/People/src/Models/Stubs/User.php app/Models/', bForceEcho: true);
+//$newMethods = '
+// protected static function booted()
+//    {
+//        static::addGlobalScope(new TenantScope());
+//        static::creating(function($model){
+//            if ($model->tenant_id) {
+//                // no-op $model->tenant_id =  $model->tenant_id;
+//            } elseif(session()->has("tenant_id")) {
+//                $model->tenant_id = session()->get("tenant_id");
+//            } else {
+//                $superadminpattern = env("TASSY_TENANCY_ADMINEMAIL");
+//                if ($model->email == $superadminpattern) {
+//                    $model->tenant_id = null;
+//                } else {
+//                    #dd(session()->getContainer());
+//                    dd( $model->email, env("MEMCACHED_HOST"), $superadminpattern, __METHOD__, __FILE__, __LINE__);
+//                    abort(500);
+//                }
+//
+//            }
+//        });
+//
+//        // I can not find where to add that in registration. Everyone is now gonna be a booker unless we say explicitly otherwise
+//        static::created(function($model) {
+//            $model->assignRole("booker");
+//        });
+//    }';
+//$ret = insertAfter(
+//    filePath:'app/Models/User.php',
+//    contentToFindInALine: '];', // hmm, looks fragile
+//    contentToInsertAfterFoundLine: $newMethods,
+//    bForceEcho: true
+//);
+//print "\n";
+//assert($ret);
 
 
 

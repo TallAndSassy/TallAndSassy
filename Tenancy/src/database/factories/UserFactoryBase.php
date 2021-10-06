@@ -1,5 +1,5 @@
 <?php
-
+// TODO move to People
 namespace TallAndSassy\Tenancy\Database\factories;
 
 use TallAndSassy\Tenancy\Models\Tenant;

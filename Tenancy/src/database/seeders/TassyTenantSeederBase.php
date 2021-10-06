@@ -1,6 +1,6 @@
 <?php
 
-namespace TallAndSassy\Tenancy\database\seeders;
+namespace TallAndSassy\Tenancy\Database\seeders;
 
 
 

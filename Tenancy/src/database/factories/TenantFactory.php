@@ -1,6 +1,6 @@
 <?php
 
-namespace TallAndSassy\Tenancy\database\factories;
+namespace TallAndSassy\Tenancy\Database\factories;
 
 use TallAndSassy\Tenancy\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
