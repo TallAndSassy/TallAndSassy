@@ -18,11 +18,12 @@ class PopulateInitalData extends Migration
     {
 
         // Make HQ tenant
-        //$tenant_id = Tenant::factory()->create(['name'=>'HQ', 'slug'=>env('app.HQ_SUBDOMAIN')])->id;
+        //$tenant_id = Tenant::factory()->create(['name'=>'HQ', 'slug'=>env('app.TASSY_TENANCY_HQSUBDOMAIN')])->id;
         #dd(\Illuminate\Support\Env::getRepository());
         # Dying here because the $hq is null
-        $hq = config('app.HQ_SUBDOMAIN');
-        assert(!is_null($hq), "HQ_SUBDOMAIN is null. If you don't see HQ_SUBDOMAIN in .env, try adding it. If you see HQ_SUBDOMAIN in the .env file, try `php artisan config:clear` ");
+        $hq = env('TASSY_TENANCY_HQSUBDOMAIN');
+
+        assert(!is_null($hq), "TASSY_TENANCY_HQSUBDOMAIN is null. If you don't see TASSY_TENANCY_HQSUBDOMAIN in .env, try adding it. If you see TASSY_TENANCY_HQSUBDOMAIN in the .env file, try `php artisan config:clear` ");
         $tenant_id = Tenant::create(['name'=>'HQ', 'slug'=>$hq])->id;
         session()->put('tenant_id',$tenant_id);
 
@@ -31,9 +32,9 @@ class PopulateInitalData extends Migration
 
         $superuser = User::create([
             'name' => 'Superadmin',
-            'email' => env('app.ADMIN_EMAIL'),
+            'email' => env('TASSY_TENANCY_ADMINEMAIL'),
 
-            'password' => App::environment('development') ?  bcrypt('password') : bcrypt(uniqid().uniqid()),
+            'password' => App::environment(['local', 'staging']) ?  bcrypt('password') : bcrypt(uniqid().uniqid()), // if not dev, require email reset
             'email_verified_at' => Date::now(),
             'tenant_id' => $tenant_id, //7/21' wouldn't work, but maybe does in october cuz of ordering
 

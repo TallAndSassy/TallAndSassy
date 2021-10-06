@@ -6,7 +6,7 @@
 
         <div class="w-full  mt-6 p-6 bg-white shadow-md overflow-hidden sm:rounded-lg prose">
             <ul>
-                @foreach (\TallAndSassy\Tenancy\Models\Tenant::all()->where('slug','!=',config('app.HQ_SUBDOMAIN')) as $tenant)
+                @foreach (\TallAndSassy\Tenancy\Models\Tenant::all()->where('slug','!=',env('TASSY_TENANCY_HQSUBDOMAIN')) as $tenant)
                     <li><a href="{{route('tenant.home', ['tenant' => $tenant])}}">{{$tenant->name}}</a></li>
                 @endforeach
             </ul>

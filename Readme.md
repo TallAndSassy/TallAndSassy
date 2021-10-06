@@ -28,10 +28,10 @@ Want to see a demo? Start by doing this:
     composer require tallandsassy/tallandsassy
 
 3. tweak your installation to work nicely with tall and sassy.
-   1. This script takes the HQ_SUBDOMAIN and update your .env appropriately. The HQ_SUBDOMAIN is a short field of your choosing for the superadmins
+   1. This script takes the TASSY_TENANCY_HQSUBDOMAIN and update your .env appropriately. The TASSY_TENANCY_HQSUBDOMAIN is a short field of your choosing for the superadmins
    
 
-    php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --HQ_SUBDOMAIN=st
+    php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN=st
 
 4. Apply the demo script.
    1. Note: Instructions printed by the abovescript will be considered 'true'. This is just a guide to get you oriented.

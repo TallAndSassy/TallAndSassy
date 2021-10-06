@@ -37,7 +37,7 @@ class TassyTenantSeederBase extends Seeder
 
 
             // Make a new user assigned to this tenant
-            $demoUserEmail = env('app.ADMIN_EMAIL');
+            $demoUserEmail = env('TASSY_TENANCY_ADMINEMAIL');
             $demoEmailName = explode('@',$demoUserEmail)[0];
             $demoEmailDomain = explode('@',$demoUserEmail)[1];
             $newTenantEmail = "$demoEmailName+{$tenant->slug}@$demoEmailDomain";

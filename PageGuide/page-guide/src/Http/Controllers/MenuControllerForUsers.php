@@ -19,7 +19,7 @@ class MenuControllerForUsers
             $tenantSlugOrNull = TenantUtils::GetTenantSlugElseNull();
 
             if (config('tassy.page-guide.canSelfRegister')) {
-                if  ($tenantSlugOrNull  && $tenantSlugOrNull != env('HQ_SUBDOMAIN') ) {
+                if  ($tenantSlugOrNull  && $tenantSlugOrNull != env('TASSY_TENANCY_HQSUBDOMAIN') ) {
                     \TallAndSassy\PageGuide\PageGuideMenuWranglerUser::wrangleMe(
                         "register",
                         [

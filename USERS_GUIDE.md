@@ -15,7 +15,12 @@ A: Try visiting hq.localhost:8000
 ## Q: How can I see all clients?
 A: Visit http://localhost:8000/tenants_directory
 
-##Q: How can I log in as a admin for a tenant?
+##Q: How access the `hq` domain?
+A: go to http://hq.localhost:8000 (or your appropriate url and TASSY_TENANCY_HQSUBDOMAIN)
+Your email will be whatever you specified in `.env` `TASSY_TENANCY_ADMINEMAIL`. The password is 
+literally `password` in development, but you must do a `forgot password` reset on prod.
+
+##Q: How can I log in as an admin for a tenant?
 A: For the demos, a default admin account is created for each tenant.
     So, if you supplied a demo email of `bob@gmail.com`, and there is a demo tenant called
     `Middleburg ES` with a slug of `middleburg`. Then the email to log into this tenant would be 

@@ -1,11 +1,11 @@
 <?php
 require_once(__DIR__.'/_bin_utils.php');
 
-if (! (isSettableOptionSet('HQ_SUBDOMAIN') && isSettableOptionSet('ADMIN_EMAIL') )) {
+if (! (isSettableOptionSet('TASSY_TENANCY_HQSUBDOMAIN') && isSettableOptionSet('TASSY_TENANCY_ADMINEMAIL') )) {
     $c = new Colors();
     echo "\n";
     echo $c->getColoredString("\n\nYou are missing stuff. Try something like this  ",'red');
-    echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --HQ_SUBDOMAIN=hq --ADMIN_EMAIL=bob@gmail.com",'green');
+    echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com",'green');
     echo "\n";
     echo "\n";
     exit(-1);
@@ -28,8 +28,8 @@ Goal #2: Make this happen automatically during the package installation. sheesh.
 // Init Tall & Sassy
 
 # Add HQ (we need an HQ subdomain) -------------------------------------------------------------------------------------------------------------------------------------------------
-$HQ_SUBDOMAIN = getOptionalOption(
-    optionName:'HQ_SUBDOMAIN',
+$TASSY_TENANCY_HQSUBDOMAIN = getOptionalOption(
+    optionName:'TASSY_TENANCY_HQSUBDOMAIN',
     default:'hq',
     doesValidate:fn($passedValueToBeValidated) => strlen($passedValueToBeValidated) < 32,
     transformInputToInternal:fn($passedValidatedValue) => strtolower($passedValidatedValue),
@@ -40,19 +40,19 @@ $HQ_SUBDOMAIN = getOptionalOption(
 
 
 // delete if already there
-jcmd(cmd:"sed -i'.orig' '/HQ_SUBDOMAIN=.*$/d' .env", bForceEcho: true);
+jcmd(cmd:"sed -i'.orig' '/TASSY_TENANCY_HQSUBDOMAIN=.*$/d' .env", bForceEcho: true);
 
-# add new HQ_SUBDOMAIN to .env
-jcmd(cmd:"sed -i'.orig' '1s/^/HQ_SUBDOMAIN={$HQ_SUBDOMAIN}\\n/' .env", bForceEcho: true);
+# add new TASSY_TENANCY_HQSUBDOMAIN to .env
+jcmd(cmd:"sed -i'.orig' '1s/^/TASSY_TENANCY_HQSUBDOMAIN={$TASSY_TENANCY_HQSUBDOMAIN}\\n/' .env", bForceEcho: true);
 # Add Admin Email (we need mostly for demos for now) -------------------------------------------------------------------------------------------------------------------------------
-$ADMIN_EMAIL = getRequiredOption(
-    optionName:'ADMIN_EMAIL',
+$TASSY_TENANCY_ADMINEMAIL = getRequiredOption(
+    optionName:'TASSY_TENANCY_ADMINEMAIL',
 );
 // delete if already there
-jcmd(cmd:"sed -i'.orig' '/ADMIN_EMAIL=.*$/d' .env", bForceEcho: true);
+jcmd(cmd:"sed -i'.orig' '/TASSY_TENANCY_ADMINEMAIL=.*$/d' .env", bForceEcho: true);
 
-# add new HQ_SUBDOMAIN to .env
-jcmd(cmd:"sed -i'.orig' '1s/^/ADMIN_EMAIL={$ADMIN_EMAIL}\\n/' .env", bForceEcho: true);
+# add new TASSY_TENANCY_HQSUBDOMAIN to .env
+jcmd(cmd:"sed -i'.orig' '1s/^/TASSY_TENANCY_ADMINEMAIL={$TASSY_TENANCY_ADMINEMAIL}\\n/' .env", bForceEcho: true);
 
 
 # add new localhost (vs. 127.0.0.1 cuz we can only have subdomains on a top level domains, not IPs) to .env
@@ -198,7 +198,7 @@ $newMethods = '
             } elseif(session()->has("tenant_id")) {
                 $model->tenant_id = session()->get("tenant_id");
             } else {
-                $superadminpattern = "admin_".ENV("MEMCACHED_HOST")."@rohrer.org";
+                $superadminpattern = env('TASSY_TENANCY_ADMINEMAIL');
                 if ($model->email == $superadminpattern) {
                     $model->tenant_id = null;
                 } else {

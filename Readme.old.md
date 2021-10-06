@@ -8,7 +8,7 @@ concern.
 ============
 Tweak .env
 [ ] insert into .env
-    HQ_SUBDOMAIN=st #or something that makes you happy
+    TASSY_TENANCY_HQSUBDOMAIN=st #or something that makes you happy
 [ ] append to app/Http/Kernel.php' #WIP - was trying to get to autoregister
     protected $routeMiddleware = [...
         'tenancy' => Middleware\SubdomainTenancy::class
