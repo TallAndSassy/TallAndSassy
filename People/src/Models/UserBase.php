@@ -72,7 +72,7 @@ class UserBase extends Authenticatable implements MustVerifyEmail
             if(session()->has('tenant_id')) {
                 $model->tenant_id = session()->get('tenant_id');
             } else {
-                $superadminpattern = 'admin_'.ENV('MEMCACHED_HOST').'@rohrer.org';
+                $superadminpattern = env('TASSY_TENANCY_ADMINEMAIL');
                 if ($model->email == $superadminpattern) {
                     $model->tenant_id = null;
                 } else {
