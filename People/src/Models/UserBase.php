@@ -69,15 +69,20 @@ class UserBase extends Authenticatable implements MustVerifyEmail
         static::addGlobalScope(new TenantScope());
         static::creating(function($model){
 
-            if(session()->has('tenant_id')) {
+            // Mostly make sure we give the user a tenant
+            if (isset($model->tenant_id)) { // whomever made this user, is telling us the tenent
+                // do nothing
+
+            } elseif(session()->has('tenant_id')) {
                 $model->tenant_id = session()->get('tenant_id');
+
             } else {
                 $superadminpattern = env('TASSY_TENANCY_ADMINEMAIL');
                 if ($model->email == $superadminpattern) {
                     $model->tenant_id = null;
                 } else {
                     #dd(session()->getContainer());
-                    dd( $model->email, ENV('MEMCACHED_HOST'), $superadminpattern, __METHOD__, __FILE__, __LINE__);
+                    dd( $model->email, ENV('MEMCACHED_HOST'),env('TASSY_TENANCY_ADMINEMAIL'), $superadminpattern, __METHOD__, __FILE__, __LINE__, $model);
                     abort(500);
                 }
 

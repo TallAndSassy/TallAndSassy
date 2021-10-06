@@ -17,14 +17,23 @@ class Tenant extends Model
 
     public static function booted() {
         static::created(function ($model) {
+            // A Tenant was just created, let's give it an admin user
             if ($model->slug != env('TASSY_TENANCY_HQSUBDOMAIN')) {
                 // create schooltwist admin for new tenant
                 $tenant_id = $model->id;
-                
+
+                // Build admin user for this (identicial to spot in Tenancy/src/Database/seeders/TassyTenantSeederBase.php)
+                $tenant = $model;
+                $demoUserEmail = env('TASSY_TENANCY_ADMINEMAIL');
+                $demoEmailName = explode('@',$demoUserEmail)[0];
+                $demoEmailDomain = explode('@',$demoUserEmail)[1];
+                $newTenantEmail = "$demoEmailName.XXX+{$tenant->slug}@$demoEmailDomain";
+
+
                 $new_admin = User::create([
-                    'name' => 'School Twist Admin',
+                    'name' => 'Builtin SubDomain Admin',
                     'password' => bcrypt('password'),
-                    'email' => 'admin_'.$model->slug.'@rohrer.org',
+                    'email' => $newTenantEmail,//'admin_'.$model->slug.'@rohrer.org',
                     'tenant_id' => $tenant_id,
                 ]);
 
@@ -33,6 +42,7 @@ class Tenant extends Model
 
                 
                 $new_admin->save();
+
 
                 $new_admin->assignRole('webmaster');
             }

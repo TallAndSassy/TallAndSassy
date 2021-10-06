@@ -31,7 +31,7 @@ class TenancyServiceProvider extends ServiceProvider
 //        ], 'randomable-migrations');
 
         $this->publishes([
-            __DIR__ . '/database/seeders/TassyTenantSeeder.php' => database_path('seeders/TassyTenantSeeder.php'),
+            __DIR__ . '/database/seeders/Stubs/TassyTenantSeeder.php' => database_path('seeders/TassyTenantSeeder.php'),
         ], ['tassy', 'tassy-tenancy', 'tassy-seeders']);
     }
 
