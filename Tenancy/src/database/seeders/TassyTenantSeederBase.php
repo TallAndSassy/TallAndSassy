@@ -37,7 +37,11 @@ class TassyTenantSeederBase extends Seeder
 
 
             // Make a new user assigned to this tenant
-            $admin_user = User::factory()->create(['email' => "test_{$tenant->slug}@rohrer.org", 'name' => 'Webmaster']);
+            $demoUserEmail = env('ADMIN_EMAIL');
+            $demoEmailName = explode('@',$demoUserEmail)[0];
+            $demoEmailDomain = explode('@',$demoUserEmail)[1];
+            $newTenantEmail = "$demoEmailName+{$tenant->slug}@$demoEmailDomain";
+            $admin_user = User::factory()->create(['email' => $newTenantEmail, 'name' => 'Webmaster']);
             $admin_user->assignRole('webmaster');
         }
 
