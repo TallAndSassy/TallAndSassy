@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::domain('{tenant:slug}.'.env('app.MEMCACHED_HOST'))
+Route::domain('{tenant:slug}.'.ENV('MEMCACHED_HOST'))
     ->middleware('tenancy')
     ->group( function () {
 
@@ -31,7 +31,7 @@ Route::domain('{tenant:slug}.'.env('app.MEMCACHED_HOST'))
     }
     );
 
-Route::domain(env('app.MEMCACHED_HOST'))
+Route::domain(ENV('MEMCACHED_HOST'))
     ->group( function () {
 
         Route::get('/', function() {
