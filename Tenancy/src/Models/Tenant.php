@@ -17,7 +17,7 @@ class Tenant extends Model
 
     public static function booted() {
         static::created(function ($model) {
-            if ($model->slug != ENV('HQ_SUBDOMAIN')) {
+            if ($model->slug != env('app.HQ_SUBDOMAIN')) {
                 // create schooltwist admin for new tenant
                 $tenant_id = $model->id;
                 
