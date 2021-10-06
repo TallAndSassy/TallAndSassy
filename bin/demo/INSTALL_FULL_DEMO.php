@@ -9,6 +9,8 @@ if (!(isSettableOptionSet('DB_USERNAME') && isSettableOptionSet('DB_PASSWORD') &
     echo "\n";
     exit(-1);
 }
+$TASSY_TENANCY_HQSUBDOMAIN = 'hq';
+$TASSY_TENANCY_ADMINEMAIL = 'bob@gmail.com';
 
 $DB_USERNAME = getRequiredOption(optionName: 'DB_USERNAME');
 $DB_PASSWORD = getRequiredOption(optionName: 'DB_PASSWORD');
@@ -25,7 +27,19 @@ if (! file_exists('INSTALL_1_Laravel.php')) {
     jcmd(cmd: "curl -LJO  https://raw.githubusercontent.com/TallAndSassy/TallAndSassy/main/bin/demo/INSTALL_1_Laravel.php", bForceEcho: true, doDieOnFailure: true);
 }
 // Install Tassy & Demo & start server
-jcmd(cmd:"php INSTALL_1_Laravel.php --DB_USERNAME='{$DB_USERNAME}' --DB_PASSWORD='$DB_PASSWORD' --APP_NAME='{$APP_NAME}' && cd {$APP_NAME} && ls -1 && composer require tallandsassy/tallandsassy:dev-main && php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php && php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php ", bForceEcho: true, doDieOnFailure: true);
+jcmd(cmd: " \
+    php INSTALL_1_Laravel.php --DB_USERNAME='{$DB_USERNAME}' --DB_PASSWORD='$DB_PASSWORD' --APP_NAME='{$APP_NAME}' \ 
+    && \ 
+    cd {$APP_NAME} \ 
+    && \ 
+    ls -1 \ 
+    && \ 
+    composer require tallandsassy/tallandsassy:dev-main \ 
+    && \ 
+    php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN={$TASSY_TENANCY_HQSUBDOMAIN} --TASSY_TENANCY_ADMINEMAIL={$TASSY_TENANCY_ADMINEMAIL} \
+    && \ 
+    php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php \
+    ", doDieOnFailure: true, bForceEcho: true);
 
 
 echo "\n";
