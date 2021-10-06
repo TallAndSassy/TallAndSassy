@@ -93,9 +93,27 @@ echo "\n";
 echo "\n";
 echo $c->getColoredString("\n  Feeling Ambitious?: Try contributing to the project.",'blue');
 echo $c->getColoredString("\n   git clone https://github.com/TallAndSassy/TallAndSassy ",'green');
-echo $c->getColoredString("\n   cd  {$DIR_NAME}/vendor/tallandsassy",'green');
-echo $c->getColoredString("\n   rm -rf tallandsassy",'green');
-echo $c->getColoredString("\n   ln -s ../../../TallAndSassy tallandsassy",'green');
+echo $c->getColoredString("\n   cd  {$DIR_NAME}",'green');
+echo $c->getColoredString("\n   Add to `{$DIR_NAME}/composer.json` ",'red');
+$snippet =<<< EOL
+        "repositories": [
+                {
+                    "type": "path",
+                    "url": "../TallAndSassy"
+                }
+            ]
+EOL;
+echo $c->getColoredString("\n   $snippet ",'magenta');
+echo "\n";
+echo "\n";
+echo $c->getColoredString("\n   composer require tallandsassy/tallandsassy:dev-main",'green');
+
+
+
+echo "\n";
+echo "\n";
+echo $c->getColoredString("\n #  rm -rf tallandsassy",'gray');
+echo $c->getColoredString("\n #  ln -s ../../../TallAndSassy tallandsassy",'gray');
 echo "\n";
 echo "\n";
 
