@@ -257,7 +257,7 @@ jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/we
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web-admin--routes.stub routes/web-admin--routes.php', bForceEcho: true);
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web-admin-people.stub routes/web-admin-people.php', bForceEcho: true);
 
-
+//
 // js  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // ToDO: Make better by searching for  webpack.mix.js and seeing how livewire, etc. does this
 // [ ] Big webpack.mix.js stuff (TODO)\
@@ -266,6 +266,7 @@ jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/Ui/webpack.mix.js webpack.mix.js',
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/Cms/resources/js/jckeditor.js resources/js/jckeditor.js', bForceEcho: true);
 
 // Nudge the provider  -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+jcmd(cmd:'php artisan vendor:publish --tag=tassy-config', bForceEcho: true);
 jcmd(cmd:'php artisan tassy-cms:install', bForceEcho: true);
 jcmd(cmd:'php artisan tassy-page-guide:install', bForceEcho: true);
 if ( $MAX_PROCRASTINATION) {

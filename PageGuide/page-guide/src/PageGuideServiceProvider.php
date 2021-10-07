@@ -28,9 +28,11 @@ class PageGuideServiceProvider extends ServiceProvider
 
             $this->publishes(
                 [   // todo: add the stub
-                    __DIR__ . '/../config/tassy/app-branding.stub.php' => config_path('/tassy/app-branding.php'),
+                    __DIR__ . '/../config/tassy/app-branding.php' => config_path('/tassy/app-branding.php'),
+                    __DIR__ . '/../config/tassy/app-versioning.php' => config_path('/tassy/app-versioning.php'),
+                    __DIR__ . '/../config/tassy/page-guide.php' => config_path('/tassy/page-guide.php'),
                 ],
-                'config'
+                ['config','tassy-config','tassy']
             );
 
             $this->publishes(
