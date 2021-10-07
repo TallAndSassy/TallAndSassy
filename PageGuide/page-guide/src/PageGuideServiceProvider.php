@@ -37,9 +37,24 @@ class PageGuideServiceProvider extends ServiceProvider
 
             $this->publishes(
                 [ // todo: make friendlier?
-                    __DIR__ . '/../resources/views' => base_path('resources/views/vendor/page-guide'),
+                    __DIR__ . '/../resources/views' => base_path('resources/views/vendor/tassy_fyi'),
                 ],
-                'views'
+                ['views', 'tassy-views', 'tassy']
+            );
+            $this->publishes(
+                [
+                    __DIR__ . '/../resources/views/license.blade.php' => base_path('resources/views/vendor/tassy/license.blade.php'),
+                    __DIR__ . '/../resources/views/licenses.blade.php' => base_path('resources/views/vendor/tassy/licenses.blade.php'),
+                    __DIR__ . '/../resources/views/pretty-version.blade.php' => base_path('resources/views/vendor/tassy/pretty-version.blade.php'),
+                    __DIR__ . '/../resources/views/components/subsite-name.blade.php' => base_path('resources/views/vendor/tassy/components/subsite-name.blade.php'),
+                    __DIR__ . '/../resources/views/components/app-tagline.blade.php' => base_path('resources/views/vendor/tassy/components/app-tagline.blade.php'),
+                    __DIR__ . '/../resources/views/teams' => base_path('resources/views/teams'), // not totally sure this is stilla  thing 10/21'
+
+                    __DIR__ . '/../resources/views/front' => base_path('resources/views/vendor/tassy/front'),
+                    __DIR__ . '/../resources/views/me' => base_path('resources/views/vendor/tassy/me'),
+                    __DIR__ . '/../resources/views/front' => base_path('resources/views/vendor/tassy/front'),
+                ],
+                ['views','tassy-views-likely','tassy']
             );
 
             $migrationFileName = 'create_page_guide_table.php';

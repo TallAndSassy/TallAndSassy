@@ -10,7 +10,12 @@
                 <div class="-mt-4 text-4xl pb-2"><x-tassy::app-name/></div>
                 <div class="-mt-2 text-lg pb-4 text-gray-500"><x-tassy::app-tagline/></div>
                 <div class="-mt-4 text-lg text-gray-400 pb-4 border rounded shadow text-left p-4">This file is in
-                    /modules/TallAndSassy/page-guide/front/index.blade.php
+                    <br>
+                    <code>resources/views/front/index.blade.php</code> (edit this)
+                    <br>
+                    or, if not there, then at.
+                    <br>
+                    <code>vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/front/index.blade.php</code>
                     <br>
                     You can customize it by making a copy and placing it in /resources/views/vendor/tassy/front/index.blade.php
                 </div>
