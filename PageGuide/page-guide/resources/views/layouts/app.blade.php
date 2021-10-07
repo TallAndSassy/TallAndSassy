@@ -20,7 +20,7 @@ copy this into /resources/views/layouts
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
-    <script>alert('hiiashdf');</script>
+    <script>alert('hiiashdf3');</script>
     <script src="https://cdn.jsdelivr.net/npm/@ryangjchandler/spruce@2.x.x/dist/spruce.umd.js"></script>
 </head>
 <body class="font-sans antialiased">
