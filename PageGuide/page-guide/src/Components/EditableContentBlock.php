@@ -3,8 +3,8 @@
 namespace TallAndSassy\PageGuide\Components;
 
 use App\Http\Controllers\PageController;
-use App\Models\Page;
 use Livewire\Component;
+use TallAndSassy\Cms\Models\Page;
 use TallAndSassy\Strings\TsStringHtml;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -49,15 +49,15 @@ class EditableContentBlock extends Component
         $this->editPermission = $editPermission;
 
 
-        $m = \App\Models\Page::findBySlug($slug);
+        $m = Page::findBySlug($slug);
         if (!$m) {
-            $m = new \App\Models\Page();
+            $m = new Page();
             $m->title = 'TBD'.__FILE__.__LINE__;
             $m->slug = $slug;
             $m->content = "<div class=\"text-gray-400\">$defaultContent</div>";
             $m->save();
             unset($m);
-            $m = \App\Models\Page::findBySlugOrFail($this->slug);
+            $m = \TallAndSassy\Cms\Models\Page::findBySlugOrFail($this->slug);
         }
         $this->content = $m->content;
         $this->thisBlock = $m;
@@ -73,7 +73,7 @@ class EditableContentBlock extends Component
             $html_more_trusted_but_not_sql_safe = TsStringHtml::strip_tags($html_untrusted);
         }
 
-        $m = \App\Models\Page::findBySlugOrFail($this->slug);
+        $m = Page::findBySlugOrFail($this->slug);
         $m->content = $html_more_trusted_but_not_sql_safe;
         $r = $m->save();
         #sleep(1);
