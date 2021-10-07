@@ -5,7 +5,7 @@ if (! (isSettableOptionSet('DB_USERNAME') && isSettableOptionSet('DB_PASSWORD') 
     echo $c->getColoredString("\n\nYou are missing stuff. Try something like this  ",'red');
     echo $c->getColoredString("\n   php INSTALL_1_Laravel.php --DB_USERNAME=root --DB_PASSWORD=ofallevil  --APP_NAME=TassyTest001  ",'green');
     echo $c->getColoredString("\n\n   --DO_FORCE_REINSTALL=(0,1) reinstalls laravel into preexisting directory ",'brown');
-    echo $c->getColoredString("\n\n   --NO_BUILD=(0,1) if 1, skips migrate and npm stuff, presuming you'll just do it later ",'brown');
+    echo $c->getColoredString("\n\n   --MAX_PROCRASTINATION=(0,1) if 1, skips migrate and npm stuff, presuming you'll just do it later ",'brown');
 
 
     echo "\n";
@@ -23,10 +23,10 @@ $DO_FORCE_REINSTALL = getOptionalOption(
     transformInputToInternal:fn($passedValidatedValue) => $passedValidatedValue,
 
 );
-$NO_BUILD = getOptionalOption(
-    optionName:'NO_BUILD',
+$MAX_PROCRASTINATION = getOptionalOption(
+    optionName:'MAX_PROCRASTINATION',
     default:0,
-    doesValidate:fn($passedValueToBeValidated) => in_array($passedValueToBeValidated,['0','1']),
+    doesValidate:fn($passedValueToBeValidated) =>  in_array($passedValueToBeValidated,['0','1']),
     transformInputToInternal:fn($passedValidatedValue) => $passedValidatedValue*1,
 );
 
@@ -40,7 +40,7 @@ print "\nDO_FORCE_REINSTALL={$DO_FORCE_REINSTALL}";
 print "\nDB_NAME={$DB_NAME}";
 print "\nDB_USERNAME={$DB_USERNAME}";
 print "\nDB_PASSWORD={$DB_PASSWORD}";
-print "\nNO_BUILD={$NO_BUILD}";
+print "\nMAX_PROCRASTINATION={$MAX_PROCRASTINATION}";
 print "\n";
 
 
@@ -76,7 +76,7 @@ print "\n";
 # fix up database. Tweak as needed
     jcmd(cmd:"mysql -u {$DB_USERNAME} -p{$DB_PASSWORD} -e 'DROP DATABASE IF EXISTS `$DB_NAME`; CREATE DATABASE `$DB_NAME`;'", bForceEcho: true);
 
-    if (! $NO_BUILD) {
+    if (! $MAX_PROCRASTINATION) {
         # setup the database so far
         jcmd(cmd: "php {$DIR_NAME}/artisan migrate", bForceEcho: true);
 
@@ -119,7 +119,8 @@ EOL;
 echo $c->getColoredString("\n   $snippet ",'magenta');
 echo $c->getColoredString("\n   composer require tallandsassy/tallandsassy:dev-main",'green');
 echo "\n";
-echo $c->getColoredString("\n   look at `TROUBLESHOOTING_PACKAGE_DEVELOPMENT.md` if you get in trouble",'red');
+echo $c->getColoredString("\n   look at `TROUBLESHOOTING_PACKAGE_DEVELOPMENT.md` if you get in trouble",'brown');
+echo $c->getColoredString("\n   Also: INSTALL_FULL_DEMO has a `--contribute=(0,1)` option to set this up automatically'",'brown');
 
 
 echo "\n";

@@ -10,8 +10,10 @@ if (!(
 
     echo "\n";
     echo $c->getColoredString("\n\nYou are missing stuff. Try something like this  ", 'red');
-    echo $c->getColoredString("\n   php INSTALL_FULL_DEMO.php --DB_USERNAME=root --DB_PASSWORD=ofallevil  --APP_NAME=TassyTest001  --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com", 'green');
+    echo $c->getColoredString("\n   php INSTALL_FULL_DEMO.php --DB_USERNAME=root --DB_PASSWORD=ofallevil   --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com --APP_NAME=TassyTestXYZ ", 'green');
     echo "\n";
+    echo $c->getColoredString("\n    --CONTRIBUTE=(0,1)", 'brown');
+    echo $c->getColoredString("\n    # optionally add the above to and to 1 to set-up this directory for local development of TallAndSassy. Good if you might want to contribute to Tall & Sassy. It checks out a copy of the package from github into TallAndSassy and tells your laravel install to look for the package there.",'brown');
     echo "\n";
     exit(-1);
 }
@@ -28,12 +30,73 @@ $DO_FORCE_REINSTALL = getOptionalOption(
     transformInputToInternal: fn($passedValidatedValue) => $passedValidatedValue,
 
 );
+$CONTRIBUTE = getOptionalOption(
+    optionName: 'CONTRIBUTE',
+    default: 0,
+    doesValidate: fn($passedValueToBeValidated) => in_array($passedValueToBeValidated, ['0', '1']),
+    transformInputToInternal: fn($passedValidatedValue) => $passedValidatedValue*1,
+
+);
+$CONTRIBUTE_PATH = 'na';
+if ($CONTRIBUTE) {
+    $CONTRIBUTE_PATH = getOptionalOption(
+        optionName: 'CONTRIBUTE_PATH',
+        default: 'TallAndSassy',
+        doesValidate: fn($passedValueToBeValidated) => strlen($passedValueToBeValidated)>1,
+        transformInputToInternal: fn($passedValidatedValue) => $passedValidatedValue,
+    );
+}
+
+print "\nDB_USERNAME={$DB_USERNAME}";
+print "\nDB_PASSWORD={$DB_PASSWORD}";
+print "\nAPP_NAME={$APP_NAME}";
+print "\nTASSY_TENANCY_HQSUBDOMAIN={$TASSY_TENANCY_HQSUBDOMAIN}";
+print "\nTASSY_TENANCY_ADMINEMAIL={$TASSY_TENANCY_ADMINEMAIL}";
+print "\nDO_FORCE_REINSTALL={$DO_FORCE_REINSTALL}";
+print "\nCONTRIBUTE={$CONTRIBUTE}";
+print "\nCONTRIBUTE_PATH={$CONTRIBUTE_PATH}";
+print "\n";
+
+$DIR_NAME = $APP_NAME;
 // Get INSTALL_1_Laravel.php (https://stackoverflow.com/a/45514197/93933)
 if (! file_exists('INSTALL_1_Laravel.php')) {
     jcmd(cmd: "curl -LJO  https://raw.githubusercontent.com/TallAndSassy/TallAndSassy/main/bin/demo/INSTALL_1_Laravel.php", bForceEcho: true, doDieOnFailure: true);
 }
 // Install Tassy & Demo & start server (let's put all on one line to it will halt if something doesn't work as anticipated)
-jcmd(cmd: "php INSTALL_1_Laravel.php --DB_USERNAME='{$DB_USERNAME}' --DB_PASSWORD='$DB_PASSWORD' --APP_NAME='{$APP_NAME}' && cd {$APP_NAME} && ls -1 && composer require tallandsassy/tallandsassy:dev-main  &&  php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN={$TASSY_TENANCY_HQSUBDOMAIN} --TASSY_TENANCY_ADMINEMAIL={$TASSY_TENANCY_ADMINEMAIL} &&  php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php ", doDieOnFailure: true, bForceEcho: true);
+jcmd(cmd: "php INSTALL_1_Laravel.php --DB_USERNAME='{$DB_USERNAME}' --DB_PASSWORD='$DB_PASSWORD' --APP_NAME='{$APP_NAME}' --MAX_PROCRASTINATION=1", doDieOnFailure: true, bForceEcho: true);
+if ($CONTRIBUTE) {
+    echo $c->getColoredString("\n\nSetting up for local developing on TallAndSassy at `$CONTRIBUTE_PATH`  ", 'red');
+    // Check out a copy from github that we can work with
+    if (file_exists($CONTRIBUTE_PATH)) {
+        // do nothing, we apparently already have a checked out copy
+        echo $c->getColoredString("\n\n `$CONTRIBUTE_PATH` already exists. So do nothing, we apparently already have a checked out copy  ", 'red');
+    } else {
+        echo $c->getColoredString("\n\n Cloning TallAndSassy into `$CONTRIBUTE_PATH`. ", 'red');
+        jcmd(cmd: "git clone https://github.com/TallAndSassy/TallAndSassy.git $CONTRIBUTE_PATH",bForceEcho: true, doDieOnFailure: true);
+    }
+
+    // Update composer to get the tallandsassy package from the local directory, instead of packagist
+    $composerJsonFilePath = $DIR_NAME.'/composer.json';
+    $jsonComposer = file_get_contents($composerJsonFilePath);
+    $asrComposer = json_decode($jsonComposer);
+    /* insert this
+    "repositories": [
+                {
+                    "type": "path",
+                    "url": "../TallAndSassy"
+                }
+            ]
+    */
+    $o = new stdClass();
+    $o->type = 'path';
+    $o->url = "../$CONTRIBUTE_PATH";
+    $asrComposer->repositories = [$o];//['type'=>'path', 'url'=>"../$CONTRIBUTE_PATH"];
+    $jsonComposer = json_encode($asrComposer);
+    assert($jsonComposer);
+    $ret = file_put_contents($composerJsonFilePath, $jsonComposer);
+    assert($ret, "ouch: couldn't put $composerJsonFilePath");
+}
+jcmd(cmd:" cd {$APP_NAME} && ls -1 && composer require tallandsassy/tallandsassy:dev-main  &&  php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN={$TASSY_TENANCY_HQSUBDOMAIN} --TASSY_TENANCY_ADMINEMAIL={$TASSY_TENANCY_ADMINEMAIL}  --MAX_PROCRASTINATION=1  &&  php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php ", doDieOnFailure: true, bForceEcho: true);
 
 echo "\n";
 
@@ -43,7 +106,7 @@ echo "\n";
 echo "\n";
 echo $c->getColoredString("\n\nPlease visit your site. Point to browser to something like  ", 'red');
 echo $c->getColoredString("\n   localhost:8000   ", 'green');
-echo " (Your port might change. See the output above.)";
+echo $c->getColoredString(" (Your port might change. See the output above.)  ", 'brown');
 echo "\n";
 echo "\n";
 
