@@ -6,12 +6,19 @@ if (! (isSettableOptionSet('TASSY_TENANCY_HQSUBDOMAIN') && isSettableOptionSet('
     echo "\n";
     echo $c->getColoredString("\n\nYou are missing stuff. Try something like this  ",'red');
     echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com",'green');
+    echo $c->getColoredString("\n\n   --NO_BUILD=(0,1) if 1, skips migrate and npm stuff, presuming you'll just do it later ",'brown');
+
     echo "\n";
     echo "\n";
     exit(-1);
 }
 
-
+$NO_BUILD = getOptionalOption(
+    optionName:'NO_BUILD',
+    default:0,
+    doesValidate:fn($passedValueToBeValidated) => in_array($passedValueToBeValidated,['0','1']),
+    transformInputToInternal:fn($passedValidatedValue) => $passedValidatedValue*1,
+);
 
 $localhostName = 'localhost';// INPUT (uncommon)
 $dirParts = explode('/',getcwd());
@@ -20,6 +27,7 @@ $APP_URL = "http://{$localhostName}";
 print "\n localhostName=>$localhostName";
 print "\n APP_NAME=>$APP_NAME";
 print "\n APP_URL=>$APP_URL";
+print "\n NO_BUILD=>$NO_BUILD";
 /*
 # Now, let's get TallAndSassy working so we can see what a minimum installation looks like.
 # Goal: Be able to run this multiple times, within the same Laravel installation.
@@ -248,8 +256,6 @@ jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/we
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web-admin--routes.stub routes/web-admin--routes.php', bForceEcho: true);
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web-admin-people.stub routes/web-admin-people.php', bForceEcho: true);
 
-// Init the db ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-jcmd(cmd:'php artisan migrate:fresh', bForceEcho: true);
 
 // js  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // ToDO: Make better by searching for  webpack.mix.js and seeing how livewire, etc. does this
@@ -261,8 +267,13 @@ jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/Cms/resources/js/jckeditor.js reso
 // Nudge the provider  -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 jcmd(cmd:'php artisan tassy-cms:install', bForceEcho: true);
 jcmd(cmd:'php artisan tassy-page-guide:install', bForceEcho: true);
-jcmd(cmd:'npm install', bForceEcho: true);
-jcmd(cmd:'npm run dev', bForceEcho: true);
+if (! $NO_BUILD) {
+// Init the db ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    jcmd(cmd:'php artisan migrate:fresh', bForceEcho: true);
+
+    jcmd(cmd: 'npm install', bForceEcho: true);
+    jcmd(cmd: 'npm run dev', bForceEcho: true);
+}
 
 
 $c = new Colors();
