@@ -98,6 +98,11 @@ if ($CONTRIBUTE) {
 }
 jcmd(cmd:" cd {$APP_NAME} && ls -1 && composer require tallandsassy/tallandsassy:dev-main  &&  php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN={$TASSY_TENANCY_HQSUBDOMAIN} --TASSY_TENANCY_ADMINEMAIL={$TASSY_TENANCY_ADMINEMAIL}  --MAX_PROCRASTINATION=1  &&  php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php ", doDieOnFailure: true, bForceEcho: true);
 
+# get the javascript all set up
+jcmd(cmd: "npm install --prefix '{$DIR_NAME}'", bForceEcho: true, doDieOnFailure: true);
+jcmd(cmd: "npm run dev --prefix '{$DIR_NAME}'", bForceEcho: true, doDieOnFailure: true);
+
+
 echo "\n";
 
 echo $c->getColoredString("\n\nPlease visit your site. Point to browser to something like  ", 'red');
