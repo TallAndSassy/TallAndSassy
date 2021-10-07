@@ -32,7 +32,7 @@ class PageGuideAdminServiceProvider extends ServiceProvider
                 [
                     __DIR__ . '/../config/page-guide-admin.php' => config_path('page-guide-admin.php'),
                 ],
-                'config'
+                ['config','tassy-config','tassy']
             );
 
             $this->publishes(

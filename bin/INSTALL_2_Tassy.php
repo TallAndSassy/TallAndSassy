@@ -265,6 +265,25 @@ jcmd(cmd:'mv webpack.mix.js webpack.mix.js.orig', bForceEcho: true);
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/Ui/webpack.mix.js webpack.mix.js', bForceEcho: true);
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/Cms/resources/js/jckeditor.js resources/js/jckeditor.js', bForceEcho: true);
 
+
+// Mostly User Stuff
+// Terms and Privacy
+// Make user accept the new terms and policy
+// uncomment config/jetstream.php --> Features::termsAndPrivacyPolicy(),
+$ret = insertAfter(
+    filePath:'config/jetstream.php',
+    contentToFindInALine:'// Features::termsAndPrivacyPolicy()',
+    contentToInsertAfterFoundLine:'Features::termsAndPrivacyPolicy(),// flipped by Tassy install script',
+    bForceEcho:true);
+assert($ret);
+$ret = commentOutLineWithStuff(
+    filePath:'config/jetstream.php',
+    contentToFindInALine: 'Features::accountDeletion(),',
+    doDieOnNoMatch: true,
+    bForceEcho: true
+);
+assert($ret);
+
 // Nudge the provider  -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 jcmd(cmd:'php artisan vendor:publish --tag=tassy-config', bForceEcho: true);
 jcmd(cmd:'php artisan tassy-cms:install', bForceEcho: true);
