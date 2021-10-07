@@ -39,7 +39,7 @@ class PageGuideAdminServiceProvider extends ServiceProvider
                 [
                     __DIR__ . '/../resources/views' => base_path('resources/views/vendor/page-guide-admin'),
                 ],
-                'views'
+                ['views','tassy-views','tassy']
             );
 
             $migrationFileName = 'create_app_theme_base_admin_table.php';
@@ -50,7 +50,7 @@ class PageGuideAdminServiceProvider extends ServiceProvider
                             'migrations/' . date('Y_m_d_His', time()) . '_' . $migrationFileName
                         ),
                     ],
-                    'migrations'
+                    ['migrations','tassy-migrations','tassy']
                 );
             }
 
@@ -59,7 +59,7 @@ class PageGuideAdminServiceProvider extends ServiceProvider
                 [
                     __DIR__ . '/../resources/public' => public_path('tallandsassy/page-guide-admin'),
                 ],
-                ['public']
+                ['public','tassy-public','tassy']
             );
 
             // Publishing resources.
