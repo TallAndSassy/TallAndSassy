@@ -4,6 +4,10 @@ if (! (isSettableOptionSet('DB_USERNAME') && isSettableOptionSet('DB_PASSWORD') 
     echo "\n";
     echo $c->getColoredString("\n\nYou are missing stuff. Try something like this  ",'red');
     echo $c->getColoredString("\n   php INSTALL_1_Laravel.php --DB_USERNAME=root --DB_PASSWORD=ofallevil  --APP_NAME=TassyTest001  ",'green');
+    echo $c->getColoredString("\n\n   --DO_FORCE_REINSTALL=(0,1) reinstalls laravel into preexisting directory ",'brown');
+    echo $c->getColoredString("\n\n   --NO_BUILD=(0,1) if 1, skips migrate and npm stuff, presuming you'll just do it later ",'brown');
+
+
     echo "\n";
     echo "\n";
     exit(-1);
@@ -19,6 +23,12 @@ $DO_FORCE_REINSTALL = getOptionalOption(
     transformInputToInternal:fn($passedValidatedValue) => $passedValidatedValue,
 
 );
+$NO_BUILD = getOptionalOption(
+    optionName:'NO_BUILD',
+    default:0,
+    doesValidate:fn($passedValueToBeValidated) => in_array($passedValueToBeValidated,['0','1']),
+    transformInputToInternal:fn($passedValidatedValue) => $passedValidatedValue*1,
+);
 
 $DIR_NAME = $APP_NAME;
 $DB_NAME = $APP_NAME;
@@ -30,6 +40,7 @@ print "\nDO_FORCE_REINSTALL={$DO_FORCE_REINSTALL}";
 print "\nDB_NAME={$DB_NAME}";
 print "\nDB_USERNAME={$DB_USERNAME}";
 print "\nDB_PASSWORD={$DB_PASSWORD}";
+print "\nNO_BUILD={$NO_BUILD}";
 print "\n";
 
 
@@ -65,13 +76,15 @@ print "\n";
 # fix up database. Tweak as needed
     jcmd(cmd:"mysql -u {$DB_USERNAME} -p{$DB_PASSWORD} -e 'DROP DATABASE IF EXISTS `$DB_NAME`; CREATE DATABASE `$DB_NAME`;'", bForceEcho: true);
 
-    # setup the database so far
-    jcmd(cmd:"php {$DIR_NAME}/artisan migrate", bForceEcho: true);
+    if (! $NO_BUILD) {
+        # setup the database so far
+        jcmd(cmd: "php {$DIR_NAME}/artisan migrate", bForceEcho: true);
 
 
-    # get the javascript all set up
-    jcmd(cmd:"npm install --prefix '{$DIR_NAME}'", bForceEcho: true);
-    jcmd(cmd:"npm run dev --prefix '{$DIR_NAME}'", bForceEcho: true);
+        # get the javascript all set up
+        jcmd(cmd: "npm install --prefix '{$DIR_NAME}'", bForceEcho: true);
+        jcmd(cmd: "npm run dev --prefix '{$DIR_NAME}'", bForceEcho: true);
+    }
 
 $c = new Colors();
 echo "\n";
