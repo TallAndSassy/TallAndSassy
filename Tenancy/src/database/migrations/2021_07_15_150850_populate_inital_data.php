@@ -38,7 +38,9 @@ class PopulateInitalData extends Migration
             'email_verified_at' => Date::now(),
             'tenant_id' => $tenant_id, //7/21' wouldn't work, but maybe does in october cuz of ordering
 
+            // TODO: ROLE?
         ]);
+        $superuser->assignRole('superuser');
         User::reguard();
 
 
