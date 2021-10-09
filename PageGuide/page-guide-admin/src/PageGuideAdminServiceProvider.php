@@ -43,9 +43,10 @@ class PageGuideAdminServiceProvider extends ServiceProvider
             );
             $this->publishes(
                 [
-                    __DIR__ . '/../resources/views/admin/about' => base_path('resources/views/vendor/admin/about'),
-                    __DIR__ . '/../resources/views/admin/config' => base_path('resources/views/vendor/admin/config'),
-                    __DIR__ . '/../resources/views/admin/dashboard' => base_path('resources/views/vendor/admin/dashboard'),
+                    __DIR__ . '/../resources/views/admin/about' => base_path('resources/views/vendor/tassy/admin/about'),
+                    __DIR__ . '/../resources/views/admin/config' => base_path('resources/views/vendor/tassy/admin/config'),
+                    __DIR__ . '/../resources/views/admin/dashboard' => base_path('resources/views/vendor/tassy/admin/dashboard'),
+                    __DIR__ . '/../resources/views/admin/help' => base_path('resources/views/vendor/tassy/admin/help'),
                     __DIR__ . '/../resources/views/admin/menu-side-lower-above.blade.php' => base_path('resources/views/vendor/tassy/admin/menu-side-lower-above.blade.php'),
                     __DIR__ . '/../resources/views/admin/menu-side-lower-below.blade.php' => base_path('resources/views/vendor/tassy/admin/menu-side-lower-below.blade.php'),
                     __DIR__ . '/../resources/views/admin/menu-side-upper-above.blade.php' => base_path('resources/views/vendor/tassy/admin/menu-side-upper-above.blade.php'),
