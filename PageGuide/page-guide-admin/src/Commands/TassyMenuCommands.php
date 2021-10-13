@@ -50,6 +50,7 @@ class TassyMenuCommands extends Command
         // Gather all the data....
         $shortNodeName = $this->ask("Give more name for what you are make, like 'Page', or 'Home', 'or 'EnrichmentCalendar'.",$defaultJunk);
 
+        $this->info('Note: Storing in Livewire doesnt make your admin page a livewire component, cuz it still needs the basic page swap functionality. But it can be useful to store everything either in Livewire, or in Controllers');
         $enumHoming_ControllersLivewire = match (
         $this->choice('How do you want to store the page info',['c' => 'app/Http/Controllers', 'l' => 'app/Http/Livewire'], 'l')
         ) {
@@ -113,7 +114,7 @@ class TassyMenuCommands extends Command
                 }
             }
         }
-        $replacementMap['ReplaceableBool_IsShoppingLocal'] = $boolShopLocal ;
+        $replacementMap['ReplaceableBool_IsShoppingLocal'] = $boolShopLocal ? 1 : 0 ;
 
 
         // Sub Url
@@ -154,6 +155,41 @@ class TassyMenuCommands extends Command
                 $ReplaceableLabel = $this->ask('What is the menu text?', $shortNodeName);//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
                 $replacementMap['ReplaceableLabel'] = $ReplaceableLabel;
         }
+
+//        // where is this menu?
+//        $existingRoots_plusNew = ['n'=>'New TreeRootLeaf', ...static::GetMenuTreeRoots($enumAdminMeFront)];
+//        $menuPlacement_c = $this->choice('Is this a new root menu item, or will it go under another menu', $existingGroups_plusNew, array_key_first($existingGroups_plusNew));
+//        if ($menuPlacement_c == 'n') {
+//            $groupName = $this->ask("Type the name of your new grouping, like 'Admin/Tasks', or 'Stuff' ", $shortNodeName);
+//            if ($enumGroupScheme != 'global') {
+//                $_fyiResourcesPath  = TassyDomainCommands::GetDomainResourceAbsolutePath( $enumHoming_ControllersLivewire, $groupName, shopLocal:true);
+//
+//                $boolShopLocal = match($this->choice("You have a group, you can choose to also shop locally so the your view files site right there. If local, it will set up a new local 'resources/views' directory for your blade files.\n($_fyiResourcesPath)\n", ['l' => 'Shop Local', 'g' => 'Default Global behavior'], 'l')) {
+//                    'l'=>true,
+//                    'g'=>false,
+//                };
+//            }
+//            TassyDomainCommands::InitializeGroup($enumHoming_ControllersLivewire, $groupName, $boolShopLocal);
+//        } else {
+//            $groupName = TassyDomainCommands::GetDomainNames($enumHoming_ControllersLivewire)[$groupName_c];
+//
+//            $isAlreadyShoppingLocal = TassyDomainCommands::IsAlreadyShoppingLocal($enumHoming_ControllersLivewire, $groupName);
+//            if ($isAlreadyShoppingLocal) {
+//                $boolShopLocal = true;
+//            } else {
+//                $_fyiResourcesPath  = TassyDomainCommands::GetDomainResourceAbsolutePath( $enumHoming_ControllersLivewire, $groupName, shopLocal:true);
+//                $boolShopLocal = match($this->choice("You have an existing group, but it is not yet set up for local shopping. You can start using local shopping.  You can choose to also shop locally so the your view files sit right there. If local, it will set up a new local 'resources/views' directory for your blade files. \n($_fyiResourcesPath)\n", ['l' => 'Shop Local', 'g' => 'Default Global behavior'], 'l')) {
+//                    'l'=>true,
+//                    'g'=>false,
+//                };
+//                if ($boolShopLocal) {
+//                    TassyDomainCommands::InitializeGroup($enumHoming_ControllersLivewire, $groupName, $boolShopLocal);
+//                }
+//            }
+//        }
+//        $isTreeRootLeaf = true;
+
+
 
         // Namespace ReplaceableNamespace
         if ($enumHoming_ControllersLivewire == 'Controllers') {
@@ -250,16 +286,20 @@ class TassyMenuCommands extends Command
 
         // Do Menu Blade
         if ($enumAdminMeFront == 'admin') {
-            static::LoadBackupModifyUpdate(
-                base_path(static::getMenuBladeFileName($enumUpperLower)),
-                function ($existingMenuFile, $ReplaceableTimestamp) use ($replacementMap) {
-                    $menuSnippet_withEnclosedVars = file_get_contents(__DIR__ . '/../stubs/menu-side-treerootleaf.blade.php.stub');
-                    $replacementMap['ReplaceableTimestamp'] = $ReplaceableTimestamp;
-                    $menuSnippet_hydrated = static::HydrateStub($menuSnippet_withEnclosedVars, $replacementMap);
-                    $existingMenuFile .= $menuSnippet_hydrated;
-                    return $existingMenuFile;
-                }
-            );
+            $isTreeRootLeaf = true;
+            $this->info("\nPutting as a Root-Leaf menu item. You can move menu items manually, or use the `php artisan tassy-page:edit-menu` (coming soon-ish)");
+            if ($isTreeRootLeaf) {
+                static::LoadBackupModifyUpdate(
+                    base_path(static::getMenuBladeFileName($enumUpperLower)),
+                    function ($existingMenuFile, $ReplaceableTimestamp) use ($replacementMap) {
+                        $menuSnippet_withEnclosedVars = file_get_contents(__DIR__ . '/../stubs/menu-side-treerootleaf.blade.php.stub');
+                        $replacementMap['ReplaceableTimestamp'] = $ReplaceableTimestamp;
+                        $menuSnippet_hydrated = static::HydrateStub($menuSnippet_withEnclosedVars, $replacementMap);
+                        $existingMenuFile .= $menuSnippet_hydrated;
+                        return $existingMenuFile;
+                    }
+                );
+            }
         }
 
 
