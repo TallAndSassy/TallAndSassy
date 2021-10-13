@@ -55,9 +55,9 @@
             location.reload();
         }
 
-        window.Spruce.store('sprucetest_modal', {
-            open: 'login',
-        });
+        // obe 10/21' window.Spruce.store('sprucetest_modal', {
+        //     open: 'login',
+        // });
     </script>
 
     @php
