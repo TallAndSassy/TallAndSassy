@@ -1,4 +1,7 @@
-{{--    New menu ReplaceableLabel created on ReplaceableTimestamp -BEGIN --}}
+{{--    New menu ReplaceableLabel created on ReplaceableTimestamp
+        (stubbed from vendor/tallandsassy/tallandsassy/PageGuide/page-guide-admin/src/stubs/menu-side-treerootleaf.blade.php.stub)
+        (Probably via  php artisan tassy-page:add)
+-BEGIN- --}}
 <x-tassy::menu-side-treerootleaf suburl="ReplaceableSubUrl">
 
 
