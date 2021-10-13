@@ -145,9 +145,11 @@ class TassyDomainCommands extends Command
 
 //    JJ - you have two sets of domains livewire and classic
     /* You can pass a subdomain, like 'Admin' */
-    public static function GetDomainNames(string $enumHoming_ControllersLivewire, ?string $_baseGroup = null, array $groupNames_soFar = [] ): array {
+    public static function GetDomainNames(string $enumHoming_ControllersLivewire, ?string $_baseGroup = null, array $groupNames_soFar = [], bool $doMakeDirsIfNotThere = true): array {
         $_baseGroupOffsetFromBase = static::GetOffsetPathToDomain($enumHoming_ControllersLivewire, $_baseGroup);
         $_baseGroupAbsolutePath = static::GetAbsolutePathToDomain($enumHoming_ControllersLivewire, $_baseGroup);
+
+        FileUtils::makeDirIfNotAlreadyThere($_baseGroupAbsolutePath);
 
         foreach (scandir($_baseGroupAbsolutePath) as $h) {
             $filepath_to_file_orMaybeDir = $_baseGroupAbsolutePath.DIRECTORY_SEPARATOR.$h;
