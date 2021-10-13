@@ -29,14 +29,14 @@ class TassyPageGuideCommands extends Command
 
     public function handle()
     {
-        // NPM Packages...
-        $this->updateNodePackages(function ($packages) {
-            return [
-               "@ryangjchandler/spruce"=> "github:ryangjchandler/spruce",// probably OBE if you start using slapine 3.0
-                ] + $packages;
-        });
-
-        print "\npackage.json was updated for Tassy-Page-Guide. Please run 'npm install' and 'run run watch' -or- 'npm run prod'\n";
+//        // NPM Packages...
+//        $this->updateNodePackages(function ($packages) {
+//            return [
+//               "@ryangjchandler/spruce"=> "github:ryangjchandler/spruce",// probably OBE if you start using slapine 3.0
+//                ] + $packages;
+//        });
+//
+//        print "\npackage.json was updated for Tassy-Page-Guide. Please run 'npm install' and 'run run watch' -or- 'npm run prod'\n";
     }
 
     /**
