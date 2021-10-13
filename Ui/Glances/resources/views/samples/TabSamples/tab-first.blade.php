@@ -1,9 +1,10 @@
 <div>
     @if ($contentIsVisible)
         @php sleep(3); @endphp
-        <span>Hard content from First Tab Sample...</span>
+        <span class="border bg-green-300">Hard content from First Tab Sample... Should have taken 3 seconds to render the first time cuz of 'sleep' throttle</span>
+
     @else
-        <span>[spinner for {{$tabName}}]</span>
+        <span>[spinner for {{$tabName}} - pretend this is spinning]</span>
     @endif
     <div class="border m-2 shadow">
         todo:
