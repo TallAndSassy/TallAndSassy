@@ -31,6 +31,9 @@
                 <p>
                     History: Before alpine 3. We used spruce to store global alpine vars.  Now we use apline's built-in $store.
                 </p>
+                <p>
+                    Troubleshooting: npm might need rebuilding. Try npm run dev or npm run prod
+                </p>
             </div>
         <div x-data>
             <div x-show="$store.sprucetest_modal.open === 'login'">

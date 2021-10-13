@@ -1,5 +1,6 @@
 {{-- Not sure of the history here.
 copy this into /resources/views/layouts
+10/1
 --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
