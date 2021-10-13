@@ -6,7 +6,7 @@ window.addOrUpdateUrlParam = function (existingUrl, paramName, newValue) {
 }
 // This should be higher in the stack
 window._urlChangedViaAjaxSoUpdateBrowserSoFeelsLikePageChange = function (newUrl) {
-    console.log('pushing to browser history: ' + newUrl);
+    console.log('pushing to browser history via T&S : ' + newUrl);
     history.pushState(null, null, newUrl);
     console.log('NewUrl: '+newUrl);
 }
