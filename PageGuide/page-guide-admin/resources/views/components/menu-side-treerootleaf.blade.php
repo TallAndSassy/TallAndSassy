@@ -7,7 +7,18 @@
 
 @endphp
 <li class=' '>
-    <a {!! \TallAndSassy\PageGuide\Components\Lepage::wireSwaplinkInA($suburl) !!} class=" linkFontColor_cssClasses linkFocus_cssClasses {{$isOnThisRoute ? 'font-extrabold text-lg' : ''}} {{$pickedClasses_ifOnThisRoute}} divNode_cssClasses ">
+    <a {!! \TallAndSassy\PageGuide\Components\Lepage::wireSwaplinkInA($suburl) !!}
+       class="
+       linkFontColor_cssClasses text-gray-300
+       linkFocus_cssClasses group flex pr-1 pl-2 rounded-md focus:outline-none focus:bg-gray-700 transition ease-in-out duration-150
+        {{$isOnThisRoute ? 'font-extrabold text-lg' : ''}} {{$pickedClasses_ifOnThisRoute}}
+        divNode_cssClasses o-underline group flex items-center px-2 py-2 text-lg leading-5 font-bold
+        "
+    >
+{{--        Hey: 10/21' These .css classes should (maybe??) exists. They are spelled out in menutree.blade.php, but I'm struggling on how to centralize this.
+            So, I'm repeating the tailwind classes here.  Probably good-enough, for now.
+--}}
+
 {{--        @if (!empty($svghtml))--}}
 {{--            <div class="mr-1.5">--}}
 {{--            {!! $svghtml !!}--}}
