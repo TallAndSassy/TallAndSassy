@@ -1,0 +1,3 @@
+<x-tassy::page-front class="">
+    ReplaceableHtml at ReplaceableBladePath
+</x-tassy::page-front>

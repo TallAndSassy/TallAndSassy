@@ -1,0 +1,11 @@
+<?php
+
+/* You can add future routes here, and be confident the user is authorized, like:
+Route::get(
+    '/E_61179600bfd38',
+    [\App\Http\Controllers\E_61179600bfd38Controller::class, 'getFrontView'] // or getBodyView or your favorite method.
+);
+
+// -or this-
+require_once(__DIR__ . '/web-admin-planning.php');
+*/

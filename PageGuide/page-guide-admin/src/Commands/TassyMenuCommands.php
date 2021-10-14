@@ -60,7 +60,7 @@ class TassyMenuCommands extends Command
 
 
         $enumAdminMeFront = match (
-        $this->choice('You want to add a page, great! Where will it live?', ['f' => '/ (user facing)', 'a' => '/admin', 'm' => '/me'], 'a')
+        $this->choice('You want to add a page, great! Where will it live?', ['f' => '/ (user facing)', 'a' => '/admin', 'm' => '/me'], 'm')
         ) {
             'f' => 'front',
             'a' => 'admin',
@@ -84,7 +84,7 @@ class TassyMenuCommands extends Command
             $groupName = '';
         } else {
             $existingGroups_plusNew = ['n'=>'New Group (Chose this to create a new grouping)', ...TassyDomainCommands::GetDomainNames($enumHoming_ControllersLivewire)];
-            $groupName_c = $this->choice('These are the existing groups', $existingGroups_plusNew, array_key_first($existingGroups_plusNew));
+            $groupName_c = $this->choice('These are the existing groups', $existingGroups_plusNew, array_key_last($existingGroups_plusNew));
             if ($groupName_c == 'n') {
                 $groupName = $this->ask("Type the name of your new grouping, like 'Admin/Tasks', or 'Stuff' ", $shortNodeName);
                 if ($enumGroupScheme != 'global') {
@@ -220,6 +220,18 @@ class TassyMenuCommands extends Command
             $controller_StubSource_filepath = __DIR__ . '/../stubs/Controller.php.stub';
         }
         $replacementMap['ReplaceableControllerName'] = $ReplaceableControllerName;
+        
+        // what does it inherit from?
+        if ($enumAdminMeFront == 'admin') {
+            $Replaceable_inheritsFrom = '\TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base';
+        } elseif ($enumAdminMeFront == 'front') {
+            $Replaceable_inheritsFrom = '\TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideFrontController_Base';
+        } elseif ($enumAdminMeFront == 'me') {
+            $Replaceable_inheritsFrom = '\TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideMeController_Base';
+        } else {
+            assert(0,'logic error');
+        }
+        $replacementMap['Replaceable_inheritsFrom'] = $Replaceable_inheritsFrom;
 
         // Where to put the controller?
         if ($enumHoming_ControllersLivewire == 'Controllers') {
@@ -252,14 +264,25 @@ class TassyMenuCommands extends Command
 
 
         // Do Route
-        $web_admin_routes_filepath = base_path('routes/web-admin--routes.php');
-        static::LoadBackupModifyUpdate($web_admin_routes_filepath, function (string $route_web, string $ReplaceableTimestamp) use ($replacementMap) {
-            $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route-web-admin-xxx.php.stub';
+        if ($enumAdminMeFront == 'admin') {
+            $web_x_routes_filepath = base_path('routes/web-admin--routes.php');
+            $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route_snippets/route-web-admin-xxx.php.stub';
+        } elseif  ($enumAdminMeFront == 'front') {
+            $web_x_routes_filepath = base_path('routes/web-front--routes.php');
+            $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route_snippets/route-web-front-xxx.php.stub';
+        }elseif  ($enumAdminMeFront == 'me') {
+            $web_x_routes_filepath = base_path('routes/web-me--routes.php');
+            $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route_snippets/route-web-me-xxx.php.stub';
+        } else {
+            assert(0,'logic');
+        }
+        static::LoadBackupModifyUpdate($web_x_routes_filepath, function (string $route_web, string $ReplaceableTimestamp) use ($replacementMap, $route_SnippetSource_filepath_rel) {
             $route_SnippetSource_filepath = $route_SnippetSource_filepath_rel;
             $replacementMap['ReplaceableTimestamp'] = $ReplaceableTimestamp;
             $routeSnippet_hydrated = static::HydrateStub(file_get_contents($route_SnippetSource_filepath), $replacementMap);
             return $route_web . $routeSnippet_hydrated;
         });
+
 
         // Do Controller
         static::LoadModifyPut($controller_StubSource_filepath, function (string $stub) use ($replacementMap) {
@@ -268,12 +291,32 @@ class TassyMenuCommands extends Command
 
 
         // Do $enumTopPageScheme
-        if ($enumTopPageScheme_single_tabbed == 'single') {
-            $blade_StubSource_filepath = __DIR__ . '/../stubs/page.blade.php.stub';
-        }elseif ($enumTopPageScheme_single_tabbed == 'tabbed') {
-            $blade_StubSource_filepath = __DIR__ . '/../stubs/pageThatIsTabbed.blade.php.stub';
+        if ($enumAdminMeFront == 'admin') {
+            if ($enumTopPageScheme_single_tabbed == 'single') {
+                $blade_StubSource_filepath = __DIR__ . '/../stubs/admin_page.blade.php.stub';
+            } elseif ($enumTopPageScheme_single_tabbed == 'tabbed') {
+                $blade_StubSource_filepath = __DIR__ . '/../stubs/admin_pageThatIsTabbed.blade.php.stub';
+            } else {
+                assert(0);
+            }
+        } elseif  ($enumAdminMeFront == 'front') {
+            if ($enumTopPageScheme_single_tabbed == 'single') {
+                $blade_StubSource_filepath = __DIR__ . '/../stubs/front_page.blade.php.stub';
+            } elseif ($enumTopPageScheme_single_tabbed == 'tabbed') {
+                $blade_StubSource_filepath = __DIR__ . '/../stubs/front_pageThatIsTabbed.blade.php.stub';
+            } else {
+                assert(0);
+            }
+        }elseif  ($enumAdminMeFront == 'me') {
+            if ($enumTopPageScheme_single_tabbed == 'single') {
+                $blade_StubSource_filepath = __DIR__ . '/../stubs/me_page.blade.php.stub';
+            } elseif ($enumTopPageScheme_single_tabbed == 'tabbed') {
+                $blade_StubSource_filepath = __DIR__ . '/../stubs/me_pageThatIsTabbed.blade.php.stub';
+            } else {
+                assert(0);
+            }
         } else {
-            assert(0);
+            assert(0,'logic error');
         }
         $ReplaceableBladePath_offsetFromResource = 'views/' . $ReplaceableViewRef . '.blade.php';
         $blade_Destination_filepath_full = TassyDomainCommands::GetDomainResourceAbsolutePath($enumHoming_ControllersLivewire, $groupName, $boolShopLocal).DIRECTORY_SEPARATOR.$shortNodeName.'.blade.php';;//resource_path($ReplaceableBladePath_offsetFromResource);
@@ -341,7 +384,7 @@ class TassyMenuCommands extends Command
         assert($ret);
         unset($stub_withEnclosedVars);
 
-        #$this->info("Made backup of '$web_admin_routes_filepath' and wrote to '$virginalFileNameBackup'");
+        #$this->info("Made backup of '$web_x_routes_filepath' and wrote to '$virginalFileNameBackup'");
     }
 
     private static function LoadModifyBackupPut(string $filepathWithContentWeWillPervert_offOfRoot, \Closure $modifyingClosure_gettingContent): void

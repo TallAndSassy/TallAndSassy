@@ -1,0 +1,4 @@
+Route::get(
+    'ReplaceableSubUrl',
+    [ReplaceableNamespace\ReplaceableControllerName::class, 'getFrontView'] // or getBodyView, or blah() - whatever you want. We don't swap for front stuff, just admin,
+);

@@ -10,6 +10,8 @@ Route::domain('{tenant:slug}.'.ENV('MEMCACHED_HOST'))
         require_once(__DIR__ . '/../vendor/tallandsassy/tallandsassy/PageGuide/page-guide/routes/web.php');
         require_once(__DIR__ . '/../vendor/tallandsassy/tallandsassy/PageGuide/page-guide-admin/routes/web.php');
         require_once(__DIR__ . '/../vendor/tallandsassy/tallandsassy/Ui/Glances/routes/web.php');
+        // --- FRONT ---
+        require_once(__DIR__.'/web-front--routes.php');
 
         // --- ADMIN ---
         Route::middleware([

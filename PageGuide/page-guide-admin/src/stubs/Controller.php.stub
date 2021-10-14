@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace ReplaceableNamespace;
 
 
-class ReplaceableControllerName extends \TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base
+class ReplaceableControllerName extends Replaceable_inheritsFrom
 {
     public const viewRef = "ReplaceableViewRef";
     public static string $title = 'ReplaceablePageTitle';
@@ -19,7 +19,7 @@ class ReplaceableControllerName extends \TallAndSassy\PageGuideAdmin\Http\Contro
         return static::$mes[$handle];
     }
 
-    public function getBodyView(string $subLevels): \Illuminate\View\View
+    public function getBodyView(string $subLevels): \Illuminate\View\View|string
     {
 
         if (ReplaceableBool_IsShoppingLocal) { // Let's tell Laravel to look for files right next to us, not in the /app/resources/views dir.  FYI: Once out of stub phpase, this 'if' statement is clearly stooopid and can be deleted.

@@ -114,6 +114,10 @@ echo $c->getColoredString("\n   localhost:8000   ", 'green');
 echo $c->getColoredString(" (Your port might change. See the output above.)  ", 'brown');
 echo "\n";
 echo "\n";
+echo $c->getColoredString("\n\nQuickly start adding pages via  ", 'red');
+echo $c->getColoredString("\n   php artisan tassy-page:add    ", 'green');
+echo "\n";
+echo "\n";
 
 # At this point, laravel should be installed and basically working.
 # Nothing before this line should be different than a typical laravel project

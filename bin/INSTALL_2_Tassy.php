@@ -253,9 +253,11 @@ jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/People/src/Models/Stubs/User.php a
 // nix the original
 jcmd(cmd:'mv routes/web.php routes/web.php.orig', bForceEcho: true);
 // use our own web.php, which has a special web-admin--routes.php --- anything there is force to admin-only
-jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/web.php', bForceEcho: true);
-jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web-admin--routes.stub routes/web-admin--routes.php', bForceEcho: true);
-jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web-admin-people.stub routes/web-admin-people.php', bForceEcho: true);
+jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/routes/web.stub routes/web.php', bForceEcho: true);
+jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/routes/web-admin--routes.stub routes/web-admin--routes.php', bForceEcho: true);
+jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/routes/web-front--routes.stub routes/web-front--routes.php', bForceEcho: true);
+jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/routes/web-me--routes.stub routes/web-me--routes.php', bForceEcho: true);
+jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/routes/web-admin-people.stub routes/web-admin-people.php', bForceEcho: true);
 
 //
 // js  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
