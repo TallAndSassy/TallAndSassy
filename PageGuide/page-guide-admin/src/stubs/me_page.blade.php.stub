@@ -1,3 +1,3 @@
-<x-tassy::page-front class="">
+<x-tassy::page-me title="You Me title here.">
     ReplaceableHtml at ReplaceableBladePath
-</x-tassy::page-front>
+</x-tassy::page-me>>

@@ -119,15 +119,15 @@ class TassyMenuCommands extends Command
 
         // Sub Url
         $_urlPrefix = '';
-        //        if ($enumAdminMeFront == 'admin' && !str_starts_with($groupName, 'admin')) {
-        //            $_urlPrefix = 'admin';
-        //        } elseif ($enumAdminMeFront == 'me' && !str_starts_with($groupName, 'me')) {
-        //            $_urlPrefix = 'me';
-        //        } elseif ($enumAdminMeFront == 'front' && !( str_starts_with($groupName, '/') || empty($groupName) )) {
-        //            $_urlPrefix = '';
-        //        } else {
-        //            assert(0);
-        //        }
+                if ($enumAdminMeFront == 'admin' && !str_starts_with($groupName, 'admin')) {
+                    $_urlPrefix = 'admin';
+                } elseif ($enumAdminMeFront == 'me' && !str_starts_with($groupName, 'me')) {
+                    $_urlPrefix = 'me';
+                } elseif ($enumAdminMeFront == 'front' && !( str_starts_with($groupName, '/') || empty($groupName) )) {
+                    $_urlPrefix = '';
+                } else {
+                    assert(0);
+                }
         $_a = [$_urlPrefix,$groupName,$shortNodeName];
         $_a = array_filter($_a);//https://stackoverflow.com/questions/3654295/remove-empty-array-elements
 

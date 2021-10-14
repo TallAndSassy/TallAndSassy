@@ -21,6 +21,14 @@ Route::domain('{tenant:slug}.'.ENV('MEMCACHED_HOST'))
         ])->group(function() {
             require_once(__DIR__.'/web-admin--routes.php');
         });
+        // --- Me ---
+        Route::middleware([
+            'auth:sanctum',
+            'verified',
+            //'can:'.\TallAndSassy\RolesAndPermissions\BaseTassyPermissions::ACCESS_ME_PAGES --- page do in future
+        ])->group(function() {
+            require_once(__DIR__.'/web-me--routes.php');
+        });
 
         Route::fallback(function () {
             // we need this function because the route needs to

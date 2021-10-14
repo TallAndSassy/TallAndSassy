@@ -1,4 +1,4 @@
-<x-tassy::page-front class="">
+<x-tassy::page-me>
     ReplaceableHtml at ReplaceableBladePath
     <div>
         <x-tassy-ui::tabs :defaultTab="'Second'">
@@ -36,4 +36,4 @@
     </div>
 
 
-</x-tassy::page-front>>
+</x-tassy::page-me>
