@@ -69,6 +69,9 @@ print "\n";
     # DB password: modify to your approprite password
     jcmd(cmd:"sed -i'.orig' 's/DB_PASSWORD=.*$/DB_PASSWORD={$DB_PASSWORD}/' {$DIR_NAME}/.env", bForceEcho: true);
 
+    #php version
+    jcmd(cmd:"sed -i'.orig' 's/.*\"php\":.*$/        \"php\": \"^8.0\",/' {$DIR_NAME}/composer.json", bForceEcho: true);
+
 ## reparse the .env
     jcmd(cmd:"php {$DIR_NAME}/artisan config:clear", bForceEcho: true);
 
