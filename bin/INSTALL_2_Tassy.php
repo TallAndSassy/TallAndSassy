@@ -1,12 +1,19 @@
 <?php
 require_once(__DIR__.'/_bin_utils.php');
 
-if (! (isSettableOptionSet('TASSY_TENANCY_HQSUBDOMAIN') && isSettableOptionSet('TASSY_TENANCY_ADMINEMAIL') )) {
+if (! (
+    isSettableOptionSet('TASSY_TENANCY_HQSUBDOMAIN') &&
+    isSettableOptionSet('TASSY_TENANCY_ADMINEMAIL') &&
+    isSettableOptionSet('REGISTRATION_COMPLETENESS')
+)) {
     $c = new Colors();
     echo "\n";
     echo $c->getColoredString("\n\nYou are missing stuff. Try something like this  ",'red');
-    echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com",'green');
+    echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com --REGISTRATION_COMPLETENESS=email --MAIL_HOST=smtp.postmarkapp.com --MAIL_USERNAME=SomeUserName --MAIL_PASSWORD=SomePassword --MAIL_FROM_ADDRESS='no-reply@gmail.com' --MAIL_FROM_NAME='The Robot' --MAIL_PORT=587 ",'green');
     echo $c->getColoredString("\n\n   --MAX_PROCRASTINATION=(0,1) if 1, skips migrate and npm stuff, presuming you'll just do it later ",'brown');
+    echo $c->getColoredString("\n\n   --REGISTRATION_COMPLETENESS=(none,email) email forces email verification of new users. You'll want to set up the email settings when  ",'brown');
+    echo $c->getColoredString("\n\n   --REGISTRATION_COMPLETENESS=email --MAIL_HOST=smtp.postmarkapp.com --MAIL_USERNAME=SomeUserName --MAIL_PASSWORD=SomePassword --MAIL_FROM_ADDRESS='no-reply@gmail.com' --MAIL_FROM_NAME='The Robot'",'brown');
+    echo $c->getColoredString("\n\n   --MAIL_PORT=587 #or whatever. Fios will, for example, block port 25",'brown');
 
     echo "\n";
     echo "\n";
@@ -20,15 +27,11 @@ $MAX_PROCRASTINATION = getOptionalOption(
     transformInputToInternal:fn($passedValidatedValue) => $passedValidatedValue*1,
     doEcho: true,
 );
+# Add Admin Email (we need mostly for demos for now) -------------------------------------------------------------------------------------------------------------------------------
+$TASSY_TENANCY_ADMINEMAIL = getRequiredOption(
+    optionName:'TASSY_TENANCY_ADMINEMAIL',
+);
 
-$localhostName = 'localhost';// INPUT (uncommon)
-$dirParts = explode('/',getcwd());
-$APP_NAME = $dirParts[count($dirParts)-1];
-$APP_URL = "http://{$localhostName}";
-print "\n localhostName=>$localhostName";
-print "\n APP_NAME=>$APP_NAME";
-print "\n APP_URL=>$APP_URL";
-print "\n MAX_PROCRASTINATION=>$MAX_PROCRASTINATION";
 /*
 # Now, let's get TallAndSassy working so we can see what a minimum installation looks like.
 # Goal: Be able to run this multiple times, within the same Laravel installation.
@@ -46,21 +49,92 @@ $TASSY_TENANCY_HQSUBDOMAIN = getOptionalOption(
 );
 
 
+$REGISTRATION_COMPLETENESS = getRequiredOption(optionName:'REGISTRATION_COMPLETENESS');
+assert(in_array($REGISTRATION_COMPLETENESS,['none','email']));
 
+# Email Settings  -------------------------------------------------------------------------------------------------------------------------------------------------
+$MAIL_HOST_elseFalse = getOptionalOption(
+    optionName:'MAIL_HOST',
+    default:false,
+    doesValidate:fn($passedValueToBeValidated) => strlen($passedValueToBeValidated) < 256,
+    transformInputToInternal:fn($passedValidatedValue) => $passedValidatedValue,
+    doEcho:  true
+);
+$MAIL_USERNAME_elseFalse = getOptionalOption(
+    optionName:'MAIL_USERNAME',
+    default:false,
+    doesValidate:fn($passedValueToBeValidated) => strlen($passedValueToBeValidated) < 256,
+    transformInputToInternal:fn($passedValidatedValue) => $passedValidatedValue,
+    doEcho:  true
+);
+$MAIL_PASSWORD_elseFalse = getOptionalOption(
+    optionName:'MAIL_PASSWORD',
+    default:false,
+    doesValidate:fn($passedValueToBeValidated) => strlen($passedValueToBeValidated) < 256,
+    transformInputToInternal:fn($passedValidatedValue) => $passedValidatedValue,
+    doEcho:  true
+);
+$MAIL_FROM_ADDRESS_elseFalse = getOptionalOption(
+    optionName:'MAIL_FROM_ADDRESS',
+    default:$TASSY_TENANCY_ADMINEMAIL,
+    doesValidate:fn($passedValueToBeValidated) => strlen($passedValueToBeValidated) < 256,
+    transformInputToInternal:fn($passedValidatedValue) => $passedValidatedValue,
+    doEcho:  true
+);
+$MAIL_FROM_NAME_elseFalse = getOptionalOption(
+    optionName:'MAIL_FROM_NAME',
+    default:false,
+    doesValidate:fn($passedValueToBeValidated) => strlen($passedValueToBeValidated) < 256,
+    transformInputToInternal:fn($passedValidatedValue) => $passedValidatedValue,
+    doEcho:  true
+);
+$MAIL_PORT_elseFalse = getOptionalOption(
+    optionName:'MAIL_PORT',
+    default:false,
+    doesValidate:fn($passedValueToBeValidated) => strlen($passedValueToBeValidated) <= 3,
+    transformInputToInternal:fn($passedValidatedValue) => $passedValidatedValue*1,
+    doEcho:  true
+);
+
+if ($REGISTRATION_COMPLETENESS != 'none') {
+    assert(
+        $MAIL_HOST_elseFalse !== false &&
+        $MAIL_USERNAME_elseFalse !== false &&
+        $MAIL_PASSWORD_elseFalse !== false &&
+        $MAIL_FROM_ADDRESS_elseFalse !== false &&
+        $MAIL_FROM_NAME_elseFalse !== false, "$REGISTRATION_COMPLETENESS is set to $REGISTRATION_COMPLETENESS. Email settings must be configured."
+    );
+}
+
+
+$localhostName = 'localhost';// INPUT (uncommon)
+$dirParts = explode('/',getcwd());
+$APP_NAME = $dirParts[count($dirParts)-1];
+$APP_URL = "http://{$localhostName}";
+print "\n localhostName=>$localhostName";
+print "\n APP_NAME=>$APP_NAME";
+print "\n APP_URL=>$APP_URL";
+print "\n MAX_PROCRASTINATION=>$MAX_PROCRASTINATION";
+print "\n REGISTRATION_COMPLETENESS = $REGISTRATION_COMPLETENESS";
+print "\n MAIL_HOST = ". ( $MAIL_HOST_elseFalse !== false ? $MAIL_HOST_elseFalse : 'default');
+print "\n MAIL_USERNAME = ". ( $MAIL_USERNAME_elseFalse !== false ? $MAIL_USERNAME_elseFalse : 'default');
+print "\n MAIL_PASSWORD = ". ( $MAIL_PASSWORD_elseFalse !== false ? $MAIL_PASSWORD_elseFalse : 'default');
+print "\n MAIL_FROM_ADDRESS = ". ( $MAIL_FROM_ADDRESS_elseFalse !== false ? $MAIL_FROM_ADDRESS_elseFalse : 'default');
+print "\n MAIL_FROM_NAME = ". ( $MAIL_FROM_NAME_elseFalse !== false ? $MAIL_FROM_NAME_elseFalse : 'default');
+print "\n MAIL_PORT = ". ( $MAIL_PORT_elseFalse !== false ? $MAIL_PORT_elseFalse : 'default');
+
+print "\n";
 
 // delete if already there
 jcmd(cmd:"sed -i'.orig' '/TASSY_TENANCY_HQSUBDOMAIN=.*$/d' .env", bForceEcho: true);
 
 # add new TASSY_TENANCY_HQSUBDOMAIN to .env
 jcmd(cmd:"sed -i'.orig' '1s/^/TASSY_TENANCY_HQSUBDOMAIN={$TASSY_TENANCY_HQSUBDOMAIN}\\n/' .env", bForceEcho: true);
-# Add Admin Email (we need mostly for demos for now) -------------------------------------------------------------------------------------------------------------------------------
-$TASSY_TENANCY_ADMINEMAIL = getRequiredOption(
-    optionName:'TASSY_TENANCY_ADMINEMAIL',
-);
+
 // delete if already there
 jcmd(cmd:"sed -i'.orig' '/TASSY_TENANCY_ADMINEMAIL=.*$/d' .env", bForceEcho: true);
 
-# add new TASSY_TENANCY_HQSUBDOMAIN to .env
+# add new TASSY_TENANCY_ADMINEMAIL to .env
 jcmd(cmd:"sed -i'.orig' '1s/^/TASSY_TENANCY_ADMINEMAIL={$TASSY_TENANCY_ADMINEMAIL}\\n/' .env", bForceEcho: true);
 
 
@@ -77,10 +151,42 @@ jcmd(cmd:"sed -i'.orig' '1s/^/APP_NAME='{$APP_NAME}'\\n/' .env", bForceEcho: tru
 //jcmd(cmd:"sed -i'.orig' '1s/^/APP_NAME={$APP_NAME}//\\n/' .env", bForceEcho: true);
 
 
+
+// Update email settings, if relevant
+if ($MAIL_HOST_elseFalse != false) {
+    jcmd(cmd:"sed -i'.orig' '/MAIL_HOST=.*$/d' .env", bForceEcho: true);
+    jcmd(cmd:"sed -i'.orig' '1s/^/MAIL_HOST='{$MAIL_HOST_elseFalse}'\\n/' .env", bForceEcho: true);
+}
+if ($MAIL_USERNAME_elseFalse != false) {
+    jcmd(cmd:"sed -i'.orig' '/MAIL_USERNAME=.*$/d' .env", bForceEcho: true);
+    jcmd(cmd:"sed -i'.orig' '1s/^/MAIL_USERNAME='{$MAIL_USERNAME_elseFalse}'\\n/' .env", bForceEcho: true);
+
+}
+if ($MAIL_PASSWORD_elseFalse != false) {
+    jcmd(cmd:"sed -i'.orig' '/MAIL_PASSWORD=.*$/d' .env", bForceEcho: true);
+    jcmd(cmd:"sed -i'.orig' '1s/^/MAIL_PASSWORD='{$MAIL_PASSWORD_elseFalse}'\\n/' .env", bForceEcho: true);
+
+}
+if ($MAIL_FROM_ADDRESS_elseFalse != false) {
+    jcmd(cmd:"sed -i'.orig' '/MAIL_FROM_ADDRESS=.*$/d' .env", bForceEcho: true);
+    jcmd(cmd:"sed -i'.orig' '1s/^/MAIL_FROM_ADDRESS='{$MAIL_FROM_ADDRESS_elseFalse}'\\n/' .env", bForceEcho: true);
+
+}
+if ($MAIL_FROM_NAME_elseFalse != false) {
+    jcmd(cmd:"sed -i'.orig' '/MAIL_FROM_NAME=.*$/d' .env", bForceEcho: true);
+    jcmd(cmd:"sed -i'.orig' '1s/^/MAIL_FROM_NAME='{$MAIL_FROM_NAME_elseFalse}'\\n/' .env", bForceEcho: true);
+
+}
+
+if ($MAIL_PORT_elseFalse != false) {
+    jcmd(cmd:"sed -i'.orig' '/MAIL_PORT=.*$/d' .env", bForceEcho: true);
+    jcmd(cmd:"sed -i'.orig' '1s/^/MAIL_PORT='{$MAIL_PORT_elseFalse}'\\n/' .env", bForceEcho: true);
+
+}
+// Troubleshooting: https://postmarkapp.com/support/article/1116-troubleshooting-common-connection-issues
+
 # reparse .env
 jcmd(cmd:"php artisan config:clear", bForceEcho: true);
-
-
 
 # Tenant Middleware ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -285,6 +391,18 @@ $ret = commentOutLineWithStuff(
     bForceEcho: true
 );
 assert($ret);
+
+// Make new user verify email
+// see: https://jetstream.laravel.com/2.x/features/registration.html
+if ($REGISTRATION_COMPLETENESS == 'email') {
+    $ret = insertAfter(
+        filePath: 'config/fortify.php',
+        contentToFindInALine: '// Features::emailVerification(),',
+        contentToInsertAfterFoundLine: 'Features::emailVerification(), // flipped by Tassy install script',
+        bForceEcho: true);
+    assert($ret);
+}
+
 
 // Nudge the provider  -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 jcmd(cmd:'php artisan vendor:publish --tag=tassy-config', bForceEcho: true);
