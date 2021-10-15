@@ -55,12 +55,13 @@
 
     </div>
     <script>
-        // https://alpinejs.dev/magics/store
+        //https://alpinejs.dev/magics/store (was https://alpinejs.dev/magics/store)
         document.addEventListener('alpine:init', () => {
             Alpine.store('sprucetest_modal', {
-                open: 'login',
+                open: 'login'
             })
         })
+
     </script>
 </div>
 
