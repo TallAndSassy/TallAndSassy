@@ -28,6 +28,12 @@ class UiGlances_ServiceProvider extends ServiceProvider
             // TODO-Before 1.0: publish resources and resources
             // TODO-Before 1.0: publish translation files
             // TODO-Before 1.0: show available commands, if any
+            $this->publishes(
+                [   // todo: add the stub
+                    __DIR__ . '/../config/tassy/ui-glances.php' => config_path('/tassy/ui-glances.php'),
+                ],
+                ['config','tassy-config','tassy']
+            );
         }
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'tassy-ui');
