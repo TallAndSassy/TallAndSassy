@@ -174,12 +174,14 @@ if ($MAIL_FROM_ADDRESS_elseFalse != false) {
 }
 if ($MAIL_FROM_NAME_elseFalse != false) {
     jcmd(cmd:"sed -i'.orig' '/MAIL_FROM_NAME=.*$/d' .env", bForceEcho: true);
-    jcmd(cmd:"sed -i'.orig' '1s/^/MAIL_FROM_NAME='{$MAIL_FROM_NAME_elseFalse}'\\n/' .env", bForceEcho: true);
+    $sed = "sed -i'.orig' '1s/^/MAIL_FROM_NAME=\"{$MAIL_FROM_NAME_elseFalse}\"\\n/' .env"; // quotes tricked me here
+    jcmd(cmd:$sed, bForceEcho: true);
 
 }
 
 if ($MAIL_PORT_elseFalse != false) {
     jcmd(cmd:"sed -i'.orig' '/MAIL_PORT=.*$/d' .env", bForceEcho: true);
+
     jcmd(cmd:"sed -i'.orig' '1s/^/MAIL_PORT='{$MAIL_PORT_elseFalse}'\\n/' .env", bForceEcho: true);
 
 }

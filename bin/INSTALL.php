@@ -12,8 +12,12 @@ if (!(
     echo $c->getColoredString("\n\nYou are missing stuff. Try something like this  ", 'red');
     echo $c->getColoredString("\n   php INSTALL_FULL_DEMO.php --DB_USERNAME=root --DB_PASSWORD=ofallevil   --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com --APP_NAME=TassyTestXYZ ", 'green');
     echo "\n";
+    echo "\n";
+    echo $c->getColoredString("\n    Help develop the package like this....", 'brown');
     echo $c->getColoredString("\n    --CONTRIBUTE=(0,1)", 'brown');
     echo $c->getColoredString("\n    # optionally add the above to and to 1 to set-up this directory for local development of TallAndSassy. Good if you might want to contribute to Tall & Sassy. It checks out a copy of the package from github into TallAndSassy and tells your laravel install to look for the package there.",'brown');
+    echo $c->getColoredString("\n   php INSTALL_FULL_DEMO.php --DB_USERNAME=root --DB_PASSWORD=ofallevil   --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com --APP_NAME=TassyTestXYZ --CONTRIBUTE=1", 'green');
+    echo "\n";
     echo "\n";
     exit(-1);
 }
@@ -96,7 +100,7 @@ if ($CONTRIBUTE) {
     $ret = file_put_contents($composerJsonFilePath, $jsonComposer);
     assert($ret, "ouch: couldn't put $composerJsonFilePath");
 }
-jcmd(cmd:" cd {$APP_NAME} && ls -1 && composer require tallandsassy/tallandsassy:dev-main  &&  php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN={$TASSY_TENANCY_HQSUBDOMAIN} --TASSY_TENANCY_ADMINEMAIL={$TASSY_TENANCY_ADMINEMAIL}  --MAX_PROCRASTINATION=1  &&  php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php ", doDieOnFailure: true, bForceEcho: true);
+jcmd(cmd:" cd {$APP_NAME} && ls -1 && composer require tallandsassy/tallandsassy:dev-main  &&  php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN={$TASSY_TENANCY_HQSUBDOMAIN} --TASSY_TENANCY_ADMINEMAIL={$TASSY_TENANCY_ADMINEMAIL}  --MAX_PROCRASTINATION=1 --REGISTRATION_COMPLETENESS=none &&  php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php ", doDieOnFailure: true, bForceEcho: true);
 
 # get the javascript all set up
 jcmd(cmd: "npm install --prefix '{$DIR_NAME}'", bForceEcho: true, doDieOnFailure: true);

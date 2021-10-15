@@ -3,7 +3,7 @@
 ## Quick Demo
 Want to see a demo? Start by doing this:
 
-    curl -LJO  https://raw.githubusercontent.com/TallAndSassy/TallAndSassy/main/bin/INSTALL_FULL_DEMO.php
+    curl -LJO  https://raw.githubusercontent.com/TallAndSassy/TallAndSassy/main/bin/INSTALL.php
 
     php INSTALL.php --DB_USERNAME=root --DB_PASSWORD=ofallevil  --APP_NAME=TassyTest001  --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com --REGISTRATION_COMPLETENESS=none
 
