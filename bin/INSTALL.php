@@ -5,26 +5,77 @@ if (!(
     isSettableOptionSet('DB_PASSWORD') &&
     isSettableOptionSet('APP_NAME') &&
     isSettableOptionSet('TASSY_TENANCY_HQSUBDOMAIN') &&
-    isSettableOptionSet('TASSY_TENANCY_ADMINEMAIL')
+    isSettableOptionSet('TASSY_TENANCY_ADMINEMAIL') &&
+    isSettableOptionSet('DEMO') &&
+    isSettableOptionSet('REGISTRATION_COMPLETENESS')
 )) {
 
     echo "\n";
     echo $c->getColoredString("\n\nYou are missing stuff. Try something like this  ", 'red');
-    echo $c->getColoredString("\n   php INSTALL_FULL_DEMO.php --DB_USERNAME=root --DB_PASSWORD=ofallevil   --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com --APP_NAME=TassyTestXYZ ", 'green');
+    echo $c->getColoredString("\n   --- For a quick install with DEMO data pre-seeded ---", 'brown');
+    echo $c->getColoredString("\n   php INSTALL.php --DEMO=1 --REGISTRATION_COMPLETENESS=none --DB_USERNAME=root --DB_PASSWORD=ofallevil   --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com --APP_NAME=TassyTestXYZ ", 'green');
     echo "\n";
     echo "\n";
-    echo $c->getColoredString("\n    Help develop the package like this....", 'brown');
-    echo $c->getColoredString("\n    --CONTRIBUTE=(0,1)", 'brown');
+    echo $c->getColoredString("\n    --- to Help develop the package, add the CONTRIBUTE flag, like this.... ---", 'brown');
+    echo $c->getColoredString("\n    --CONTRIBUTE=1", 'brown');
     echo $c->getColoredString("\n    # optionally add the above to and to 1 to set-up this directory for local development of TallAndSassy. Good if you might want to contribute to Tall & Sassy. It checks out a copy of the package from github into TallAndSassy and tells your laravel install to look for the package there.",'brown');
-    echo $c->getColoredString("\n   php INSTALL_FULL_DEMO.php --DB_USERNAME=root --DB_PASSWORD=ofallevil   --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com --APP_NAME=TassyTestXYZ --CONTRIBUTE=1", 'green');
+    echo $c->getColoredString("\n   php INSTALL.php --DEMO=1  --REGISTRATION_COMPLETENESS=none --DB_USERNAME=root --DB_PASSWORD=ofallevil   --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com --APP_NAME=TassyTestXYZ --CONTRIBUTE=1", 'green');
+    echo "\n";
+    echo "\n";
+    echo $c->getColoredString("\n    --- To start developing your app (skipping demo data and email verification), flip to --DEMO=0 try this ---", 'brown');
+    echo $c->getColoredString("\n   php INSTALL.php --DEMO=0  --REGISTRATION_COMPLETENESS=none --DB_USERNAME=root --DB_PASSWORD=ofallevil   --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com  --CONTRIBUTE=0 --APP_NAME=TassyTestXYZ", 'green');
+    echo $c->getColoredString("\n   (--REGISTRATION_COMPLETENESS=(none|email): when set to email, you'll need to manually configure your .env/email settings", 'blue');
+    echo "\n";
+    echo "\n";
+    echo $c->getColoredString("\n    --- To develop with email verification for new users flip to --REGISTRATION_COMPLETENESS=email and add mail server settings, like this ---", 'brown');
+    echo $c->getColoredString("\n    (with demo data)", 'blue');
+    echo $c->getColoredString("\n    php INSTALL.php --DEMO=1  --DB_USERNAME=root --DB_PASSWORD=ofallevil   --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com  --CONTRIBUTE=0  --REGISTRATION_COMPLETENESS=email --MAIL_HOST=smtp.postmarkapp.com --MAIL_USERNAME=SomeUserName --MAIL_PASSWORD=SomePassword --MAIL_FROM_ADDRESS='no-reply@mydomainiown.com' --MAIL_FROM_NAME='The Robot' --MAIL_PORT=587 --APP_NAME=TassyTestXYZ", 'green');
+    echo $c->getColoredString("\n    (without demo data)", 'blue');
+    echo $c->getColoredString("\n    php INSTALL.php --DEMO=0  --DB_USERNAME=root --DB_PASSWORD=ofallevil   --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com  --CONTRIBUTE=0  --REGISTRATION_COMPLETENESS=email --MAIL_HOST=smtp.postmarkapp.com --MAIL_USERNAME=SomeUserName --MAIL_PASSWORD=SomePassword --MAIL_FROM_ADDRESS='no-reply@mydomainiown.com' --MAIL_FROM_NAME='The Robot' --MAIL_PORT=587 --APP_NAME=TassyTestXYZ", 'green');
+
+    echo $c->getColoredString("\n    (with demo data and contributing)", 'blue');
+    echo $c->getColoredString("\n    php INSTALL.php --DEMO=1  --DB_USERNAME=root --DB_PASSWORD=ofallevil   --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com  --CONTRIBUTE=1  --REGISTRATION_COMPLETENESS=email --MAIL_HOST=smtp.postmarkapp.com --MAIL_USERNAME=SomeUserName --MAIL_PASSWORD=SomePassword --MAIL_FROM_ADDRESS='no-reply@mydomainiown.com' --MAIL_FROM_NAME='The Robot' --MAIL_PORT=587 --APP_NAME=TassyTestXYZ", 'green');
+
     echo "\n";
     echo "\n";
     exit(-1);
 }
+
+
+
+
+
+
+
+
 $TASSY_TENANCY_HQSUBDOMAIN = getRequiredOption(optionName:'TASSY_TENANCY_HQSUBDOMAIN');
 $TASSY_TENANCY_ADMINEMAIL = getRequiredOption(optionName:'TASSY_TENANCY_ADMINEMAIL');
+$REGISTRATION_COMPLETENESS = getRequiredOption(optionName:'REGISTRATION_COMPLETENESS');
+assert(in_array($REGISTRATION_COMPLETENESS,['none','email']));
+if ($REGISTRATION_COMPLETENESS == 'email') {
+    if (! (
+    isSettableOptionSet('MAIL_HOST') &&
+    isSettableOptionSet('MAIL_USERNAME') &&
+    isSettableOptionSet('MAIL_PASSWORD') &&
+    isSettableOptionSet('MAIL_FROM_ADDRESS') &&
+    isSettableOptionSet('MAIL_FROM_NAME') &&
+    isSettableOptionSet('MAIL_PORT')
+
+    ) ) {
+        assert(0, 'Missing lots of mail server stuff.');
+    } else {
+        $MAIL_HOST = getRequiredOption(optionName:'MAIL_HOST');
+        $MAIL_USERNAME = getRequiredOption(optionName:'MAIL_USERNAME');
+        $MAIL_PASSWORD = getRequiredOption(optionName:'MAIL_PASSWORD');
+        $MAIL_FROM_ADDRESS = getRequiredOption(optionName:'MAIL_FROM_ADDRESS');
+        $MAIL_FROM_NAME = getRequiredOption(optionName:'MAIL_FROM_NAME');
+        $MAIL_PORT = getRequiredOption(optionName:'MAIL_PORT');
+    }
+}
 
 $DB_USERNAME = getRequiredOption(optionName: 'DB_USERNAME');
+$DEMO = getRequiredOption(optionName: 'DEMO');
+assert(in_array($DEMO,[0,1]));
 $DB_PASSWORD = getRequiredOption(optionName: 'DB_PASSWORD');
 $APP_NAME = getRequiredOption(optionName: 'APP_NAME');
 $DO_FORCE_REINSTALL = getOptionalOption(
@@ -59,6 +110,7 @@ print "\nTASSY_TENANCY_ADMINEMAIL={$TASSY_TENANCY_ADMINEMAIL}";
 print "\nDO_FORCE_REINSTALL={$DO_FORCE_REINSTALL}";
 print "\nCONTRIBUTE={$CONTRIBUTE}";
 print "\nCONTRIBUTE_PATH={$CONTRIBUTE_PATH}";
+print "\nDEMO={$DEMO}";
 print "\n";
 
 $DIR_NAME = $APP_NAME;
@@ -100,7 +152,18 @@ if ($CONTRIBUTE) {
     $ret = file_put_contents($composerJsonFilePath, $jsonComposer);
     assert($ret, "ouch: couldn't put $composerJsonFilePath");
 }
-jcmd(cmd:" cd {$APP_NAME} && ls -1 && composer require tallandsassy/tallandsassy:dev-main  &&  php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN={$TASSY_TENANCY_HQSUBDOMAIN} --TASSY_TENANCY_ADMINEMAIL={$TASSY_TENANCY_ADMINEMAIL}  --MAX_PROCRASTINATION=1 --REGISTRATION_COMPLETENESS=none &&  php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php ", doDieOnFailure: true, bForceEcho: true);
+$MAX_PROCRASTINATION = $DEMO;
+
+$appendingDemoSeeder = '';
+if ($DEMO) {
+    $appendingDemoSeeder = "&&  php vendor/tallandsassy/tallandsassy/bin/demo/INSTALL_3_Demo.php ";
+}
+
+$appendingREGISTRATION_COMPLETENESS =" --REGISTRATION_COMPLETENESS={$REGISTRATION_COMPLETENESS} ";
+if ($REGISTRATION_COMPLETENESS == 'email') {
+    $appendingREGISTRATION_COMPLETENESS .= "--MAIL_HOST={$MAIL_HOST} --MAIL_USERNAME={$MAIL_USERNAME} --MAIL_PASSWORD={$MAIL_PASSWORD} --MAIL_FROM_ADDRESS='{$MAIL_FROM_ADDRESS}' --MAIL_FROM_NAME='{$MAIL_FROM_NAME}' --MAIL_PORT={$MAIL_PORT}";
+}
+jcmd(cmd:" cd {$APP_NAME} && ls -1 && composer require tallandsassy/tallandsassy:dev-main  &&  php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN={$TASSY_TENANCY_HQSUBDOMAIN} --TASSY_TENANCY_ADMINEMAIL={$TASSY_TENANCY_ADMINEMAIL}  --MAX_PROCRASTINATION={$MAX_PROCRASTINATION} {$appendingREGISTRATION_COMPLETENESS} $appendingDemoSeeder", doDieOnFailure: true, bForceEcho: true);
 
 # get the javascript all set up
 jcmd(cmd: "npm install --prefix '{$DIR_NAME}'", bForceEcho: true, doDieOnFailure: true);
@@ -149,7 +212,7 @@ function isSettableOptionSet(string $optionName): bool
 function getRequiredOption(string $optionName): string
 {
     $options = getopt('', ["{$optionName}:"]);
-    assert(!empty($options), "You must specify --{$optionName}");
+    assert(!empty($options), "You must specify --{$optionName} on the command line. $optionName is '$optionName'");
     assert(count($options) == 1, "You must specify --{$optionName}=blah");
     return $options[$optionName];
 }

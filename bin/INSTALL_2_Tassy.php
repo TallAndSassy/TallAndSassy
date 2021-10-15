@@ -9,10 +9,10 @@ if (! (
     $c = new Colors();
     echo "\n";
     echo $c->getColoredString("\n\nYou are missing stuff. Try something like this  ",'red');
-    echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com --REGISTRATION_COMPLETENESS=email --MAIL_HOST=smtp.postmarkapp.com --MAIL_USERNAME=SomeUserName --MAIL_PASSWORD=SomePassword --MAIL_FROM_ADDRESS='no-reply@gmail.com' --MAIL_FROM_NAME='The Robot' --MAIL_PORT=587 ",'green');
+    echo $c->getColoredString("\n   php vendor/tallandsassy/tallandsassy/bin/INSTALL_2_Tassy.php --TASSY_TENANCY_HQSUBDOMAIN=hq --TASSY_TENANCY_ADMINEMAIL=bob@gmail.com --REGISTRATION_COMPLETENESS=email --MAIL_HOST=smtp.postmarkapp.com --MAIL_USERNAME=SomeUserName --MAIL_PASSWORD=SomePassword --MAIL_FROM_ADDRESS='no-reply@mydomainiown.com' --MAIL_FROM_NAME='The Robot' --MAIL_PORT=587 ",'green');
     echo $c->getColoredString("\n\n   --MAX_PROCRASTINATION=(0,1) if 1, skips migrate and npm stuff, presuming you'll just do it later ",'brown');
     echo $c->getColoredString("\n\n   --REGISTRATION_COMPLETENESS=(none,email) email forces email verification of new users. You'll want to set up the email settings when  ",'brown');
-    echo $c->getColoredString("\n\n   --REGISTRATION_COMPLETENESS=email --MAIL_HOST=smtp.postmarkapp.com --MAIL_USERNAME=SomeUserName --MAIL_PASSWORD=SomePassword --MAIL_FROM_ADDRESS='no-reply@gmail.com' --MAIL_FROM_NAME='The Robot'",'brown');
+    echo $c->getColoredString("\n\n   --REGISTRATION_COMPLETENESS=email --MAIL_HOST=smtp.postmarkapp.com --MAIL_USERNAME=SomeUserName --MAIL_PASSWORD=SomePassword --MAIL_FROM_ADDRESS='no-reply@mydomainiown.com' --MAIL_FROM_NAME='The Robot'",'brown');
     echo $c->getColoredString("\n\n   --MAIL_PORT=587 #or whatever. Fios will, for example, block port 25",'brown');
 
     echo "\n";
@@ -102,7 +102,7 @@ if ($REGISTRATION_COMPLETENESS != 'none') {
         $MAIL_USERNAME_elseFalse !== false &&
         $MAIL_PASSWORD_elseFalse !== false &&
         $MAIL_FROM_ADDRESS_elseFalse !== false &&
-        $MAIL_FROM_NAME_elseFalse !== false, "$REGISTRATION_COMPLETENESS is set to $REGISTRATION_COMPLETENESS. Email settings must be configured."
+        $MAIL_FROM_NAME_elseFalse !== false, "REGISTRATION_COMPLETENESS is set to $REGISTRATION_COMPLETENESS. Email settings must be configured."
     );
 }
 
@@ -144,7 +144,7 @@ jcmd(cmd:"sed -i'.orig' '/MEMCACHED_HOST=.*$/d' .env", bForceEcho: true);
 jcmd(cmd:"sed -i'.orig' '1s/^/MEMCACHED_HOST='{$localhostName}'\\n/' .env", bForceEcho: true);
 
 jcmd(cmd:"sed -i'.orig' '/APP_URL=.*$/d' .env", bForceEcho: true);
-jcmd(cmd:"sed -i'.orig' '1s/^/APP_URL='{$APP_URL}'//\\n/' .env", bForceEcho: true);
+jcmd(cmd:"sed -i'.orig' '1s/^/APP_URL=\"{$APP_URL}\"//\\n/' .env", bForceEcho: true);
 
 jcmd(cmd:"sed -i'.orig' '/APP_NAME=.*$/d' .env", bForceEcho: true);
 jcmd(cmd:"sed -i'.orig' '1s/^/APP_NAME='{$APP_NAME}'\\n/' .env", bForceEcho: true);
@@ -306,7 +306,14 @@ jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/we
 
 // Big changes to model/User.php ... (good candidate for Rector?)
 jcmd(cmd:'mv app/Models/User.php app/Models/User.php.eraseme', bForceEcho: true);
-jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/People/src/Models/Stubs/User.php app/Models/', bForceEcho: true);
+if ($REGISTRATION_COMPLETENESS == 'none') {
+    jcmd(cmd: 'cp vendor/tallandsassy/tallandsassy/People/src/Models/Stubs/User.NoEmailVerification.php.stub app/Models/User.php', bForceEcho: true);
+} elseif ($REGISTRATION_COMPLETENESS =='email') {
+    jcmd(cmd: 'cp vendor/tallandsassy/tallandsassy/People/src/Models/Stubs/User.YesEmailVerification.php.stub app/Models/User.php', bForceEcho: true);
+
+} else {
+    assert(0, 'logic error');
+}
 //$newMethods = '
 // protected static function booted()
 //    {
