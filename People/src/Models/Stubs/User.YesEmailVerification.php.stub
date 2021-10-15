@@ -1,0 +1,9 @@
+<?php
+
+namespace App\Models;
+
+use TallAndSassy\People\Models\UserBase;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+class User extends UserBase
+    implements MustVerifyEmail
+{}

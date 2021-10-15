@@ -4,4 +4,9 @@ namespace App\Models;
 
 use TallAndSassy\People\Models\UserBase;
 
-class User extends UserBase {}
+class User extends UserBase
+    // uncomment if you want to start requiring users to verify their emails upon registration.
+    // You'll also need to enable `Features::emailVerification(),` in config/fortify.php and properly enable a mail server
+    // If using INSTALL.php or INSTALL_2_Tassy.php, look at using the --REGISTRATION_COMPLETENESS=email to set this up automatically
+    // implements \Illuminate\Contracts\Auth\MustVerifyEmail
+{}
