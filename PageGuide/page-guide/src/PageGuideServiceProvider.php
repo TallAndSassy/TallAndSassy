@@ -46,6 +46,7 @@ class PageGuideServiceProvider extends ServiceProvider
                     __DIR__ . '/../resources/views/license.blade.php' => base_path('resources/views/vendor/tassy/license.blade.php'),
                     __DIR__ . '/../resources/views/licenses.blade.php' => base_path('resources/views/vendor/tassy/licenses.blade.php'),
                     __DIR__ . '/../resources/views/pretty-version.blade.php' => base_path('resources/views/vendor/tassy/pretty-version.blade.php'),
+                    __DIR__ . '/../resources/views/components/content-front.blade.php' => base_path('resources/views/vendor/tassy/components/content-front.blade.php'),
                     __DIR__ . '/../resources/views/components/subsite-name.blade.php' => base_path('resources/views/vendor/tassy/components/subsite-name.blade.php'),
                     __DIR__ . '/../resources/views/components/app-tagline.blade.php' => base_path('resources/views/vendor/tassy/components/app-tagline.blade.php'),
                     __DIR__ . '/../resources/views/teams' => base_path('resources/views/teams'), // not totally sure this is stilla  thing 10/21'
