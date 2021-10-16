@@ -48,7 +48,8 @@
             "TallAndSassy\\RolesAndPermissions\\": "RolesAndPermissions/src",
             "TallAndSassy\\Tenancy\\": "Tenancy/src",
             "TallAndSassy\\Cms\\": "Cms/src",
-            "TallAndSassy\\People\\": "People/src"
+            "TallAndSassy\\People\\": "People/src",
+            "TallAndSassy\\Console\\": "Console/src"
         }
     },
 

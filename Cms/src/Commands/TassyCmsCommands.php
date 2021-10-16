@@ -11,6 +11,7 @@ namespace TallAndSassy\Cms\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use JetBrains\PhpStorm\Pure;
+use TallAndSassy\Console\ConsoleUtils;
 use function PHPUnit\Framework\directoryExists;
 use function PHPUnit\Framework\throwException;
 
@@ -30,7 +31,7 @@ class TassyCmsCommands extends Command
     public function handle()
     {
         // NPM Packages...
-        $this->updateNodePackages(function ($packages) {
+        ConsoleUtils::UpdateNodePackages(callback: function ($packages) {
             return [
                 "@ckeditor/ckeditor5-alignment" => "^27.1.0",
         "@ckeditor/ckeditor5-basic-styles" => "^27.1.0",
@@ -54,7 +55,7 @@ class TassyCmsCommands extends Command
         "@ckeditor/ckeditor5-theme-lark" => "^27.1.0"
 
                 ] + $packages;
-        });
+        }, enum_dev_prod: 'prod');
 
 
 
@@ -63,34 +64,5 @@ class TassyCmsCommands extends Command
 
     }
 
-    /**
-     * Copied from vendor/laravel/jetstream/src/Console/InstallCommand.php
-     * Update the "package.json" file.
-     *
-     * @param  callable  $callback
-     * @param  bool  $dev
-     * @return void
-     */
-    protected static function updateNodePackages(callable $callback, $dev = true)
-    {
-        if (! file_exists(base_path('package.json'))) {
-            return;
-        }
 
-        $configurationKey = $dev ? 'devDependencies' : 'dependencies';
-
-        $packages = json_decode(file_get_contents(base_path('package.json')), true);
-
-        $packages[$configurationKey] = $callback(
-            array_key_exists($configurationKey, $packages) ? $packages[$configurationKey] : [],
-            $configurationKey
-        );
-
-        ksort($packages[$configurationKey]);
-
-        file_put_contents(
-            base_path('package.json'),
-            json_encode($packages, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT).PHP_EOL
-        );
-    }
 }
