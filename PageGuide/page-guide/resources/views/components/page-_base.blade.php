@@ -76,7 +76,7 @@
         @stack('modals')
         @stack('TassyScripts')
         @livewireScripts
-     @bukScripts
+{{--     @bukScripts--}}
     </body>
 </html>
 
