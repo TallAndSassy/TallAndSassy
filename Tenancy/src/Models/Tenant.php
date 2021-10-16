@@ -27,7 +27,7 @@ class Tenant extends Model
                 $demoUserEmail = env('TASSY_TENANCY_ADMINEMAIL');
                 $demoEmailName = explode('@',$demoUserEmail)[0];
                 $demoEmailDomain = explode('@',$demoUserEmail)[1];
-                $newTenantEmail = "$demoEmailName.XXX+{$tenant->slug}@$demoEmailDomain";
+                $newTenantEmail = "$demoEmailName+{$tenant->slug}@$demoEmailDomain";
 
 
                 $new_admin = User::create([
