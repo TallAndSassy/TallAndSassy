@@ -7,6 +7,9 @@ use TallAndSassy\Tenancy\Models\Tenant;
 
 class TenantUtils
 {
+    static function GetTenantNameElseFail(): ?string {
+        return \TallAndSassy\Tenancy\Models\Tenant::where('slug', \TallAndSassy\Tenancy\TenantUtils::GetTenantSlugElseNull())->firstOrFail()->name;
+    }
     static function GetTenantIdElseNull(): ?string {
         if (! session()->has('tenant_id')) {
             return null;
