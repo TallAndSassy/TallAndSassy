@@ -1,1 +1,1 @@
-<div class="text-3xl">{{$slot}}</div>
+<div class="text-4xl">{{$slot}}</div>
