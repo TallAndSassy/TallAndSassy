@@ -2,13 +2,13 @@
     <x-tassy::ui.looks.title>My Big Title</x-tassy::ui.looks.title>
     <x-tassy::ui.looks.parenthetical>(parenthetical text)</x-tassy::ui.looks.parenthetical>
     <hr>
-    <ul class="list-disc">
+    <ul class="list-disc pl-6">
         <li>Item Red</li>
         <li>Item Sea Froth</li>
         <li>Item Amber</li>
     </ul>
     <hr>
-    <ol class="list-decimal">
+    <ol class="list-decimal pl-6">
         <li>Item Red</li>
         <li>
             Good luck with sub-items
@@ -16,7 +16,7 @@
         <li>Item Amber</li>
     </ol>
     <hr>
-    <ul class="list-disc">
+    <ul class="list-disc pl-6">
         <li>
             <x-tassy::ui.looks.link-to  href='/' >
                 Link to another page in this app
