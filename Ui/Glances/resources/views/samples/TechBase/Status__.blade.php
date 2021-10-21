@@ -2,8 +2,9 @@
 <div class="Page_Config">
     Is stuff working here in UI Glances?
 
-    <div class="border rounded bg-gray-200 shadow">
-        <div class="text-2xl">Does alpine work</div>
+
+    <div class="border rounded bg-gray-200 shadow mb-2">
+        <div class="text-2xl">Does alpine work?</div>
         <div x-data="{ open: false }">
             <button @click="open = true">Open Dropdown (click to see alpine stuff)</button>
 
@@ -15,10 +16,29 @@
             </ul>
         </div>
     </div>
-    <div x-data :class="$store.darkModeStoreTest_forStatus__.on && 'bg-gray-400'">Light Mode / Dark Mode</div>
+
+    <div class="border rounded bg-gray-200 shadow mb-2">
+        <div class="text-2xl">Does alpine $store work?</div>
+        <div x-data :class="$store.darkModeStoreTest_forStatus__.on && 'bg-gray-400'">Light Mode / Dark Mode</div>
     <button x-data @click="$store.darkModeStoreTest_forStatus__.toggle()">[Toggle Dark Mode Button]</button>
     <div class="italic text-gray-400">This references the $store.darkModeStoreTest_forStatus__ alpine variable that is initialized in PageGuide/page-guide/resources/views/components/page-_base.blade.php</div>
+    </div>
 
+    <div class="border rounded bg-gray-200 shadow mb-2">
+        <div class="text-2xl">Is alpine $persist working?</div>
+
+    <div x-data="{ count: $persist(0) }">
+        <button x-on:click="count++">[Increment]</button>
+
+        <span x-text="count">$persists is dead if you see this.</span> <div class="italic text-gray-400">This will count up as you click. <br>It starts at 'Zero' and will go up to '1', '2', etc.  Refreshing the page won't change the count.
+            <br>
+            Security Note: This value is stored in the browser's local storage. This raw data is not tied to a user.
+        <br>
+            https://alpinejs.dev/plugins/persist
+        </div>
+
+    </div>
+    </div>
 
 {{--    <div class="border rounded bg-gray-200 shadow">--}}
 {{--        10/19/21' I'm not sure this is relevant.--}}

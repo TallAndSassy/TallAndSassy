@@ -1,7 +1,7 @@
 {
     "name": "TallAndSassy",
     "version": "1.0.0",
-    "dependencies": {
+    "devDependencies": {
         "@ckeditor/ckeditor5-alignment": "^27.1.0",
         "@ckeditor/ckeditor5-basic-styles": "^27.1.0",
         "@ckeditor/ckeditor5-cloud-services": "^27.1.0",
@@ -21,7 +21,8 @@
         "@ckeditor/ckeditor5-paragraph": "^27.1.0",
         "@ckeditor/ckeditor5-remove-format": "^27.1.0",
         "@ckeditor/ckeditor5-table": "^27.1.0",
-        "@ckeditor/ckeditor5-theme-lark": "^27.1.0",
-        "alpinejs": "^3.4.2"
+        "@ckeditor/ckeditor5-theme-lark": "^27.1.0"
+
+
     }
 }
