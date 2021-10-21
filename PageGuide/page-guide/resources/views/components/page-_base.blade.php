@@ -76,6 +76,17 @@
         @stack('modals')
         @stack('TassyScripts')
         @livewireScripts
+
+
+{{--     Giving up - tried making this work via package.json and PageGuide/page-guide/resources/js/app.js--}}
+{{--     but I just can't manage npm config. I'm sure somebody could.--}}
+
+     <!-- Alpine Plugins -->
+     <script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+
+     <!-- Alpine Core -->
+     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
      <script>
          document.addEventListener('alpine:init', () => {
              Alpine.store('darkModeStoreTest_forStatus__', {
