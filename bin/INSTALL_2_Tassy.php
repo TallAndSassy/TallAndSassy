@@ -301,7 +301,7 @@ jcmd(cmd:'mv database/factories/UserFactory.php database/factories/UserFactory.o
 jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/Tenancy/src/database/factories/stub/UserFactory.php database/factories', bForceEcho: true);
 
 jcmd(cmd:'php artisan vendor:publish --tag="tassy"', bForceEcho: true);
-jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/web.php', bForceEcho: true);
+// OBE 10/21' jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/PageGuide/stubs/web.stub routes/web.php', bForceEcho: true);
 
 
 // Big changes to model/User.php ... (good candidate for Rector?)

@@ -3,7 +3,7 @@ if (! (isSettableOptionSet('DB_USERNAME') && isSettableOptionSet('DB_PASSWORD') 
     $c = new Colors();
     echo "\n";
     echo $c->getColoredString("\n\nYou are missing stuff. Try something like this  ",'red');
-    echo $c->getColoredString("\n   php INSTALL_1_Laravel.php --DB_USERNAME=root --DB_PASSWORD=ofallevil  --APP_NAME=TassyTest001  ",'green');
+    echo $c->getColoredString("\n   php INSTALL_1_Laravel.php --DB_USERNAME=root --DB_PASSWORD=ofallevil  --APP_NAME=MyTassyTest001  ",'green');
     echo $c->getColoredString("\n\n   --DO_FORCE_REINSTALL=(0,1) reinstalls laravel into preexisting directory ",'brown');
     echo $c->getColoredString("\n\n   --MAX_PROCRASTINATION=(0,1) if 1, skips migrate and npm stuff, presuming you'll just do it later ",'brown');
 
