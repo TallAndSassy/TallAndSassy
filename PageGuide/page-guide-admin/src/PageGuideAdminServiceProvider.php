@@ -57,6 +57,7 @@ class PageGuideAdminServiceProvider extends ServiceProvider
             );
 
 
+            /* OBE? file just isn't there 10/21'
             $migrationFileName = 'create_app_theme_base_admin_table.php';
             if (! $this->migrationFileExists($migrationFileName)) {
                 $this->publishes(
@@ -68,6 +69,7 @@ class PageGuideAdminServiceProvider extends ServiceProvider
                     ['migrations','tassy-migrations','tassy']
                 );
             }
+            */
 
 
             $this->publishes(
