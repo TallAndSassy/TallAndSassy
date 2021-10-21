@@ -21,8 +21,8 @@ class TassyTenantSeederBase extends Seeder
         $faker = \Faker\Factory::create();
 
         // Lets make a bunch of tenants, and create users and data in each one
-        $numTenants = 10;
-        $numUsersPerTenants = 8;
+        $numTenants = 1;
+        $numUsersPerTenants = 0;
         for ($i = 0; $i < $numTenants; $i++) {
             // Per tenant stuff...
             $tenant = Tenant::factory()->create();
@@ -36,13 +36,13 @@ class TassyTenantSeederBase extends Seeder
             Page::factory(5)->create();
 
 
-            // Make a new user assigned to this tenant
-            $demoUserEmail = env('TASSY_TENANCY_ADMINEMAIL');
-            $demoEmailName = explode('@',$demoUserEmail)[0];
-            $demoEmailDomain = explode('@',$demoUserEmail)[1];
-            $newTenantEmail = "$demoEmailName+{$tenant->slug}@$demoEmailDomain";
-            $admin_user = User::factory()->create(['email' => $newTenantEmail, 'name' => 'Webmaster']);
-            $admin_user->assignRole('webmaster');
+//            // Make a new user assigned to this tenant
+//            $demoUserEmail = env('TASSY_TENANCY_ADMINEMAIL');
+//            $demoEmailName = explode('@',$demoUserEmail)[0];
+//            $demoEmailDomain = explode('@',$demoUserEmail)[1];
+//            $newTenantEmail = "$demoEmailName+{$tenant->slug}@$demoEmailDomain";
+//            $admin_user = User::factory()->create(['email' => $newTenantEmail, 'name' => 'Webmaster']);
+//            $admin_user->assignRole('webmaster');
         }
 
 
