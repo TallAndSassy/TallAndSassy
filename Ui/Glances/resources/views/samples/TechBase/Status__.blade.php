@@ -15,6 +15,10 @@
             </ul>
         </div>
     </div>
+    <div x-data :class="$store.darkModeStoreTest_forStatus__.on && 'bg-gray-400'">Light Mode / Dark Mode</div>
+    <button x-data @click="$store.darkModeStoreTest_forStatus__.toggle()">[Toggle Dark Mode Button]</button>
+    <div class="italic text-gray-400">This references the $store.darkModeStoreTest_forStatus__ alpine variable that is initialized in PageGuide/page-guide/resources/views/components/page-_base.blade.php</div>
+
 
 {{--    <div class="border rounded bg-gray-200 shadow">--}}
 {{--        10/19/21' I'm not sure this is relevant.--}}

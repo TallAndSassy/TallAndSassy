@@ -76,7 +76,17 @@
         @stack('modals')
         @stack('TassyScripts')
         @livewireScripts
-{{--     @bukScripts--}}
+     <script>
+         document.addEventListener('alpine:init', () => {
+             Alpine.store('darkModeStoreTest_forStatus__', {
+                 on: false,
+
+                 toggle() {
+                     this.on = ! this.on
+                 }
+             })
+         })
+     </script>
     </body>
 </html>
 
