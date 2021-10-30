@@ -6,7 +6,7 @@ namespace TallAndSassy\Ui\Glances;
 
 
 trait TabsProducer_SimpleImplementation{
-    static string $PAGE_TAB_KEY = 'pageTab';
+    static string $PAGE_TAB_KEY = 'page_tab_slug';
     public function getCurrentTab(): TabProducer_StmInterface {
         if (isset($_REQUEST[static::$PAGE_TAB_KEY]) && (in_array($_REQUEST[static::$PAGE_TAB_KEY], $this->getAllowedTabSlugs()))) {
             $current_tab_parts_producer = $this->getTabs()[$_REQUEST[static::$PAGE_TAB_KEY]];
