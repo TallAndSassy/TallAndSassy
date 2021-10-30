@@ -21,8 +21,8 @@ class TassyTenantSeederBase extends Seeder
         $faker = \Faker\Factory::create();
 
         // Lets make a bunch of tenants, and create users and data in each one
-        $numTenants = 1;
-        $numUsersPerTenants = 0;
+        $numTenants = 10;
+        $numUsersPerTenants = 8;
         for ($i = 0; $i < $numTenants; $i++) {
             // Per tenant stuff...
             $tenant = Tenant::factory()->create();
