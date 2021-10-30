@@ -18,10 +18,10 @@
     <x-tassy-ui::tab-container defaultSlug="second">
 
         <x-tassy-ui::tab name="First" :isLivewire="true" slug="first">
-            <livewire:tassy-ui:Sample_Tab1_Tab :tabName="'First'"/>
+            <livewire:tassy-ui:Sample_Tab1_Tab :tabName="'First'" :tabSlug="'first'"/>
         </x-tassy-ui::tab>
         <x-tassy-ui::tab name="Second" slug='second' :isLivewire="true">
-            <livewire:tassy-ui:Sample_Tab2_Tab :tabName="'Second'"/>
+            <livewire:tassy-ui:Sample_Tab2_Tab :tabName="'Second'" :tabSlug="'second'"/>
         </x-tassy-ui::tab>
         <x-tassy-ui::tab name="Third" slug="third">
             <div class="border shadow mt-2 p-2 ">

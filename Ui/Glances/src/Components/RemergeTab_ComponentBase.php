@@ -6,7 +6,6 @@ trait RemergeTab_Implementation {
     
     public string $tabName;
     public string $tabSlug;
-    
     public string $enumRenderState_Placeheld_Rendered = 'Placeheld';
 
     public function mount_RemergeTab_Implementation(string $tabName, string $tabSlug) {
