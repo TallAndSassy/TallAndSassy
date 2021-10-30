@@ -82,10 +82,10 @@
 {{--     but I just can't manage npm config. I'm sure somebody could.--}}
 
      <!-- Alpine Plugins -->
-     <script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+{{--     <script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>--}}
 
      <!-- Alpine Core -->
-     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+{{--     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>--}}
 
      <script>
          document.addEventListener('alpine:init', () => {
