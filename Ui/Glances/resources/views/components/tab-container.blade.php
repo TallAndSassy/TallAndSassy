@@ -53,7 +53,11 @@
 
 
             arrSlug2DomTab: {},
-            activeSlug: 'students2'
+            activeSlug: 'students2',
+            _afterFirstRender: function() {
+                console.log('rendered page.');
+                Livewire.emit('iSeeTab', this.activeSlug);
+            }
 
          }"
          x-init="let queryString = window.location.search;
@@ -65,6 +69,9 @@
                      activeSlug = '{{$defaultSlug}}';
                  }
                  console.log('pageTab: '+pageTab);
+                 $nextTick(() => {
+                    _afterFirstRender();
+                 })
                  {{--         //Note: this is called before child divs get a chance to call jRegisterTab($el); which doesn't give a chance to pick default tab, or inspect the url.--}}
          {{--         // get the url parameter $PAGE_TAB_KEY https://www.sitepoint.com/get-url-parameters-with-javascript/--}}
                  "
