@@ -2,26 +2,28 @@
 
 namespace TallAndSassy\Ui\Glances\Components;
 use Livewire\Component;
+
+
 trait RemergeTab_Implementation {
     
     public string $tabName;
     public string $tabSlug;
-    public string $enumRenderState_Placeheld_Rendered = 'Placeheld';
+    
+    public string $snumRenderState = 'Placeheld';
 
     public function mount_RemergeTab_Implementation(string $tabName, string $tabSlug) {
         $this->tabName = $tabName;
         $this->tabSlug = $tabSlug;
-        //$this->listeners['iSeeTab'] =  'maybeShowContent';
     }
     public function maybeShowContent(string $tabSlug): void {
         if ($tabSlug == $this->tabSlug) {
-            if ($this->enumRenderState_Placeheld_Rendered == 'Placeheld') {
+            if ($this->snumRenderState == enumRenderState::PLACEHELD->value) {
                 
-                $this->enumRenderState_Placeheld_Rendered = 'Rendered';
-            } elseif ($this->enumRenderState_Placeheld_Rendered == 'Rendered') {
+                $this->snumRenderState = enumRenderState::RENDERED->value;
+            } elseif ($this->snumRenderState == enumRenderState::RENDERED->value) {
                 $this->skipRender();
             } else {
-                assert(0,$this->enumRenderState_Placeheld_Rendered. ' is bonkers');
+                assert(0,$this->snumRenderState. ' is bonkers');
             }
         } else {
             $this->skipRender();
