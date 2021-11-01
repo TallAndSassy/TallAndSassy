@@ -1,10 +1,16 @@
-@props(['name','slug','isLivewire'=>false])
+@props(['name','slug','enumLivewireRendering_default_custom'=>'default'])
+@php
+    $isLivewire = str_starts_with(trim($slot),'<div wire:id');
+    if ($isLivewire) {
+        assert(in_array($enumLivewireRendering_default_custom,['default','custom']), 'enumLivewireRendering_default_custom must be set when including a livewire componenent');
+    }
+@endphp
 <div name="{!! $name !!}"
      x-data="{
                 isLivewire: {{$isLivewire ? 'true' : 'false'}},
                 iBecameVisible: function() {
                     console.log('I ('+$el.attributes.slug.value+') become visible');
-                    Livewire.emit('iSeeTab', $el.attributes.slug.value);
+                    Livewire.emit('iSeeTab', $el.attributes.slug.value); // uhhh, this is dumb 10/21'  just call livewire directly
                      console.log('emmitted to '+$el.attributes.slug.value);
                 }
             }"
