@@ -387,9 +387,17 @@ jcmd(cmd:'cp vendor/tallandsassy/tallandsassy/Cms/resources/js/jckeditor.js reso
 // Terms and Privacy
 // Make user accept the new terms and policy
 // uncomment config/jetstream.php --> Features::termsAndPrivacyPolicy(),
+// (ugh, I'm really saying, uncomment this line, but don't freak out if it is already uncommented 11/21')
+$ret = commentOutLineWithStuff(
+    filePath:'config/jetstream.php',
+    contentToFindInALine: 'Features::accountDeletion(),',
+    doDieOnNoMatch: false,
+    bForceEcho: true
+);
+assert($ret);
 $ret = insertAfter(
     filePath:'config/jetstream.php',
-    contentToFindInALine:'// Features::termsAndPrivacyPolicy()',
+    contentToFindInALine:'Features::termsAndPrivacyPolicy()',
     contentToInsertAfterFoundLine:'Features::termsAndPrivacyPolicy(),// flipped by Tassy install script',
     bForceEcho:true);
 assert($ret);
