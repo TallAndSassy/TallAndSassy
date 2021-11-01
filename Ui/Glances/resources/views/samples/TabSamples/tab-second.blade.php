@@ -5,7 +5,7 @@
                     <span>Smoe more content, slightly fast glances hard to build Content...</span>
 
     @elseif ($snumRenderState == \TallAndSassy\Ui\Glances\Components\EnumRenderState::PLACEHELD->value)
-                    <span>[spinner for {{$tabName}}]</span>
+        <x-spinners.loading/>
             @else
                     <span>I'm bad at enums</span>
             @endif
