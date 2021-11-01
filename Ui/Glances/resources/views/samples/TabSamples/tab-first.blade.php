@@ -7,7 +7,7 @@
         <span class="border bg-green-300">Hard content from First Tab Sample... Should have taken {{$delaySeconds}} seconds to render the first time cuz of hardcoded 'sleep' throttle that is just here as a demo</span>
 
     @elseif ($snumRenderState == \TallAndSassy\Ui\Glances\Components\EnumRenderState::PLACEHELD->value)
-        <x-spinners.working/>
+        <x-tassy-ui::spinners.working/>
     @else
         <span>I'm bad at enums</span>
     @endif

@@ -1,7 +1,7 @@
 <x-tassy::page-me title="Super Admin">
     <div>
         <x-tassy-ui::tabs :defaultTab="'Dashboard'">
-            <x-tassy-ui::tab name="Dashboard" :isLivewire="false">
+            <x-tassy-ui::tab name="Dashboard" :isLivewire="false" slug="dashboard">
 
 {{--                https://tailwindui.com/components/application-ui/data-display/stats--}}
                 <div>
@@ -26,12 +26,12 @@
                 </div>
 
             </x-tassy-ui::tab>
-            <x-tassy-ui::tab name="Tenants" :isLivewire="true">
+            <x-tassy-ui::tab name="Tenants" :isLivewire="true" slug="tenants">
 {{--                <livewire:su.super-admin-tenant-directory :tabName="'SuperAdminTenantDirectory'"/>--}}
                 <livewire:tassy:super-admin.tenant-directory :tabName="'SuperAdminTenantDirectory'"/>
 
             </x-tassy-ui::tab>
-            <x-tassy-ui::tab name="More...">
+            <x-tassy-ui::tab name="More..." slug="more">
                 <div class="border shadow mt-2 p-2 ">
                     TBD
                 </div>
