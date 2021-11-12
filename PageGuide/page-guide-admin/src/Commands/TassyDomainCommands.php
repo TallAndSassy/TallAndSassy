@@ -31,35 +31,39 @@ class TassyDomainCommands extends Command
 
     public function handle()
     {
+        $arrHoming_ControllersLivewire = ['Controllers', 'Livewire'];
         $enumHoming_ControllersLivewire = '';
         if ($this->option('homing')) {
-            $enumHoming_ControllersLivewire = $this->option('homing')[0];
+            $enumHoming_ControllersLivewire = [$this->option('homing')[0]];
+            assert(in_array($enumHoming_ControllersLivewire, $arrHoming_ControllersLivewire));
         }
-        if (! in_array($enumHoming_ControllersLivewire,['Controllers', 'Livewire']) ) {
-            $enumHoming_ControllersLivewire = match (
-            $this->choice('How do you want to store the page info', ['c' => 'app/Http/Controllers', 'l' => 'app/Http/Livewire'], 'l')
-            ) {
-                'c' => 'Controllers',
-                'l' => 'Livewire',
-            };
-        }
+        //        if (! in_array($enumHoming_ControllersLivewire,['Controllers', 'Livewire']) ) {
+        //            $enumHoming_ControllersLivewire = [match (
+        //            $this->choice('How do you want to store the page info', ['c' => 'app/Http/Controllers', 'l' => 'app/Http/Livewire'], 'l')
+        //            ) {
+        //                'c' => 'Controllers',
+        //                'l' => 'Livewire',
+        //            }];
+        //        }
 
 
+        foreach ($arrHoming_ControllersLivewire as $enumHoming_ControllersLivewire) {
+            print "\n-------- $enumHoming_ControllersLivewire -----------\n";
+            $subdomain = '';
+            if ($this->option('subdomain')) {
+                $subdomain = $this->option('subdomain')[0];
+            }
+            print "These are the domains found in " . static::GetOffsetPathToDomain($enumHoming_ControllersLivewire, $subdomain) . "\n";
+            $dir = base_path(static::GetDomainDir_offsetFromBasePath($enumHoming_ControllersLivewire) . DIRECTORY_SEPARATOR . $subdomain);
+            if (!is_dir($dir)) {
+                print "\n The dir does not exist.  Zero group here: $dir \n";
+                return 0;
+            }
 
-        $subdomain = '';
-        if ($this->option('subdomain')) {
-            $subdomain = $this->option('subdomain')[0];
-        }
-        print "These are the domains found in ".static::GetOffsetPathToDomain($enumHoming_ControllersLivewire, $subdomain)."\n";
-        $dir = base_path(static::GetDomainDir_offsetFromBasePath($enumHoming_ControllersLivewire).DIRECTORY_SEPARATOR.$subdomain);
-        if (! is_dir($dir)) {
-            print "\n The dir does not exist.  Zero group here: $dir \n";
-            return 0;
-        }
-
-        foreach (static::GetDomainNames($enumHoming_ControllersLivewire, $subdomain) as $name) {
-            print $name;
-            print "\n";
+            foreach (static::GetDomainNames($enumHoming_ControllersLivewire, $subdomain) as $name) {
+                print $name;
+                print "\n";
+            }
         }
 
     }
