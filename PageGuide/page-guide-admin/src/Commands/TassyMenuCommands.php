@@ -124,7 +124,7 @@ class TassyMenuCommands extends Command
 
         $replacementMap['ReplaceableBool_IsShoppingLocal'] = $boolShopLocal ? 1 : 0 ;
         TassyDomainCommands::InitializeAssets(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
-        $replacementMap['ReplaceableString_UrlOffsetToAsset'] = TassyDomainCommands::GetDirOffsetToAssetDir(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
+        $replacementMap['ReplaceableString_PathOffsetToAsset'] = TassyDomainCommands::GetDirOffsetToAssetDir(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
 
         // Sub Url
         $_urlPrefix = '';
@@ -346,7 +346,8 @@ class TassyMenuCommands extends Command
         $ReplaceableBladePath_offsetFromResource = 'views/' . $ReplaceableViewRef . '.blade.php';
         $blade_Destination_filepath_full = TassyDomainCommands::GetDomainResourceAbsolutePath($enumHoming_ControllersLivewire, $groupName, $boolShopLocal).DIRECTORY_SEPARATOR.$shortNodeName.'.blade.php';;//resource_path($ReplaceableBladePath_offsetFromResource);
         #dd($blade_Destination_filepath_full);
-        $replacementMap['ReplaceableBladePath'] = $ReplaceableBladePath_offsetFromResource;
+        $replacementMap['ReplaceableString_BladePath_ResourceOffset'] = $ReplaceableBladePath_offsetFromResource;
+        $replacementMap['ReplaceableString_BladePath_Abs'] = $blade_Destination_filepath_full;
 
         static::LoadModifyPut($blade_StubSource_filepath, function (string $stub) use ($replacementMap) {
             return static::HydrateStub($stub, $replacementMap);

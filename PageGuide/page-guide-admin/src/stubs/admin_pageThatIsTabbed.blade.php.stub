@@ -1,5 +1,16 @@
 <div>
-    ReplaceableHtml at ReplaceableBladePath
+    ReplaceableHtml
+    <br>
+    Blade Path: ReplaceableBladePath
+    @if ('ReplaceableString_enumGroupScheme' != 'global')
+    (maybe inside the group directory, not the normal resources/views directory)
+    @endif
+    <br>
+    Edit the controller and adjust title stuff at: ReplaceableString_controller_filepath
+    <br>
+    Put public assets in: ReplaceableString_UrlOffsetToAsset
+    <img src="{{asset('ReplaceableString_UrlOffsetToAsset/Mockup.png')}}" >
+
     <div>
         <x-tassy-ui::tabs :defaultTab="'Second'">
             <x-tassy-ui::tab name="First" :isLivewire="true">
