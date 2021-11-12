@@ -125,6 +125,7 @@ class TassyMenuCommands extends Command
         $replacementMap['ReplaceableBool_IsShoppingLocal'] = $boolShopLocal ? 1 : 0 ;
         TassyDomainCommands::InitializeAssets(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
         $replacementMap['ReplaceableString_PathOffsetToAsset'] = TassyDomainCommands::GetDirOffsetToAssetDir(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
+        $replacementMap['ReplaceableString_UrlOffsetToAsset'] = TassyDomainCommands::GetUrlOffsetToAssetDir(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
 
         // Sub Url
         $_urlPrefix = '';
