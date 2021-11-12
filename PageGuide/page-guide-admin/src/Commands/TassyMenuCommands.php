@@ -60,7 +60,7 @@ class TassyMenuCommands extends Command
 
 
         $enumAdminMeFront = match (
-        $this->choice('You want to add a page, great! Where will it live?', ['f' => '/ (user facing)', 'a' => '/admin', 'm' => '/me'], 'm')
+        $this->choice('You want to add a page, great! Where will it live?', ['f' => '/ (user facing)', 'a' => '/admin', 'm' => '/me'], 'a')
         ) {
             'f' => 'front',
             'a' => 'admin',
@@ -228,7 +228,7 @@ class TassyMenuCommands extends Command
         // Which Page Controller - Single, or Tabbed
 
         // Is Page controller a tabbed page?
-        $enumTopPageScheme_single_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['s' => 'Single Page', 't' => 'Tabbed Page'], 's')) {
+        $enumTopPageScheme_single_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['s' => 'Single Page', 't' => 'Tabbed Page'], 't')) {
             's'=>'single',
             't'=>'tabbed',
         };//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
