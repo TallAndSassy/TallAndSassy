@@ -115,8 +115,27 @@ class TassyDomainCommands extends Command
         }
 
 
+
     }
 
+
+    public static function InitializeAssets( string $groupName, bool $shopLocal): void
+    {
+
+        if (!$shopLocal) {
+            dd(__FILE__,__LINE__,$shopLocal,$groupName);
+            return;
+        }
+
+        // images
+        $gfp = resource_path('img/'.$groupName);
+//        dd(__FILE__,__LINE__,$shopLocal,$groupName, $gfp);
+        if (! file_exists($gfp)) {
+            mkdir($gfp, recursive: true);
+            print "\nMade Directory: $gfp\n";
+            assert(file_exists($gfp),$gfp);
+        }
+    }
 //    private static function GetGroupFilePath_byGroupName(string $groupName): string {
 //        $_basedomainsuffix = ($groupName ? $groupName.DIRECTORY_SEPARATOR : '');
 //        $_baseDir = static::GetDomainDir_offsetFromBasePath().DIRECTORY_SEPARATOR.$_basedomainsuffix;

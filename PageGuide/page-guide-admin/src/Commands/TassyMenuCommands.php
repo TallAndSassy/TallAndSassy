@@ -96,12 +96,15 @@ class TassyMenuCommands extends Command
                     };
                 }
                 TassyDomainCommands::InitializeGroup($enumHoming_ControllersLivewire, $groupName, $boolShopLocal);
+                #TassyDomainCommands::InitializeAssets($groupName, $boolShopLocal);
+
             } else {
                 $groupName = TassyDomainCommands::GetDomainNames($enumHoming_ControllersLivewire)[$groupName_c];
 
                 $isAlreadyShoppingLocal = TassyDomainCommands::IsAlreadyShoppingLocal($enumHoming_ControllersLivewire, $groupName);
                 if ($isAlreadyShoppingLocal) {
                     $boolShopLocal = true;
+
                 } else {
                     $_fyiResourcesPath  = TassyDomainCommands::GetDomainResourceAbsolutePath( $enumHoming_ControllersLivewire, $groupName, shopLocal:true);
                     $boolShopLocal = match($this->choice("You have an existing group, but it is not yet set up for local shopping. You can start using local shopping.  You can choose to also shop locally so the your view files sit right there. If local, it will set up a new local 'resources/views' directory for your blade files. \n($_fyiResourcesPath)\n", ['l' => 'Shop Local', 'g' => 'Default Global behavior'], 'l')) {
@@ -110,12 +113,15 @@ class TassyMenuCommands extends Command
                     };
                     if ($boolShopLocal) {
                         TassyDomainCommands::InitializeGroup($enumHoming_ControllersLivewire, $groupName, $boolShopLocal);
+                        #TassyDomainCommands::InitializeAssets( $groupName, $boolShopLocal);
                     }
                 }
             }
-        }
-        $replacementMap['ReplaceableBool_IsShoppingLocal'] = $boolShopLocal ? 1 : 0 ;
 
+        }
+
+        $replacementMap['ReplaceableBool_IsShoppingLocal'] = $boolShopLocal ? 1 : 0 ;
+        TassyDomainCommands::InitializeAssets(groupName: $groupName, shopLocal: $boolShopLocal);
 
         // Sub Url
         $_urlPrefix = '';
@@ -145,7 +151,7 @@ class TassyMenuCommands extends Command
         $_a = [$_urlPrefix,$groupName,$shortNodeName];
         $_a = array_filter($_a);//https://stackoverflow.com/questions/3654295/remove-empty-array-elements
 
-        $ReplaceableSubUrl = $this->ask('What is the relative path? Probably something like "/admin/help"', '/'.implode('/', $_a) );//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
+        $ReplaceableSubUrl = $this->ask('What is the relative url? Probably something like "/admin/help"', '/'.implode('/', $_a) );//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
         $replacementMap['ReplaceableSubUrl'] = $ReplaceableSubUrl;
 
 
