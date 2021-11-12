@@ -80,6 +80,7 @@ class TassyMenuCommands extends Command
 
         };
         $boolShopLocal = false;
+        $replacementMap['ReplaceableString_enumGroupScheme'] = $enumGroupScheme;
         if ($enumGroupScheme == 'global') {
             $groupName = '';
         } else {
@@ -122,7 +123,7 @@ class TassyMenuCommands extends Command
 
         $replacementMap['ReplaceableBool_IsShoppingLocal'] = $boolShopLocal ? 1 : 0 ;
         TassyDomainCommands::InitializeAssets(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
-        $replacementMap['ReplaceableString_UrlOffsetToAsset'] = TassyDomainCommands::GetUrlOffsetToAssetDir(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
+        $replacementMap['ReplaceableString_UrlOffsetToAsset'] = TassyDomainCommands::GetDirOffsetToAssetDir(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
 
         // Sub Url
         $_urlPrefix = '';
@@ -241,6 +242,7 @@ class TassyMenuCommands extends Command
             $controller_StubSource_filepath = __DIR__ . '/../stubs/Controller.php.stub';
         }
         $replacementMap['ReplaceableControllerName'] = $ReplaceableControllerName;
+
         
         // what does it inherit from?
         if ($enumAdminMeFront == 'admin') {
@@ -268,6 +270,7 @@ class TassyMenuCommands extends Command
             $path .=  "/{$ReplaceableControllerName}.php";
             $controller_Destination_filepath = base_path($path);
         }
+        $replacementMap['ReplaceableString_controller_filepath'] = $controller_Destination_filepath;
 
 
         // Default HTML
