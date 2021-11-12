@@ -1,3 +1,4 @@
 <x-tassy::page-front class="">
     ReplaceableHtml at ReplaceableBladePath
+    <img src="{{asset('ReplaceableString_UrlOffsetToAsset/someImage.png')}}">
 </x-tassy::page-front>

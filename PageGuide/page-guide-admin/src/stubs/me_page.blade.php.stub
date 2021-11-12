@@ -1,3 +1,4 @@
 <x-tassy::page-me title="You Me title here.">
     ReplaceableHtml at ReplaceableBladePath
+    <img src="{{asset('ReplaceableString_UrlOffsetToAsset/someImage.png')}}">
 </x-tassy::page-me>>

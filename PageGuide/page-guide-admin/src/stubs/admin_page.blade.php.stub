@@ -1,3 +1,4 @@
 <div>
     ReplaceableHtml at ReplaceableBladePath
+    <img src="{{asset('ReplaceableString_UrlOffsetToAsset/someImage.png')}}">
 </div>

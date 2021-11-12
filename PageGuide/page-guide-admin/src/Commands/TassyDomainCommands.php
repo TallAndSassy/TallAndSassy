@@ -119,16 +119,16 @@ class TassyDomainCommands extends Command
     }
 
 
-    public static function InitializeAssets( string $groupName, bool $shopLocal): void
+    public static function InitializeAssets( string $groupName, string $pageName, bool $shopLocal): void
     {
 
         if (!$shopLocal) {
-            dd(__FILE__,__LINE__,$shopLocal,$groupName);
+
             return;
         }
 
         // images
-        $gfp = resource_path('img/'.$groupName);
+        $gfp = static::GetAbsolutePathToAssetDir($groupName, $pageName, $shopLocal);
 //        dd(__FILE__,__LINE__,$shopLocal,$groupName, $gfp);
         if (! file_exists($gfp)) {
             mkdir($gfp, recursive: true);
@@ -144,6 +144,30 @@ class TassyDomainCommands extends Command
 
     private static function GetAbsolutePathToDomain(string $enumHoming_ControllersLivewire, ?string $_baseGroup = null): string {
         return base_path(static::GetOffsetPathToDomain($enumHoming_ControllersLivewire, $_baseGroup));
+    }
+
+    private static function GetAbsolutePathToAssetDir( string $groupName, string $pageName, bool $shopLocal): string {
+        return base_path(static::GetDirOffsetToAssetDir($groupName, $pageName, $shopLocal));
+    }
+    //    private static function GetUrlToAssetDir( string $groupName, string $pageName, bool $shopLocal): string {
+    //        assert(0, 'call from within the blade asset(TassyDomainCommands::GetOffsetUrlToAssetDir() instead cuz issues when called from command line');
+    //        return asset(static::GetOffsetPathToAssetDir($groupName, $pageName, $shopLocal));
+    //    }
+    #[Pure]
+    public static function GetDirOffsetToAssetDir(string $groupName, string $pageName, bool $shopLocal): string {
+        if (!$shopLocal) {
+            return 'public';
+        }
+        $_baseGroupPrefix = ($groupName ? $groupName.DIRECTORY_SEPARATOR : '');
+        return "public/$_baseGroupPrefix/$pageName";
+    }
+    #[Pure]
+    public static function GetUrlOffsetToAssetDir(string $groupName, string $pageName, bool $shopLocal): string {
+        if (!$shopLocal) {
+            return '';
+        }
+        $_baseGroupPrefix = ($groupName ? $groupName.DIRECTORY_SEPARATOR : '');
+        return "$_baseGroupPrefix/$pageName";
     }
 
     #[Pure]
