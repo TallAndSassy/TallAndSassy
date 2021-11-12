@@ -34,6 +34,12 @@ class UiGlances_ServiceProvider extends ServiceProvider
                 ],
                 ['config','tassy-config','tassy']
             );
+            $this->publishes(
+                [ // todo: make friendlier?
+                    __DIR__ . '/../resources/views' => base_path('resources/views/vendor/tassy-ui_fyi'),
+                ],
+                ['views', 'tassy-views', 'tassy-ui']
+            );
         }
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'tassy-ui');

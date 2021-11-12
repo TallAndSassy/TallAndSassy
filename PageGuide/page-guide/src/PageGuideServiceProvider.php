@@ -94,7 +94,7 @@ class PageGuideServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'tassy');
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'tassy');
 
-
+//        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
 
         Route::macro(
             'tassy',
@@ -106,7 +106,7 @@ class PageGuideServiceProvider extends ServiceProvider
                         if (App::environment(['local', 'testing'])) {
                             // prefixed url to string
                             Route::get(
-                                '/TallAndSassy/PageGuide/sample_string', // you will absolutely need a prefix in your url
+                                '/TallAndSassy/PageGuide/sample_string', // you will absolutely need a prefix in your url, like: http://turcotteville.localhost:8002/tassy/TallAndSassy/PageGuide/sample_string
                                 function () {
                                     return "Hello PageGuide string via blade prefix";
                                 }
