@@ -31,3 +31,6 @@ The default password (for demos) is `password`. Literally.
 For example, to log into the 
 subsite `http://johathanbury.localhost:8000/login` when your admin email is `bob@gmail.com`
 you would enter `bob+johathanbury@gmail.com` and `password` as your password.
+
+##Q: How can I add pages?
+A: 
