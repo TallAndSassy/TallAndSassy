@@ -8,6 +8,7 @@ class UiSampleController extends \TallAndSassy\PageGuideAdmin\Http\Controllers\A
     public static string $title = 'UI Sample';
     public function getBodyView(string $subLevels) : \Illuminate\View\View
     {
+        $asr = static::subLevels2asrParams($subLevels);
         return view(static::viewRef);
     }
 }
