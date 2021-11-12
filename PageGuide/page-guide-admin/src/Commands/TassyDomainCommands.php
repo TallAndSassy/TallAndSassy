@@ -192,18 +192,33 @@ class TassyDomainCommands extends Command
 
 //    JJ - you have two sets of domains livewire and classic
     /* You can pass a subdomain, like 'Admin' */
-    public static function GetDomainNames(string $enumHoming_ControllersLivewire, ?string $_baseGroup = null, array $groupNames_soFar = [], bool $doMakeDirsIfNotThere = true): array {
+    private static function scan_dir_by_date($dir) { //https://stackoverflow.com/a/11923516/93933
+        //$ignored = array('.', '..', '.svn', '.htaccess', '.git');
+
+        $files = array();
+        foreach (scandir($dir) as $file) {
+            #if (in_array($file, $ignored)) continue;
+            $files[$file] = filemtime($dir . '/' . $file);
+        }
+
+        arsort($files);
+        $files = array_keys($files);
+
+        return ($files) ? $files : false;
+    }
+    public static function GetDomainNames(string $enumHoming_ControllersLivewire, ?string $_baseGroup = null,  array $groupNames_soFar = [], bool $doMakeDirsIfNotThere = true, string $enumSort_alpha_age = 'alpha',): array {
+        assert(in_array($enumSort_alpha_age,['alpha','age']),$enumSort_alpha_age);
         $_baseGroupOffsetFromBase = static::GetOffsetPathToDomain($enumHoming_ControllersLivewire, $_baseGroup);
         $_baseGroupAbsolutePath = static::GetAbsolutePathToDomain($enumHoming_ControllersLivewire, $_baseGroup);
 
         FileUtils::makeDirIfNotAlreadyThere($_baseGroupAbsolutePath);
-
-        foreach (scandir($_baseGroupAbsolutePath) as $h) {
+        $sortedDirs = static::scan_dir_by_date($_baseGroupAbsolutePath);
+        foreach ($sortedDirs as $h) {
             $filepath_to_file_orMaybeDir = $_baseGroupAbsolutePath.DIRECTORY_SEPARATOR.$h;
             if (is_dir($filepath_to_file_orMaybeDir) and ! in_array($h, ['.','..','resources'])) {
                 $newGroupName = $_baseGroup ? "$_baseGroup/$h" : $h;
                 $groupNames_soFar[] = $newGroupName;
-                $groupNames_soFar = static::GetDomainNames($enumHoming_ControllersLivewire, $newGroupName, $groupNames_soFar);
+                $groupNames_soFar = static::GetDomainNames(enumHoming_ControllersLivewire: $enumHoming_ControllersLivewire, _baseGroup: $newGroupName, groupNames_soFar: $groupNames_soFar, enumSort_alpha_age: $enumSort_alpha_age);
             }
         }
         return $groupNames_soFar;

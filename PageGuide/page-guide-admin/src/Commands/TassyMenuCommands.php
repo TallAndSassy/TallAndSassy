@@ -85,7 +85,8 @@ class TassyMenuCommands extends Command
             $groupName = '';
         } else {
             $existingGroups_plusNew = ['n'=>'New Group (Chose this to create a new grouping)', ...TassyDomainCommands::GetDomainNames($enumHoming_ControllersLivewire)];
-            $groupName_c = $this->choice('These are the existing groups', $existingGroups_plusNew, array_key_last($existingGroups_plusNew));
+            $defaultToLastTouchedDomain = (count($existingGroups_plusNew) == 1 ? array_key_last($existingGroups_plusNew) : array_key_first(TassyDomainCommands::GetDomainNames($enumHoming_ControllersLivewire, enumSort_alpha_age: 'age')));
+            $groupName_c = $this->choice('These are the existing groups', $existingGroups_plusNew, $defaultToLastTouchedDomain);
             if ($groupName_c == 'n') {
                 $groupName = $this->ask("Type the name of your new grouping, like 'Admin/Tasks', or 'Stuff' ", $shortNodeName);
                 if ($enumGroupScheme != 'global') {
