@@ -10,6 +10,8 @@ namespace TallAndSassy\PageGuideAdmin\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
+use TallAndSassy\Strings\TsStringConvert;
 
 
 class TassyPageAddCommand extends Command
@@ -370,6 +372,11 @@ class TassyPageAddCommand extends Command
             return static::HydrateStub($stub, $replacementMap);
         }, $blade_Destination_filepath_full);
 
+
+        //        turn view ref into html attribute friendly format
+        //        from: horns/E_1636768049 to horns.E_1636768049
+        $replacementMap['ReplaceableView_htmlAttributeCompatible'] =  TsStringConvert::viewPath2htmlAttribute_playsWithLivewire($replacementMap['ReplaceableViewRef']);
+
         // Do Menu Blade
         if ($enumAdminMeFront == 'admin') {
             if ($enumTopPageScheme_tab_page_tabbed == 'monopage' || $enumTopPageScheme_tab_page_tabbed == 'tabbedpage') {
@@ -388,7 +395,7 @@ class TassyPageAddCommand extends Command
                     );
                 }
             } elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
-                $htmlSnippet = file_get_contents(__DIR__ . '/../stubs/tab_snippet.blade.php.stub');
+                $htmlSnippet = file_get_contents(__DIR__ . '/../stubs/singletab_tab.blade.php.stub');
                 $htmlSnippet = static::HydrateStub($htmlSnippet, $replacementMap);
                 $this->info( "\n--- Please make the tab work by inserting something like this into your existing tabbed page.");
                 $this->alert( "\n$htmlSnippet");

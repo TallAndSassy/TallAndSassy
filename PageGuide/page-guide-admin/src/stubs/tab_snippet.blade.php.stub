@@ -1,4 +1,0 @@
-<x-tassy-ui::tab name="ReplaceableString_shortNodeName" slug="one">
-    ReplaceableString_shortNodeName body is here.
-    <a href="phpstorm://open?file=ReplaceableString_BladePath_Abs">ReplaceableString_BladePath_ResourceOffset</a>
-</x-tassy-ui::tab>

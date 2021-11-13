@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TallAndSassy\Strings;
 
+use Illuminate\Support\Str;
+
 class TsStringConvert {
     /*
      * History: copied from EtStringConvert
@@ -32,6 +34,13 @@ class TsStringConvert {
     }
     public static function htmlAttribute2pure(string $pure) : string {
         return urldecode($pure);
+    }
+
+    /* @returns: string compatible with livewire attributes
+     * <livewire:ReplaceableView_htmlAttributeCompatible :tabName="'ReplaceableString_shortNodeName'" :tabSlug="'ReplaceableString_shortNodeName'"/>
+     * */
+    public static function viewPath2htmlAttribute_playsWithLivewire(string $pureViewPath): string {
+        return str_replace('/','.', Str::kebab($pureViewPath));
     }
 
 
