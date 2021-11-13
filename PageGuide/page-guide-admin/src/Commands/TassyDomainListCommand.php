@@ -15,9 +15,9 @@ use function PHPUnit\Framework\directoryExists;
 use function PHPUnit\Framework\throwException;
 
 
-class TassyDomainCommands extends Command
+class TassyDomainListCommand extends Command
 {
-
+    public static $arrAllowedHoming_ControllersLivewire = ['Controllers', 'Livewire'];
     protected $signature = 'tassy-domain:list
             { --subdomain=* : "(Admin|Me|Front)"  },
             { --homing=* : "(Controllers|Livewire)"  }
@@ -31,11 +31,11 @@ class TassyDomainCommands extends Command
 
     public function handle()
     {
-        $arrHoming_ControllersLivewire = ['Controllers', 'Livewire'];
+
         $enumHoming_ControllersLivewire = '';
         if ($this->option('homing')) {
             $enumHoming_ControllersLivewire = [$this->option('homing')[0]];
-            assert(in_array($enumHoming_ControllersLivewire, $arrHoming_ControllersLivewire));
+            assert(in_array($enumHoming_ControllersLivewire, static::$arrAllowedHoming_ControllersLivewire));
         }
         //        if (! in_array($enumHoming_ControllersLivewire,['Controllers', 'Livewire']) ) {
         //            $enumHoming_ControllersLivewire = [match (
@@ -47,7 +47,7 @@ class TassyDomainCommands extends Command
         //        }
 
 
-        foreach ($arrHoming_ControllersLivewire as $enumHoming_ControllersLivewire) {
+        foreach (static::$arrAllowedHoming_ControllersLivewire as $enumHoming_ControllersLivewire) {
             print "\n-------- $enumHoming_ControllersLivewire -----------\n";
             $subdomain = '';
             if ($this->option('subdomain')) {
@@ -178,7 +178,7 @@ class TassyDomainCommands extends Command
         return $_baseDir;
     }
 
-    private static function GetDomainDir_offsetFromBasePath(string $enumHoming_ControllersLivewire): string {
+    public static function GetDomainDir_offsetFromBasePath(string $enumHoming_ControllersLivewire): string {
         if ($enumHoming_ControllersLivewire == 'Livewire') {
             return 'app/Http/Livewire';
         } elseif($enumHoming_ControllersLivewire == 'Controllers') {

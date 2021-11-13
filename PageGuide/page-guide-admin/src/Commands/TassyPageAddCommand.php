@@ -12,7 +12,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
 
-class TassyMenuCommands extends Command
+class TassyPageAddCommand extends Command
 {
 
     protected $signature = 'tassy-page:add';
@@ -21,7 +21,7 @@ class TassyMenuCommands extends Command
     //     { --label=* : "A quoted label for the menu item."  }';
     protected $description = 'Interactively Add an admin menu with a corresponding page. usage: php artisan tassy-menu:add (upper|lower) --label="People Stuff"';
 
-    // Future: Add --blade="" optino
+    
     public function __construct()
     {
         parent::__construct();
@@ -84,37 +84,37 @@ class TassyMenuCommands extends Command
         if ($enumGroupScheme == 'global') {
             $groupName = '';
         } else {
-            $existingGroups_plusNew = ['n'=>'New Group (Chose this to create a new grouping)', ...TassyDomainCommands::GetDomainNames($enumHoming_ControllersLivewire)];
-            $defaultToLastTouchedDomain = (count($existingGroups_plusNew) == 1 ? array_key_last($existingGroups_plusNew) : array_key_first(TassyDomainCommands::GetDomainNames($enumHoming_ControllersLivewire, enumSort_alpha_age: 'age')));
+            $existingGroups_plusNew = ['n'=>'New Group (Chose this to create a new grouping)', ...TassyDomainListCommand::GetDomainNames($enumHoming_ControllersLivewire)];
+            $defaultToLastTouchedDomain = (count($existingGroups_plusNew) == 1 ? array_key_last($existingGroups_plusNew) : array_key_first(TassyDomainListCommand::GetDomainNames($enumHoming_ControllersLivewire, enumSort_alpha_age: 'age')));
             $groupName_c = $this->choice('These are the existing groups', $existingGroups_plusNew, $defaultToLastTouchedDomain);
             if ($groupName_c == 'n') {
                 $groupName = $this->ask("Type the name of your new grouping, like 'Admin/Tasks', or 'Stuff' ", $shortNodeName);
                 if ($enumGroupScheme != 'global') {
-                    $_fyiResourcesPath  = TassyDomainCommands::GetDomainResourceAbsolutePath( $enumHoming_ControllersLivewire, $groupName, shopLocal:true);
+                    $_fyiResourcesPath  = TassyDomainListCommand::GetDomainResourceAbsolutePath( $enumHoming_ControllersLivewire, $groupName, shopLocal:true);
 
                     $boolShopLocal = match($this->choice("You have a group, you can choose to also shop locally so the your view files site right there. If local, it will set up a new local 'resources/views' directory for your blade files.\n($_fyiResourcesPath)\n", ['l' => 'Shop Local', 'g' => 'Default Global behavior'], 'l')) {
                         'l'=>true,
                         'g'=>false,
                     };
                 }
-                TassyDomainCommands::InitializeGroup($enumHoming_ControllersLivewire, $groupName, $boolShopLocal);
+                TassyDomainListCommand::InitializeGroup($enumHoming_ControllersLivewire, $groupName, $boolShopLocal);
                 #TassyDomainCommands::InitializeAssets($groupName, $boolShopLocal);
 
             } else {
-                $groupName = TassyDomainCommands::GetDomainNames($enumHoming_ControllersLivewire)[$groupName_c];
+                $groupName = TassyDomainListCommand::GetDomainNames($enumHoming_ControllersLivewire)[$groupName_c];
 
-                $isAlreadyShoppingLocal = TassyDomainCommands::IsAlreadyShoppingLocal($enumHoming_ControllersLivewire, $groupName);
+                $isAlreadyShoppingLocal = TassyDomainListCommand::IsAlreadyShoppingLocal($enumHoming_ControllersLivewire, $groupName);
                 if ($isAlreadyShoppingLocal) {
                     $boolShopLocal = true;
 
                 } else {
-                    $_fyiResourcesPath  = TassyDomainCommands::GetDomainResourceAbsolutePath( $enumHoming_ControllersLivewire, $groupName, shopLocal:true);
+                    $_fyiResourcesPath  = TassyDomainListCommand::GetDomainResourceAbsolutePath( $enumHoming_ControllersLivewire, $groupName, shopLocal:true);
                     $boolShopLocal = match($this->choice("You have an existing group, but it is not yet set up for local shopping. You can start using local shopping.  You can choose to also shop locally so the your view files sit right there. If local, it will set up a new local 'resources/views' directory for your blade files. \n($_fyiResourcesPath)\n", ['l' => 'Shop Local', 'g' => 'Default Global behavior'], 'l')) {
                         'l'=>true,
                         'g'=>false,
                     };
                     if ($boolShopLocal) {
-                        TassyDomainCommands::InitializeGroup($enumHoming_ControllersLivewire, $groupName, $boolShopLocal);
+                        TassyDomainListCommand::InitializeGroup($enumHoming_ControllersLivewire, $groupName, $boolShopLocal);
                         #TassyDomainCommands::InitializeAssets( $groupName, $boolShopLocal);
                     }
                 }
@@ -123,9 +123,9 @@ class TassyMenuCommands extends Command
         }
 
         $replacementMap['ReplaceableBool_IsShoppingLocal'] = $boolShopLocal ? 1 : 0 ;
-        TassyDomainCommands::InitializeAssets(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
-        $replacementMap['ReplaceableString_PathOffsetToAsset'] = TassyDomainCommands::GetDirOffsetToAssetDir(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
-        $replacementMap['ReplaceableString_UrlOffsetToAsset'] = TassyDomainCommands::GetUrlOffsetToAssetDir(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
+        TassyDomainListCommand::InitializeAssets(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
+        $replacementMap['ReplaceableString_PathOffsetToAsset'] = TassyDomainListCommand::GetDirOffsetToAssetDir(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
+        $replacementMap['ReplaceableString_UrlOffsetToAsset'] = TassyDomainListCommand::GetUrlOffsetToAssetDir(groupName: $groupName, pageName: $shortNodeName, shopLocal: $boolShopLocal);
 
         // Sub Url
         $_urlPrefix = '';
@@ -162,23 +162,7 @@ class TassyMenuCommands extends Command
 
 
 
-        /* Rule: Name groups are shunted into Livewire to avoid infinite file scattering
-        */
 
-        if ($enumAdminMeFront == 'admin') {
-                        $enumUpperLower = match (
-                $this->choice('Where should this menu go? ', ['u' => 'Upper Menu', 'l' => 'Lower Menu'], 'u')
-                ) {
-                    'u' => 'upper',
-                    'l' => 'lower',
-                };
-                // OUTPUT: $enumUpperLower
-                $replacementMap['enumUpperLower'] = $enumUpperLower;
-
-                // Label
-                $ReplaceableLabel = $this->ask('What is the menu text?', $shortNodeName);//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
-                $replacementMap['ReplaceableLabel'] = $ReplaceableLabel;
-        }
 
 //        // where is this menu?
 //        $existingRoots_plusNew = ['n'=>'New TreeRootLeaf', ...static::GetMenuTreeRoots($enumAdminMeFront)];
@@ -229,23 +213,49 @@ class TassyMenuCommands extends Command
         // Which Page Controller - Single, or Tabbed
 
         // Is Page controller a tabbed page?
-        $enumTopPageScheme_single_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['s' => 'Single Page', 't' => 'Tabbed Page'], 't')) {
-            's'=>'single',
-            't'=>'tabbed',
-        };//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
-        $replacementMap['enumTopPageScheme'] = $enumTopPageScheme_single_tabbed;
+        $enumTopPageScheme_tab_page_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['m' => 'Monolithic Page', 't' => 'Tabbed Page', 's'=>'Single Tab'], 's')) {
+            'p'=>'monopage',
+            't'=>'tabbedpage',
+            's'=>'singletab'
 
-        if ($enumTopPageScheme_single_tabbed == 'tabbed') {
+        };//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
+        $replacementMap['enumTopPageScheme'] = $enumTopPageScheme_tab_page_tabbed;
+
+        if ($enumTopPageScheme_tab_page_tabbed == 'tabbedpage') {
             $ReplaceableControllerName = $shortNodeName . 'TabbedPageController';
             $controller_StubSource_filepath = __DIR__ . '/../stubs/TabbedPageController.php.stub';
 
-        } else {
+        } elseif ($enumTopPageScheme_tab_page_tabbed == 'monopage') {
             $ReplaceableControllerName = $shortNodeName . 'Controller';
             $controller_StubSource_filepath = __DIR__ . '/../stubs/Controller.php.stub';
+        }elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
+            $ReplaceableControllerName = $shortNodeName . 'Controller';
+            $controller_StubSource_filepath = __DIR__ . '/../stubs/Controller.php.stub';
+        } else {
+            assert(0,'enum logic');
         }
         $replacementMap['ReplaceableControllerName'] = $ReplaceableControllerName;
 
-        
+
+        /* Rule: Name groups are shunted into Livewire to avoid infinite file scattering
+        */
+
+        if ($enumAdminMeFront == 'admin' && $enumTopPageScheme_tab_page_tabbed != 'singletab') {
+            $enumUpperLower = match (
+            $this->choice('Where should this menu go? ', ['u' => 'Upper Menu', 'l' => 'Lower Menu'], 'u')
+            ) {
+                'u' => 'upper',
+                'l' => 'lower',
+            };
+            // OUTPUT: $enumUpperLower
+            $replacementMap['enumUpperLower'] = $enumUpperLower;
+
+            // Label
+            $ReplaceableLabel = $this->ask('What is the menu text?', $shortNodeName);//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
+            $replacementMap['ReplaceableLabel'] = $ReplaceableLabel;
+        }
+
+
         // what does it inherit from?
         if ($enumAdminMeFront == 'admin') {
             $Replaceable_inheritsFrom = '\TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base';
@@ -318,26 +328,32 @@ class TassyMenuCommands extends Command
 
         // Do $enumTopPageScheme
         if ($enumAdminMeFront == 'admin') {
-            if ($enumTopPageScheme_single_tabbed == 'single') {
+            if ($enumTopPageScheme_tab_page_tabbed == 'monopage') {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/admin_page.blade.php.stub';
-            } elseif ($enumTopPageScheme_single_tabbed == 'tabbed') {
+            } elseif ($enumTopPageScheme_tab_page_tabbed == 'tabbedpage') {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/admin_pageThatIsTabbed.blade.php.stub';
+            } elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
+                $blade_StubSource_filepath = __DIR__ . '/../stubs/admin_pageThatIsSingleTab.blade.php.stub';
             } else {
                 assert(0);
             }
         } elseif  ($enumAdminMeFront == 'front') {
-            if ($enumTopPageScheme_single_tabbed == 'single') {
+            if ($enumTopPageScheme_tab_page_tabbed == 'monopage') {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/front_page.blade.php.stub';
-            } elseif ($enumTopPageScheme_single_tabbed == 'tabbed') {
+            } elseif ($enumTopPageScheme_tab_page_tabbed == 'tabbedpage') {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/front_pageThatIsTabbed.blade.php.stub';
+            } elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
+                $blade_StubSource_filepath = __DIR__ . '/../stubs/front_pageThatIsSingleTab.blade.php.stub';
             } else {
                 assert(0);
             }
         }elseif  ($enumAdminMeFront == 'me') {
-            if ($enumTopPageScheme_single_tabbed == 'single') {
+            if ($enumTopPageScheme_tab_page_tabbed == 'monopage') {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/me_page.blade.php.stub';
-            } elseif ($enumTopPageScheme_single_tabbed == 'tabbed') {
+            } elseif ($enumTopPageScheme_tab_page_tabbed == 'tabbedpage') {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/me_pageThatIsTabbed.blade.php.stub';
+            } elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
+                $blade_StubSource_filepath = __DIR__ . '/../stubs/me_pageThatIsSingleTab.blade.php.stub';
             } else {
                 assert(0);
             }
@@ -345,7 +361,7 @@ class TassyMenuCommands extends Command
             assert(0,'logic error');
         }
         $ReplaceableBladePath_offsetFromResource = 'views/' . $ReplaceableViewRef . '.blade.php';
-        $blade_Destination_filepath_full = TassyDomainCommands::GetDomainResourceAbsolutePath($enumHoming_ControllersLivewire, $groupName, $boolShopLocal).DIRECTORY_SEPARATOR.$shortNodeName.'.blade.php';;//resource_path($ReplaceableBladePath_offsetFromResource);
+        $blade_Destination_filepath_full = TassyDomainListCommand::GetDomainResourceAbsolutePath($enumHoming_ControllersLivewire, $groupName, $boolShopLocal).DIRECTORY_SEPARATOR.$shortNodeName.'.blade.php';;//resource_path($ReplaceableBladePath_offsetFromResource);
         #dd($blade_Destination_filepath_full);
         $replacementMap['ReplaceableString_BladePath_ResourceOffset'] = $ReplaceableBladePath_offsetFromResource;
         $replacementMap['ReplaceableString_BladePath_Abs'] = $blade_Destination_filepath_full;
@@ -356,19 +372,29 @@ class TassyMenuCommands extends Command
 
         // Do Menu Blade
         if ($enumAdminMeFront == 'admin') {
-            $isTreeRootLeaf = true;
-            $this->info("\nPutting as a Root-Leaf menu item. You can move menu items manually, or use the `php artisan tassy-page:edit-menu` (coming soon-ish)");
-            if ($isTreeRootLeaf) {
-                static::LoadBackupModifyUpdate(
-                    base_path(static::getMenuBladeFileName($enumUpperLower)),
-                    function ($existingMenuFile, $ReplaceableTimestamp) use ($replacementMap) {
-                        $menuSnippet_withEnclosedVars = file_get_contents(__DIR__ . '/../stubs/menu-side-treerootleaf.blade.php.stub');
-                        $replacementMap['ReplaceableTimestamp'] = $ReplaceableTimestamp;
-                        $menuSnippet_hydrated = static::HydrateStub($menuSnippet_withEnclosedVars, $replacementMap);
-                        $existingMenuFile .= $menuSnippet_hydrated;
-                        return $existingMenuFile;
-                    }
-                );
+            if ($enumTopPageScheme_tab_page_tabbed == 'monopage' || $enumTopPageScheme_tab_page_tabbed == 'tabbedpage') {
+                $isTreeRootLeaf = true;
+                $this->info("\nPutting as a Root-Leaf menu item. You can move menu items manually, or use the `php artisan tassy-page:edit-menu` (coming soon-ish)");
+                if ($isTreeRootLeaf) {
+                    static::LoadBackupModifyUpdate(
+                        base_path(static::getMenuBladeFileName($enumUpperLower)),
+                        function ($existingMenuFile, $ReplaceableTimestamp) use ($replacementMap) {
+                            $menuSnippet_withEnclosedVars = file_get_contents(__DIR__ . '/../stubs/menu-side-treerootleaf.blade.php.stub');
+                            $replacementMap['ReplaceableTimestamp'] = $ReplaceableTimestamp;
+                            $menuSnippet_hydrated = static::HydrateStub($menuSnippet_withEnclosedVars, $replacementMap);
+                            $existingMenuFile .= $menuSnippet_hydrated;
+                            return $existingMenuFile;
+                        }
+                    );
+                }
+            } elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
+                $htmlSnippet = file_get_contents(__DIR__ . '/../stubs/tab_snippet.blade.php.stub');
+                $htmlSnippet = static::HydrateStub($htmlSnippet, $replacementMap);
+                $this->info( "\n--- Please make the tab work by inserting something like this into your existing tabbed page.");
+                $this->alert( "\n$htmlSnippet");
+
+            } else {
+                assert(0, 'enum error');
             }
         }
 

@@ -2,7 +2,7 @@
 
 namespace TallAndSassy\Cms;
 use Illuminate\Support\ServiceProvider;
-use TallAndSassy\PageGuideAdmin\Commands\TassyDomainCommands;
+use TallAndSassy\PageGuideAdmin\Commands\TassyDomainListCommand;
 
 class CmsServiceProvider extends ServiceProvider
 {
