@@ -1,0 +1,3 @@
+<x-tassy-ui::tab name="One" slug="one">
+    Tab 1
+</x-tassy-ui::tab>
