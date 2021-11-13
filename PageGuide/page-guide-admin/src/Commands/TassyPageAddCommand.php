@@ -49,7 +49,7 @@ class TassyPageAddCommand extends Command
 
         // Gather all the data....
         $shortNodeName = $this->ask("Give more name for what you are make, like 'Page', or 'Home', 'or 'EnrichmentCalendar'.",$defaultJunk);
-
+        $replacementMap['ReplaceableString_shortNodeName'] =$shortNodeName;
         $this->info('Note: Storing in Livewire doesnt make your admin page a livewire component, cuz it still needs the basic page swap functionality. But it can be useful to store everything either in Livewire, or in Controllers');
         $enumHoming_ControllersLivewire = match (
         $this->choice('How do you want to store the page info',['c' => 'app/Http/Controllers', 'l' => 'app/Http/Livewire'], 'l')
