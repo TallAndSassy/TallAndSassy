@@ -1,3 +1,3 @@
-<x-tassy-ui::tab name="ReplaceableString_shortNodeName" slug="one">
+<x-tassy-ui::tab name="ReplaceableString_shortNodeName" slug="ReplaceableString_shortNodeName">
     <livewire:ReplaceableView_htmlAttributeCompatible :tabName="'ReplaceableString_shortNodeName'" :tabSlug="'ReplaceableString_shortNodeName'"/>
 </x-tassy-ui::tab>

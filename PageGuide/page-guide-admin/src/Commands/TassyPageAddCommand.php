@@ -44,13 +44,21 @@ class TassyPageAddCommand extends Command
         $replacementMap = [];
 
         // ReplaceableDomain
-        $defaultJunk = 'E_' . time();
+        $defaultJunk = 'Experiment' . time();
         #$ReplaceableDomain = $defaultJunk;
-       # $replacementMap['ReplaceableDomain'] = $ReplaceableDomain;
+        # $replacementMap['ReplaceableDomain'] = $ReplaceableDomain;
 
 
         // Gather all the data....
-        $shortNodeName = $this->ask("Give more name for what you are make, like 'Page', or 'Home', 'or 'EnrichmentCalendar'.",$defaultJunk);
+        $shortNodeName_input = $this->ask("Give a camel cased name for what you are make, like 'Page', or 'Home', 'or 'EnrichmentCalendar'.", $defaultJunk);
+        // Let's ensure it if very legal
+        $shortNodeName = Str::ucfirst( Str::camel($shortNodeName_input));
+        if (! preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/',$shortNodeName)) {
+            assert(0, "Please make it a php compatible variable name.");
+        }
+        if ($shortNodeName != $shortNodeName_input) {
+            $this->info("FYI: We munged your input from '$shortNodeName_input' to '$shortNodeName'");
+        }
         $replacementMap['ReplaceableString_shortNodeName'] =$shortNodeName;
         $this->info('Note: Storing in Livewire doesnt make your admin page a livewire component, cuz it still needs the basic page swap functionality. But it can be useful to store everything either in Livewire, or in Controllers');
         $enumHoming_ControllersLivewire = match (
@@ -231,8 +239,10 @@ class TassyPageAddCommand extends Command
             $ReplaceableControllerName = $shortNodeName . 'Controller';
             $controller_StubSource_filepath = __DIR__ . '/../stubs/Controller.php.stub';
         }elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
-            $ReplaceableControllerName = $shortNodeName . 'Controller';
-            $controller_StubSource_filepath = __DIR__ . '/../stubs/Controller.php.stub';
+            //yuck -  need to  do <livewire:horns.f-i1636769441-livetroller :tabName="'Temp'" :tabSlug="'temp'"/>. But at least it is explicit
+            $ReplaceableControllerName = $shortNodeName . 'Livetroller';
+
+            $controller_StubSource_filepath = __DIR__ . '/../stubs/singletab_Livetroller.php.stub';
         } else {
             assert(0,'enum logic');
         }
@@ -374,8 +384,11 @@ class TassyPageAddCommand extends Command
 
 
         //        turn view ref into html attribute friendly format
-        //        from: horns/E_1636768049 to horns.E_1636768049
-        $replacementMap['ReplaceableView_htmlAttributeCompatible'] =  TsStringConvert::viewPath2htmlAttribute_playsWithLivewire($replacementMap['ReplaceableViewRef']);
+        //        from: horns/E1636768049Love to horns.e1636768049-love or horns.e1636768049-livetroller
+        //          If it is a livewire thingy, then the reference is to the controller, not to the view.  Hmm, is it ever to the view?  Maybe not.
+        //$replacementMap['ReplaceableView_htmlAttributeCompatible'] =  TsStringConvert::viewPath2htmlAttribute_playsWithLivewire($replacementMap['ReplaceableViewRef']);
+        $viewLikePathToController = $groupName.'/'.$replacementMap['ReplaceableControllerName'];// so, like just the offset, not ' App\Http\Livewire\horns\E1636768049Love', just 'horns/E1636768049Love';
+        $replacementMap['ReplaceableView_htmlAttributeCompatible'] =  TsStringConvert::viewPath2htmlAttribute_playsWithLivewire($viewLikePathToController);
 
         // Do Menu Blade
         if ($enumAdminMeFront == 'admin') {

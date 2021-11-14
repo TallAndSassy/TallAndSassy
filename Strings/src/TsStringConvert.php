@@ -40,7 +40,11 @@ class TsStringConvert {
      * <livewire:ReplaceableView_htmlAttributeCompatible :tabName="'ReplaceableString_shortNodeName'" :tabSlug="'ReplaceableString_shortNodeName'"/>
      * */
     public static function viewPath2htmlAttribute_playsWithLivewire(string $pureViewPath): string {
-        return str_replace('/','.', Str::kebab($pureViewPath));
+        $pureViewPath = str_replace('/','.',$pureViewPath);
+        // want horns.experiment1636900535-livetroller  horns.-experiment1636900535-livetroller vs.
+        $pureViewPath = Str::kebab($pureViewPath);
+        $pureViewPath = str_replace('.-','.',$pureViewPath);
+        return $pureViewPath;
     }
 
 

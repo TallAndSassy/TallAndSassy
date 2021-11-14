@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+namespace ReplaceableNamespace;
+use Livewire\Component;
+
+
+class ReplaceableControllerName extends \TallAndSassy\Ui\Glances\Components\RemergeTab_ComponentBase
+{
+
+    public int $view_count = 0; // example livewire stuff. Feel free to delete
+    public bool $localIsVisible = false; // required for ajax loading
+    public function render()
+    {
+
+        $this->view_count++;// example livewire stuff. Feel free to delete
+
+        if(ReplaceableBool_IsShoppingLocal) { // Are we shopping local? If so, tell laravel to look locally, first.
+            \Illuminate\Support\Facades\View::getFinder()->addLocation(__DIR__ . '/resources/views'); //
+        }
+        return view('ReplaceableViewRef');
+    }
+
+}

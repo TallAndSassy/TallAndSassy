@@ -20,6 +20,9 @@ final class TabSample1__Page extends PageGuideAdminController_Base{
         // register my controllers (only needed if not (if controller is sitting in the module) in the main app)
         \Livewire\Livewire::component('tassy-ui:Sample_Tab1_Tab',  Sample_Tab1_Tab::class);
         \Livewire\Livewire::component('tassy-ui:Sample_Tab2_Tab',  Sample_Tab2_Tab::class);
+        \Livewire\Livewire::component('tassy-ui:Sample_Tab2_Tab',  Sample_Tab2_Tab::class);
+
+
     }
     public static string $title = 'TabSample1';
 

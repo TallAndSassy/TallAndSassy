@@ -45,6 +45,13 @@
                 @include(('tassy-ui::samples/UI/UISample__Page'))
             </div>
         </x-tassy-ui::tab>
+
+        <x-tassy-ui::tab name="Experiment1636900458" slug="Experiment1636900458">
+            <livewire:horns.experiment1636900458-livetroller :tabName="'Experiment1636900458'" :tabSlug="'Experiment1636900458'"/>
+        </x-tassy-ui::tab>
+        <x-tassy-ui::tab name="TestOneTwo" slug="TestOneTwo">
+            <livewire:bucket-suitcase-bag.test-one-two-livetroller :tabName="'TestOneTwo'" :tabSlug="'TestOneTwo'"/>
+        </x-tassy-ui::tab>
     </x-tassy-ui::tab-container>
 
 
