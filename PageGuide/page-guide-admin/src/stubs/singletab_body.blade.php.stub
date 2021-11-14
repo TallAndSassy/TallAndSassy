@@ -1,20 +1,27 @@
-@php
-$delaySeconds = 3;
-@endphp
-@if ($snumRenderState == \TallAndSassy\Ui\Glances\Components\EnumRenderState::RENDERED->value)
-@php sleep($delaySeconds); @endphp
-<span class="border bg-green-300">Hard content from First Tab Sample... Should have taken {{$delaySeconds}} seconds to render the first time cuz of hardcoded 'sleep' throttle that is just here as a demo</span>
-
-@elseif ($snumRenderState == \TallAndSassy\Ui\Glances\Components\EnumRenderState::PLACEHELD->value)
-<x-tassy-ui::spinners.working/>
-@else
-<span>I'm bad at enums</span>
-@endif
-<div class="border m-2 shadow">
-    Livewire based view count: {{$view_count}}
+<div>
+    <div>
+        @if ($snumRenderState == \TallAndSassy\Ui\Glances\Components\EnumRenderState::PLACEHELD->value)
+        <x-tassy-ui::spinners.working/>
+        @elseif ($snumRenderState == \TallAndSassy\Ui\Glances\Components\EnumRenderState::RENDERED->value)
+        @php sleep(3); @endphp <!--  Seriously, delete this. It just is for demo. But, you could do long renders here, within the EnumRenderState::RENDERED-->
+        <span class="border bg-green-300">Hard content from First Tab Sample... Should have taken a few seconds to render the first time cuz of hardcoded 'sleep' throttle that is just here as a demo</span>
+        @else
+        <span>I'm bad at enums</span>
+        @endif
+    </div>
+    ReplaceableHtml
     <br>
-    $tabName: {{$tabName }}
-    <br>
-    $tabSlug: {{$tabSlug }}
+    You can erase all of this...
+    <p></p>
 
+    @if ('ReplaceableString_enumGroupScheme' == 'global')
+    Blade Path (normal spot): <a href="phpstorm://open?file=ReplaceableString_BladePath_Abs">ReplaceableString_BladePath_ResourceOffset</a>
+    @else
+    Blade Path (in group): <a href="phpstorm://open?file=ReplaceableString_BladePath_Abs">ReplaceableString_BladePath_ResourceOffset</a>
+    @endif
+    <br>
+    Edit the controller and adjust title stuff at: <a href="phpstorm://open?file=ReplaceableString_controller_filepath">ReplaceableString_controller_filepath</a>
+    <br>
+    Put public assets in: ReplaceableString_PathOffsetToAsset
+    <img src="{{asset('ReplaceableString_UrlOffsetToAsset/Mockup.png')}}" >
 </div>

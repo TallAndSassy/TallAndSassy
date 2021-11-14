@@ -353,7 +353,7 @@ class TassyPageAddCommand extends Command
             } elseif ($enumTopPageScheme_tab_page_tabbed == 'tabbedpage') {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/admin_pageThatIsTabbed.blade.php.stub';
             } elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
-                $blade_StubSource_filepath = __DIR__ . '/../stubs/admin_pageThatIsSingleTab.blade.php.stub';
+                $blade_StubSource_filepath = __DIR__ . '/../stubs/singletab_body.blade.php.stub';
             } else {
                 assert(0);
             }
@@ -363,7 +363,7 @@ class TassyPageAddCommand extends Command
             } elseif ($enumTopPageScheme_tab_page_tabbed == 'tabbedpage') {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/front_pageThatIsTabbed.blade.php.stub';
             } elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
-                $blade_StubSource_filepath = __DIR__ . '/../stubs/front_pageThatIsSingleTab.blade.php.stub';
+                $blade_StubSource_filepath = __DIR__ . '/../stubs/singletab_body.blade.php.stub';
             } else {
                 assert(0);
             }
@@ -373,7 +373,7 @@ class TassyPageAddCommand extends Command
             } elseif ($enumTopPageScheme_tab_page_tabbed == 'tabbedpage') {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/me_pageThatIsTabbed.blade.php.stub';
             } elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
-                $blade_StubSource_filepath = __DIR__ . '/../stubs/me_pageThatIsSingleTab.blade.php.stub';
+                $blade_StubSource_filepath = __DIR__ . '/../stubs/singletab_body.blade.php.stub';
             } else {
                 assert(0);
             }
