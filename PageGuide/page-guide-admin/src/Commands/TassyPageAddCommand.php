@@ -98,7 +98,15 @@ class TassyPageAddCommand extends Command
             $defaultToLastTouchedDomain = (count($existingGroups_plusNew) == 1 ? array_key_last($existingGroups_plusNew) : array_key_first(TassyDomainListCommand::GetDomainNames($enumHoming_ControllersLivewire, enumSort_alpha_age: 'age')));
             $groupName_c = $this->choice('These are the existing groups', $existingGroups_plusNew, $defaultToLastTouchedDomain);
             if ($groupName_c == 'n') {
-                $groupName = $this->ask("Type the name of your new grouping, like 'Admin/Tasks', or 'Stuff' ", $shortNodeName);
+                $groupName_input = $this->ask("Type the name of your new grouping, like 'Admin/Tasks', or 'Stuff' ", $shortNodeName);
+                $groupName = Str::ucfirst( Str::camel($groupName_input));
+                if (! preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/',$groupName)) {
+                    assert(0, "Please make it is a php compatible variable name.");
+                }
+                if ($groupName != $groupName_input) {
+                    $this->info("FYI: We munged your input from '$groupName_input' to '$groupName'");
+                }
+
                 if ($enumGroupScheme != 'global') {
                     $_fyiResourcesPath  = TassyDomainListCommand::GetDomainResourceAbsolutePath( $enumHoming_ControllersLivewire, $groupName, shopLocal:true);
 
