@@ -14,13 +14,13 @@ class Status__Page extends PageGuideAdminController_Base
     }
 
     public static function Init(): void {
-        MenuTree::singleton('upper')->pushTop(
-            'admin.tassy-ui.TechWorks',
-            'TmpGUi Tech',
-            null,
-            'heroicon-o-question-mark-circle',
-            '/admin/'.self::getSlug()
-        );
+//        MenuTree::singleton('upper')->pushTop(
+//            'admin.tassy-ui.TechWorks',
+//            'TmpGUi Tech',
+//            null,
+//            'heroicon-o-question-mark-circle',
+//            '/admin/'.self::getSlug()
+//        );
     }
 
     // ---- Implement: SlugProducer --------------------------------------------------------------------------------

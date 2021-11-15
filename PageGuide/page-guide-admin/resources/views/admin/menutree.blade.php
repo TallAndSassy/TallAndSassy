@@ -166,9 +166,9 @@
             @endfor
                 @if ($handle == 'upper')
                     @include('tassy::admin.menu-side-upper-below')
-                    @if(config('tassy.admin.DoSamples_Side_Blade'))
-                        @include('tassy::samples/menu-side/sample_menu')
-                    @endif
+{{--                    @if(config('tassy.admin.DoSamples_Side_Blade'))--}}
+{{--                        @include('tassy::samples/menu-side/sample_menu')--}}
+{{--                    @endif--}}
 
                 @endif
                 @if ($handle == 'lower')
