@@ -19,7 +19,7 @@ final class ConsoleUtils {
             return;
         }
 
-        $configurationKey = ($enum_dev_prod == 'prod') ? 'dependencies' : 'devDependencies';
+        $configurationKey = 'devDependencies';// we're simple folk. We'll rely upon webpack to take care of all. ($enum_dev_prod == 'prod') ? 'dependencies' : 'devDependencies';
 
         $packages = json_decode(file_get_contents(base_path('package.json')), true);
 
