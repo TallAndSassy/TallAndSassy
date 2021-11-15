@@ -5,6 +5,7 @@
         @elseif ($snumRenderState == \TallAndSassy\Ui\Glances\Components\EnumRenderState::RENDERED->value)
         @php sleep(3); @endphp <!--  Seriously, delete this. It just is for demo. But, you could do long renders here, within the EnumRenderState::RENDERED-->
         <span class="border bg-green-300">Hard content from First Tab Sample... Should have taken a few seconds to render the first time cuz of hardcoded 'sleep' throttle that is just here as a demo</span>
+        <img src="{{asset('ReplaceableString_UrlOffsetToAsset/Mockup.png')}}" >
         @else
         <span>I'm bad at enums</span>
         @endif
@@ -23,5 +24,5 @@
     Edit the controller and adjust title stuff at: <a href="phpstorm://open?file=ReplaceableString_controller_filepath">ReplaceableString_controller_filepath</a>
     <br>
     Put public assets in: ReplaceableString_PathOffsetToAsset
-    <img src="{{asset('ReplaceableString_UrlOffsetToAsset/Mockup.png')}}" >
+
 </div>
