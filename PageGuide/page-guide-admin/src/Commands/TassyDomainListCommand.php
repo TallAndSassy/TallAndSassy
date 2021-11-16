@@ -159,7 +159,7 @@ class TassyDomainListCommand extends Command
             return 'public';
         }
         $_baseGroupPrefix = ($groupName ? $groupName.DIRECTORY_SEPARATOR : '');
-        return "public/pages/$_baseGroupPrefix/$pageName";
+        return "public/tassypagesync/$_baseGroupPrefix/$pageName";
     }
     #[Pure]
     public static function GetUrlOffsetToAssetDir(string $groupName, string $pageName, bool $shopLocal): string {
