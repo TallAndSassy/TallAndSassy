@@ -11,7 +11,7 @@
                                 Num Tenants
                             </dt>
                             <dd class="mt-1 text-3xl font-semibold text-gray-900">
-                                <a href="/superadmin/dashboard?pageTab=Tenants"><livewire:tassy:super-admin.tenant-count/></a>
+                                <a href="/superadmin/dashboard?page_tab_slug=tenants"><livewire:tassy:super-admin.tenant-count/></a>
                             </dd>
                         </div>
                         <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
