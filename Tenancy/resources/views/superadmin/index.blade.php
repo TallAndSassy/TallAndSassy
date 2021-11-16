@@ -1,9 +1,9 @@
 <x-tassy::page-me title="Super Admin">
-    <div>
-        <x-tassy-ui::tabs :defaultTab="'Dashboard'">
-            <x-tassy-ui::tab name="Dashboard" :isLivewire="false" slug="dashboard">
 
-{{--                https://tailwindui.com/components/application-ui/data-display/stats--}}
+    <div>
+        <x-tassy-ui::tab-container defaultSlug="dashboard">
+            <x-tassy-ui::tab name="Dashboard" :isLivewire="false" slug="dashboard">
+                {{--                https://tailwindui.com/components/application-ui/data-display/stats--}}
                 <div>
                     <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
                         <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
@@ -26,11 +26,12 @@
                 </div>
 
             </x-tassy-ui::tab>
-            <x-tassy-ui::tab name="Tenants" :isLivewire="true" slug="tenants">
-{{--                <livewire:su.super-admin-tenant-directory :tabName="'SuperAdminTenantDirectory'"/>--}}
-                <livewire:tassy:super-admin.tenant-directory :tabName="'SuperAdminTenantDirectory'"/>
 
+
+            <x-tassy-ui::tab name="Tenants" :isLivewire="true" slug="tenants">
+                <livewire:tassy:super-admin.tenant-directory :tabName="'SuperAdminTenantDirectory'"/>
             </x-tassy-ui::tab>
+
             <x-tassy-ui::tab name="More..." slug="more">
                 <div class="border shadow mt-2 p-2 ">
                     TBD
@@ -48,8 +49,8 @@
 {{--                    @include('tassy-ui::samples/TechBase/Status__')--}}
 {{--                </div>--}}
 {{--            </x-tassy-ui::tab>--}}
-        </x-tassy-ui::tabs>
-
+{{--        </x-tassy-ui::tabs>--}}
+        </x-tassy-ui::tab-container>
 
 
 
