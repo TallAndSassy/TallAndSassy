@@ -62,6 +62,7 @@
          }"
          x-init="let queryString = window.location.search;
                  const urlParams = new URLSearchParams(queryString);
+                 // this, somehow needs to get reset on new page swaps: arrSlug2DomTab = {}; 11/21'
                  const pageTab = urlParams.get('{{\TallAndSassy\Ui\Glances\TabsProducer_SimpleImplementation::$PAGE_TAB_KEY}}');
                  if (pageTab !== null) {
                      activeSlug = pageTab;

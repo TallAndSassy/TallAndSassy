@@ -1,6 +1,6 @@
 @props(['defaultTab'])
 
-
+probably OBE by tab-container
 <div x-data="{
        activeTab: '{{app('request')->input(\TallAndSassy\Ui\Glances\TabsProducer_SimpleImplementation::$PAGE_TAB_KEY) ?? $defaultTab}}',
        tabs: [],
