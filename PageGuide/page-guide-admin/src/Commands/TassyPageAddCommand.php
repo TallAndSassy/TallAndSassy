@@ -231,7 +231,7 @@ class TassyPageAddCommand extends Command
         // Which Page Controller - Single, or Tabbed
 
         // Is Page controller a tabbed page?
-        $enumTopPageScheme_tab_page_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['m' => 'Monolithic Page', 't' => 'Tabbed Page', 's'=>'Single Tab'], 's')) {
+        $enumTopPageScheme_tab_page_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['m' => 'Monolithic Page', 't' => 'Tabbed Page', 's'=>'Single Tab'])) {
             'p'=>'monopage',
             't'=>'tabbedpage',
             's'=>'singletab'
