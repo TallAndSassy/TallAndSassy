@@ -19,6 +19,9 @@
 
         <x-tassy-ui::tab name="First" :isLivewire="true" slug="first">
             <livewire:tassy-ui:Sample_Tab1_Tab :tabName="'First'" :tabSlug="'first'"/>
+            {{-- calls vendor/tallandsassy/tallandsassy/Ui/Glances/src/Samples/Sample_Tab1_Tab.php
+                which, in turn, loads vendor/tallandsassy/tallandsassy/Ui/Glances/resources/views/samples/TabSamples/tab-first.blade.php
+                ugh, naming. --}}
         </x-tassy-ui::tab>
         <x-tassy-ui::tab name="Second" slug='second' :isLivewire="true">
             <livewire:tassy-ui:Sample_Tab2_Tab :tabName="'Second'" :tabSlug="'second'"/>

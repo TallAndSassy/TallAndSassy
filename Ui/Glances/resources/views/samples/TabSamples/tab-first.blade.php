@@ -1,4 +1,5 @@
 <div>
+    {{--    Called by vendor/tallandsassy/tallandsassy/Ui/Glances/src/Samples/Sample_Tab1_Tab.php--}}
     @php
     $delaySeconds = 3;
     @endphp

@@ -100,8 +100,11 @@ class TassyPageAddCommand extends Command
             if ($groupName_c == 'n') {
                 $groupName_input = $this->ask("Type the name of your new grouping, like 'Admin/Tasks', or 'Stuff' ", $shortNodeName);
                 $groupName = Str::ucfirst( Str::camel($groupName_input));
-                if (! preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/',$groupName)) {
-                    assert(0, "Please make it is a php compatible variable name.");
+                $_arrGroupNames = explode('/', $groupName);
+                foreach ($_arrGroupNames as $groupNamePart) {
+                    if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $groupNamePart)) {
+                        assert(0, "Please make sure each group name part ($groupNamePart)  is a php compatible variable name.");
+                    }
                 }
                 if ($groupName != $groupName_input) {
                     $this->info("FYI: We munged your input from '$groupName_input' to '$groupName'");
@@ -231,7 +234,7 @@ class TassyPageAddCommand extends Command
         // Which Page Controller - Single, or Tabbed
 
         // Is Page controller a tabbed page?
-        $enumTopPageScheme_tab_page_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['m' => 'Monolithic Page', 't' => 'Tabbed Page', 's'=>'Single Tab'])) {
+        $enumTopPageScheme_tab_page_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['m' => 'Monolithic Page', 't' => 'Page with tabs', 's'=>'Single Tab (within a page with tabs)'])) {
             'p'=>'monopage',
             't'=>'tabbedpage',
             's'=>'singletab'
