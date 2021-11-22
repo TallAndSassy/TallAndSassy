@@ -27,6 +27,10 @@
         <!-- Scripts -->
 {{--        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.js" defer></script>--}}
 {{--        @bukStyles--}}
+    @if (App::environment(['local', 'testing']))
+        <!-- Code highlighting 1 of 2 (stolen from) https://github.com/ElegantTechnologies/grok-->
+        <link href="/eleganttechnologies/grok/css/prism.css" rel="stylesheet" />
+    @endif
     </head>
     @if  (config('tassy.admin.DoSamples',false))
     <script>
@@ -62,6 +66,7 @@
     </script>
     @endif
     <body class="font-sans antialiased">
+
      <div>
          <div id="theOneModal_HideOnPageLoadHacks" class="hidden">                                                      {{--  x-cloak wasn't hiding the modal on pageload, as expected, so class='hidden' is here.  Yuck. HideOnPageLoadHacks--}}
          @livewire('tassy::livewire.the-modal-box')
@@ -98,6 +103,8 @@
              })
          })
      </script>
+     <!-- Code highlighting 2 of 2  (stolen from) https://github.com/ElegantTechnologies/grok -->
+     <script src="/eleganttechnologies/grok/js/prism.js"></script>
     </body>
 </html>
 

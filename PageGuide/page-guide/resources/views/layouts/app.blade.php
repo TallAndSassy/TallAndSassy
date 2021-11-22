@@ -2,6 +2,8 @@
 copy this into /resources/views/layouts
 10/1
 --}}
+        I think this (vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/layouts/app.blade.php) is OBE
+Use vendor/tallandsassy/tallandsassy/PageGuide/page-guide/resources/views/components/page-_base.blade.php instead
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -21,7 +23,8 @@ copy this into /resources/views/layouts
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
-
+    <!-- Code highlighting 1 of 2-->
+    <link href="/css/prism.css" rel="stylesheet" />
 </head>
 <body class="font-sans antialiased">
 <x-jet-banner />
@@ -47,5 +50,7 @@ copy this into /resources/views/layouts
 @stack('modals')
 
 @livewireScripts
+<!-- Code highlighting 2 of 2 -->
+<script src="/js/prism.js"></script>
 </body>
 </html>

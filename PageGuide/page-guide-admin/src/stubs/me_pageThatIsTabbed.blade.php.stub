@@ -1,5 +1,5 @@
 <x-tassy::page-me>
-    ReplaceableHtml at ReplaceableBladePath
+    ReplaceableHtml
     <div>
         <x-tassy-ui::tabs :defaultTab="'Second'">
             <x-tassy-ui::tab name="First" :isLivewire="true">
@@ -35,5 +35,21 @@
 
     </div>
 
-
+    <div>
+        <details class=" ml-3 mt-3">
+            <summary class="text-gray-600 cursor-pointer">About this page</summary>
+            <div class="rounded bg-gray-300 p-3">
+                @if ('ReplaceableString_enumGroupScheme' == 'global')
+                Blade Path (normal spot): <a href="phpstorm://open?file=ReplaceableString_BladePath_Abs">ReplaceableString_BladePath_ResourceOffset</a>
+                @else
+                Blade Path (in group): <a href="phpstorm://open?file=ReplaceableString_BladePath_Abs">ReplaceableString_BladePath_ResourceOffset</a>
+                @endif
+                <br>
+                Edit the controller and adjust title stuff at: <a href="phpstorm://open?file=ReplaceableString_controller_filepath">ReplaceableString_controller_filepath</a>
+                <br>
+                Put public assets in: ReplaceableString_PathOffsetToAsset
+                <img src="{{asset('ReplaceableString_UrlOffsetToAsset/Mockup.png')}}" >
+            </div>
+        </details>
+    </div>
 </x-tassy::page-me>

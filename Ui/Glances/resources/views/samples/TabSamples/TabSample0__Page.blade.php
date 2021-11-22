@@ -1,10 +1,5 @@
 <div>
-	<x-tassy-ui::tab-container defaultSlug="one">
-		<x-tassy-ui::tab name="One" slug="one">
-			Tab 1
-		</x-tassy-ui::tab>
-		<x-tassy-ui::tab name="Two" slug="two">
-			Tab 2
-		</x-tassy-ui::tab>
-	</x-tassy-ui::tab-container>
+	@include('tassy-ui::samples/TabSamples/TabSample0_Body')
+
+	<x-grok::tas-sample-from-file language="html" path="vendor/tallandsassy/tallandsassy/Ui/Glances/resources/views/samples/TabSamples/TabSample0_Body.blade.php"/>
 </div>

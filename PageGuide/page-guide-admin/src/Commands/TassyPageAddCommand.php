@@ -159,27 +159,6 @@ class TassyPageAddCommand extends Command
 //                } else {
 //                    assert(0,$enumAdminMeFront, $groupName, $_urlPrefix);
 //                }
-        if ($enumAdminMeFront == 'admin' ) {
-            if (!str_starts_with($groupName, 'admin')) {
-                $_urlPrefix = 'admin';
-            }
-        } elseif ($enumAdminMeFront == 'me') {
-            if (!str_starts_with($groupName, 'me')) {
-                $_urlPrefix = 'me';
-
-            }
-        } elseif ($enumAdminMeFront == 'front') {
-            $_urlPrefix = '';
-        } else {
-            assert(0,$enumAdminMeFront, $groupName, $_urlPrefix);
-        }
-        $_a = [$_urlPrefix,$groupName,$shortNodeName];
-        $_a = array_filter($_a);//https://stackoverflow.com/questions/3654295/remove-empty-array-elements
-
-        $ReplaceableSubUrl = $this->ask('What is the relative url? Probably something like "/admin/help"', '/'.implode('/', $_a) );//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
-        $replacementMap['ReplaceableSubUrl'] = $ReplaceableSubUrl;
-
-
 
 
 
@@ -235,7 +214,7 @@ class TassyPageAddCommand extends Command
 
         // Is Page controller a tabbed page?
         $enumTopPageScheme_tab_page_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['m' => 'Monolithic Page', 't' => 'Page with tabs', 's'=>'Single Tab (within a page with tabs)'])) {
-            'p'=>'monopage',
+            'm'=>'monopage',
             't'=>'tabbedpage',
             's'=>'singletab'
 
@@ -277,6 +256,33 @@ class TassyPageAddCommand extends Command
             $ReplaceableLabel = $this->ask('What is the menu text?', $shortNodeName);//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
             $replacementMap['ReplaceableLabel'] = $ReplaceableLabel;
         }
+
+
+        if ($enumAdminMeFront == 'admin' ) {
+            if (!str_starts_with($groupName, 'admin')) {
+                $_urlPrefix = 'admin';
+            }
+        } elseif ($enumAdminMeFront == 'me') {
+            if (!str_starts_with($groupName, 'me')) {
+                $_urlPrefix = 'me';
+
+            }
+        } elseif ($enumAdminMeFront == 'front') {
+            $_urlPrefix = '';
+        } else {
+            assert(0,$enumAdminMeFront, $groupName, $_urlPrefix);
+        }
+        $_a = [$_urlPrefix,$groupName,$shortNodeName];
+        $_a = array_filter($_a);//https://stackoverflow.com/questions/3654295/remove-empty-array-elements
+
+
+        if ($enumTopPageScheme_tab_page_tabbed != 'singletab') {
+            $ReplaceableSubUrl = $this->ask('What is the relative url? Probably something like "/admin/help"', '/' . implode('/', $_a));//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
+            $replacementMap['ReplaceableSubUrl'] = $ReplaceableSubUrl;
+        } else {
+            $replacementMap['ReplaceableSubUrl'] = 'urlIsNotRelevantForSingleTab';
+        }
+
 
 
         // what does it inherit from?
@@ -323,24 +329,27 @@ class TassyPageAddCommand extends Command
 
 
         // Do Route
-        if ($enumAdminMeFront == 'admin') {
-            $web_x_routes_filepath = base_path('routes/web-admin--routes.php');
-            $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route_snippets/route-web-admin-xxx.php.stub';
-        } elseif  ($enumAdminMeFront == 'front') {
-            $web_x_routes_filepath = base_path('routes/web-front--routes.php');
-            $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route_snippets/route-web-front-xxx.php.stub';
-        }elseif  ($enumAdminMeFront == 'me') {
-            $web_x_routes_filepath = base_path('routes/web-me--routes.php');
-            $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route_snippets/route-web-me-xxx.php.stub';
-        } else {
-            assert(0,'logic');
+        if ($enumTopPageScheme_tab_page_tabbed != 'singletab') {
+            // not normally relevant to single tab. Maybe relevant if not livewire controller, but no usecase yet.
+            if ($enumAdminMeFront == 'admin') {
+                $web_x_routes_filepath = base_path('routes/web-admin--routes.php');
+                $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route_snippets/route-web-admin-xxx.php.stub';
+            } elseif ($enumAdminMeFront == 'front') {
+                $web_x_routes_filepath = base_path('routes/web-front--routes.php');
+                $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route_snippets/route-web-front-xxx.php.stub';
+            } elseif ($enumAdminMeFront == 'me') {
+                $web_x_routes_filepath = base_path('routes/web-me--routes.php');
+                $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route_snippets/route-web-me-xxx.php.stub';
+            } else {
+                assert(0, 'logic');
+            }
+            static::LoadBackupModifyUpdate($web_x_routes_filepath, function (string $route_web, string $ReplaceableTimestamp) use ($replacementMap, $route_SnippetSource_filepath_rel) {
+                $route_SnippetSource_filepath = $route_SnippetSource_filepath_rel;
+                $replacementMap['ReplaceableTimestamp'] = $ReplaceableTimestamp;
+                $routeSnippet_hydrated = static::HydrateStub(file_get_contents($route_SnippetSource_filepath), $replacementMap);
+                return $route_web . $routeSnippet_hydrated;
+            });
         }
-        static::LoadBackupModifyUpdate($web_x_routes_filepath, function (string $route_web, string $ReplaceableTimestamp) use ($replacementMap, $route_SnippetSource_filepath_rel) {
-            $route_SnippetSource_filepath = $route_SnippetSource_filepath_rel;
-            $replacementMap['ReplaceableTimestamp'] = $ReplaceableTimestamp;
-            $routeSnippet_hydrated = static::HydrateStub(file_get_contents($route_SnippetSource_filepath), $replacementMap);
-            return $route_web . $routeSnippet_hydrated;
-        });
 
 
         // Do Controller

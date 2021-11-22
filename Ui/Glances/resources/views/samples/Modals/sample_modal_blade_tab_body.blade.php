@@ -7,21 +7,31 @@
 
     <x-tassy-ui::button
         onclick="$modals.showBladeModalNamed('sample-modal')"
+        {{--        see vendor/tallandsassy/tallandsassy/Ui/resources/js/app.js--}}
         enumStyle="Primary"
     >
         Click me!
     </x-tassy-ui::button>
+
+    <x-tassy-ui::button
+            onclick="$modals.showBladeModalNamed('sample-modal2')"
+            enumStyle="Primary"
+    >
+        Click me, too!
+    </x-tassy-ui::button>
     <hr>
-    So, launch a modal, make a button or link, and add an on-click
-    <pre>
-        <code class="html">
-        onclick="$modals.showBladeModalNamed('sample-modal')"
-        </code>
-    </pre>
+
     <pre>
         <code class="html">
             @php
-                $sample =<<<EOD
+                $sample =<<<html
+                    <x-tassy-ui::button
+                        onclick="\$modals.showBladeModalNamed('sample-modal')"
+                        enumStyle="Primary"
+                    >
+                        Click me!
+                    </x-tassy-ui::button>
+
                     <x-tassy-ui::modal name="sample-modal">
                         <x-slot name="title">A Sample Modal</x-slot>
                         <x-slot name="body">
@@ -33,7 +43,7 @@
                                 @click="show = false">Go Away</x-tassy-ui::button>
                         </x-slot>
                     </x-tassy-ui::modal>
-                EOD;
+                html;
                 print htmlspecialchars($sample);
             @endphp
 

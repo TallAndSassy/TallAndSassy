@@ -44,4 +44,19 @@ if (config('tassy.ui-glances.DoSamples')) {
             fn() => (new Samples\TechBase\Generic__Page())->getFrontView(),
         )
         ->where('sublevels', '.*');
+
+    Route::middleware(['auth:sanctum', 'verified'])
+        ->get(
+            '/admin/GrokModalLepage/{sublevels?}',
+            fn() => 'hello'
+            //fn() => (new Samples\Modals\GrokModalLepage())->getFrontView(),
+        )
+        ->where('sublevels', '.*');
+
+
+        Route::get(
+            '/admin/tassy/samples/code',
+            [Samples\Code\CodeHomeTabbedPageController::class, 'getFrontView']
+        );
+
 }

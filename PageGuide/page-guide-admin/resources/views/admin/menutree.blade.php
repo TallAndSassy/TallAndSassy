@@ -47,6 +47,9 @@
 
             @if ($handle == 'upper')
                 @include('tassy::admin.menu-side-upper-above')
+                @if(config('tassy.ui-glances.DoSamples'))
+                    @include('tassy-ui::samples/SideMenu')
+                @endif
             @endif
             @if ($handle == 'lower')
                 @include('tassy::admin.menu-side-lower-above')
