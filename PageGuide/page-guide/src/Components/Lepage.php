@@ -134,6 +134,10 @@ class Lepage extends Component
         $blade_prefix = \TallAndSassy\PageGuide\PageGuideServiceProvider::$blade_prefix;
 
          //return view($blade_prefix.'::livewire.lepage', ['bodyHtml' => $bodyHtml, 'title' => 'fromLePageRender']);
+
+        // Hmm - 11/21' closely related to Ui/Glances/src/Components/RemergeTab_ComponentBase.php and used as easy way to dispatch that we've rendered. see also Ui/Glances/resources/views/components/code-reveal.blade.php
+        $this->dispatchBrowserEvent('snumRenderStateChanged');
+
         return view($blade_prefix.'::'.$this->bladeTemplate, ['bodyHtml' => $bodyHtml, 'title' => 'fromLePageRender']);
 
         //        $this->justMounted = false;

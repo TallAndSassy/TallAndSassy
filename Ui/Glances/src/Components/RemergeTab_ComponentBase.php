@@ -20,6 +20,8 @@ trait RemergeTab_Implementation {
             if ($this->snumRenderState == enumRenderState::PLACEHELD->value) {
                 
                 $this->snumRenderState = enumRenderState::RENDERED->value;
+                $this->dispatchBrowserEvent('snumRenderStateChanged');
+                #ddd(__FILE__,__LINE__);
             } elseif ($this->snumRenderState == enumRenderState::RENDERED->value) {
                 $this->skipRender();
             } else {
@@ -28,6 +30,7 @@ trait RemergeTab_Implementation {
         } else {
             $this->skipRender();
         }
+
 
     }
    

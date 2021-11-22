@@ -13,6 +13,7 @@
 		<x-tassy::menu-side-treeroot-fork-leaf suburl="/admin/tassy/samples/code" label="Code"/>
 	</x-tassy::menu-side-treeroot-fork>
 	<x-tassy::menu-side-treeroot-fork label="Level 2">
+		<x-tassy::menu-side-treeroot-fork-leaf suburl="/admin/tassy/level2/tabs" label="Tabs"/>
 		<x-tassy::menu-side-treeroot-fork-leaf suburl="{{'/admin/'.\TallAndSassy\Ui\Glances\Samples\TabSample1__Page::getSlug()}}" label="Tab Sampler"/>
 	</x-tassy::menu-side-treeroot-fork>
 	<x-tassy::menu-side-treeroot-fork label="Grok">

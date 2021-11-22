@@ -16,10 +16,10 @@
 			</div>
 		</x-tassy-ui::tab>
 		<x-tassy-ui::tab name="Modal-Blade Sample" slug="mbs">
-			@include('tassy-ui::samples/Modals/sample_modal_blade_tab_body')
+			@include('tassy-ui::samples/Modals/sample_modal_blade__page')
 		</x-tassy-ui::tab>
 		<x-tassy-ui::tab name="Modal-Livewire Sample" slug="mls">
-			@include('tassy-ui::samples/Modals/sample_modal_livewire__tab_body')
+			@include('tassy-ui::samples.Modals.sample_modal_livewire__page')
 		</x-tassy-ui::tab>
 		<x-tassy-ui::tab name="Tabbed Tech Check" slug="ttc">
 			<div class="border shadow mt-2 p-2 ">

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 namespace TallAndSassy\Ui\Glances\Samples;
-use TallAndSassy\Ui\Glances\Samples\Modals\SampleButtonModal_LivewireController;
+use TallAndSassy\Ui\Glances\Samples\Modals\SampleModalLivewire_ModalBody_Livetroller;
 
 class Admin_Init {
     public static function Init(): void {
@@ -11,7 +11,7 @@ class Admin_Init {
 
             TechBase\Status__Page::Init();
 
-            SampleButtonModal_LivewireController::SelfRegister(); // We can't, for some reason, init this from the blade itself
+            SampleModalLivewire_ModalBody_Livetroller::SelfRegister(); // We can't, for some reason, init this from the blade itself
 
         }
     }

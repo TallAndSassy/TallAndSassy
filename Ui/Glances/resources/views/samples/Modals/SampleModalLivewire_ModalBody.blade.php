@@ -1,3 +1,6 @@
+{{--This is: Ui/Glances/resources/views/samples/Modals/SampleModalLivewire_ModalBody.blade.php--}}
+
+
 {{-- This works with the livewire component: \Livewire\Livewire::component('tassy-ui::Samples.Modals.SampleButtonModal_CustomAlias',  self::class); --}}
 <div>
     <x-tassy-ui::button

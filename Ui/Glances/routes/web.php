@@ -59,4 +59,11 @@ if (config('tassy.ui-glances.DoSamples')) {
             [Samples\Code\CodeHomeTabbedPageController::class, 'getFrontView']
         );
 
+        //-------- Level 2 --------
+    Route::get(
+        '/admin/tassy/level2/tabs',
+        [Samples\Level2\TabsController::class, 'getFrontView']
+    );
+
+
 }
