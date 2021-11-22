@@ -58,8 +58,13 @@
                           The required parameters are 'language' and 'path', where 'path' is off the app root directory
                           and language is (php,html,javascript,console,css);
                           <hr>
+                          <x-grok::title>File Reveal</x-grok::title>
+                          You can quickly give the user a little quick-view code like this:
+                          @include('tassy-ui::samples/Code/Code_FileReveal')
+                          <x-grok::tas-sample-from-file language="php" path="vendor/tallandsassy/tallandsassy/Ui/Glances/resources/views/samples/Code/Code_FileReveal.blade.php"/>
 
 
 
-                    </x-slot>
+
+                      </x-slot>
                   </x-grok::action-section>
