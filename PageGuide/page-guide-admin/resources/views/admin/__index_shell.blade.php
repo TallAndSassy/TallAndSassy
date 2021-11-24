@@ -101,10 +101,12 @@
         {{--          <div class=" inset-0 float w-screen  ">--}}
         {{--            <div class="absolute inset-0 bg-green-600 z-40   opacity-75"></div>--}}
         {{--        </div>--}}
+{{--
+        I think this is flotsam from doing modals internally
         <div id="curtain" class=" inset-0 float w-screen  ">
-            <div class="absolute inset-0 bg-gray-600 z-40   opacity-75"></div>
-        </div>
-        <div class="h-screen flex overflow-hidden bg-gray-100 fixed inset-0 flex z-40">
+           <div class="absolute inset-0 bg-gray-600 z-40   opacity-75"></div>
+        </div>--}}
+        <div class="h-screen flex overflow-hidden bg-gray-100 fixed inset-0 flex z-10">
             <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
             <!-- Static sidebar for desktop -->
             <div id="adminmenu" class="hidden md:flex flex-shrink-0">
