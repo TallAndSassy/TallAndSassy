@@ -68,11 +68,11 @@ class TassyDomainListCommand extends Command
 
     }
 
-    public static function IsAlreadyShoppingLocal(string $enumHoming_ControllersLivewire, string $groupName): bool {
+    public static function IsAlreadyShoppingLocal(EnumControllerType $enumHoming_ControllersLivewire, string $groupName): bool {
         $gfp = static::GetDomainResourceAbsolutePath( $enumHoming_ControllersLivewire, $groupName, true);
         return file_exists($gfp);
     }
-    public static function GetDomainResourceAbsolutePath(string $enumHoming_ControllersLivewire, string $groupName, bool $shopLocal) : string{
+    public static function GetDomainResourceAbsolutePath(EnumControllerType $enumHoming_ControllersLivewire, string $groupName, bool $shopLocal) : string{
         $gfp = static::GetAbsolutePathToDomain( $enumHoming_ControllersLivewire, $groupName);
         if ($shopLocal) {
             $gfp = $gfp . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'views';
@@ -83,7 +83,7 @@ class TassyDomainListCommand extends Command
         return $gfp;
     }
 
-    public static function InitializeGroup(string $enumHoming_ControllersLivewire, string $groupName, bool $shopLocal): void {
+    public static function InitializeGroup(EnumControllerType $enumHoming_ControllersLivewire, string $groupName, bool $shopLocal): void {
         $gfp = static::GetAbsolutePathToDomain( $enumHoming_ControllersLivewire, $groupName);
 
         // Homing
@@ -142,7 +142,7 @@ class TassyDomainListCommand extends Command
 //        return base_path($_baseDir);
 //    }
 
-    private static function GetAbsolutePathToDomain(string $enumHoming_ControllersLivewire, ?string $_baseGroup = null): string {
+    private static function GetAbsolutePathToDomain(EnumControllerType $enumHoming_ControllersLivewire, ?string $_baseGroup = null): string {
         return base_path(static::GetOffsetPathToDomain($enumHoming_ControllersLivewire, $_baseGroup));
     }
 
@@ -171,17 +171,17 @@ class TassyDomainListCommand extends Command
     }
 
     #[Pure]
-    private static function GetOffsetPathToDomain(string $enumHoming_ControllersLivewire, ?string $_baseGroup = null): string {
+    private static function GetOffsetPathToDomain(EnumControllerType $enumHoming_ControllersLivewire, ?string $_baseGroup = null): string {
         $_baseGroupPrefix = ($_baseGroup ? $_baseGroup.DIRECTORY_SEPARATOR : '');
         #print "\n_baseGroupPrefix($_baseGroupPrefix)\n";
         $_baseDir = static::GetDomainDir_offsetFromBasePath($enumHoming_ControllersLivewire).DIRECTORY_SEPARATOR.$_baseGroupPrefix;
         return $_baseDir;
     }
 
-    public static function GetDomainDir_offsetFromBasePath(string $enumHoming_ControllersLivewire): string {
-        if ($enumHoming_ControllersLivewire == 'Livewire') {
+    public static function GetDomainDir_offsetFromBasePath(EnumControllerType $enumHoming_ControllersLivewire): string {
+        if ($enumHoming_ControllersLivewire == EnumControllerType::LIVEWIRE_CONTROLLER) {
             return 'app/Http/Livewire';
-        } elseif($enumHoming_ControllersLivewire == 'Controllers') {
+        } elseif($enumHoming_ControllersLivewire == EnumControllerType::CLASSIC_CONTROLLER) {
             return 'app/Http/Controllers';
         } else {
             assert(0, "enumHoming_ControllersLivewire($enumHoming_ControllersLivewire)");
@@ -206,7 +206,7 @@ class TassyDomainListCommand extends Command
 
         return ($files) ? $files : false;
     }
-    public static function GetDomainNames(string $enumHoming_ControllersLivewire, ?string $_baseGroup = null,  array $groupNames_soFar = [], bool $doMakeDirsIfNotThere = true, string $enumSort_alpha_age = 'alpha',): array {
+    public static function GetDomainNames(EnumControllerType $enumHoming_ControllersLivewire, ?string $_baseGroup = null,  array $groupNames_soFar = [], bool $doMakeDirsIfNotThere = true, string $enumSort_alpha_age = 'alpha',): array {
         assert(in_array($enumSort_alpha_age,['alpha','age']),$enumSort_alpha_age);
         $_baseGroupOffsetFromBase = static::GetOffsetPathToDomain($enumHoming_ControllersLivewire, $_baseGroup);
         $_baseGroupAbsolutePath = static::GetAbsolutePathToDomain($enumHoming_ControllersLivewire, $_baseGroup);

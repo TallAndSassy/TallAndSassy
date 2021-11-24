@@ -12,6 +12,75 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use TallAndSassy\Strings\TsStringConvert;
+interface CliChoicer {
+    # private static function singleLetterToEnum(string $singleLetter);
+    public static function getCliChoice(Command $cmdContext): self;
+}
+
+enum EnumControllerType implements CliChoicer {
+    case CLASSIC_CONTROLLER;
+    case LIVEWIRE_CONTROLLER;
+
+    public static function getCliChoice(Command $cmdContext): self {
+        $singleLetterChoice =$cmdContext->choice('How do you want to store the page info',['c' => 'app/Http/Controllers', 'l' => 'app/Http/Livewire'], 'l');
+        $enumSelf = match ($singleLetterChoice) {
+            'c'=>self::CLASSIC_CONTROLLER,
+            'l'=>self::LIVEWIRE_CONTROLLER,
+        };
+        return $enumSelf;
+    }
+}
+enum EnumGroupingScheme implements CliChoicer {
+    case GLOBAL;
+    case GROUPING;
+
+    public static function getCliChoice(Command $cmdContext): self {
+        $singleLetterChoice =$cmdContext->choice('You can group this into a logical directory, keeping the files geographically close to each other. Or, you can keep everything global, like default laravel. Grouping is like a lightweight package', ['g' => 'Group it', 'd' => 'Default Global behavior'], 'g');
+        $enumSelf = match ($singleLetterChoice) {
+            'd'=>self::GLOBAL,
+            'g'=>self::GROUPING,
+        };
+        return $enumSelf;
+    }
+}
+
+enum EnumSitePageType implements CliChoicer{
+    case FRONT;
+    case ADMIN;
+    case ME;
+    public static function getCliChoice(Command $cmdContext): self {
+        $singleLetterChoice =$cmdContext->choice('You want to add a page, great! Where will it live?', ['f' => '/ (user facing)', 'a' => '/admin', 'm' => '/me'], 'a');
+        $enumSelf = match ($singleLetterChoice) {
+            'f'=>static::FRONT,
+            'a'=>static::ADMIN,
+            'm'=>static::ME,
+        };
+        return $enumSelf;
+    }
+
+}
+enum EnumInnerPageType implements CliChoicer {
+    case MONOLITHIC_PAGE;
+    case TABBED_PAGE;
+    case SINGLE_INNER_TAB;
+    case WIRE_MODAL;
+
+    public static function getCliChoice(Command $cmdContext): self {
+        $singleLetterChoice =$cmdContext->choice('Is page a single top-level page, or a tabbed paged.', ['p' => 'Monolithic Page', 't' => 'Page with tabs', 's'=>'Single Tab (within a page with tabs)', 'm'=>'Modal (Wire-Modal Based)']);
+        $enumSelf = match ($singleLetterChoice) {
+            'p'=>static::MONOLITHIC_PAGE,
+            't'=>static::TABBED_PAGE,
+            's'=>static::SINGLE_INNER_TAB,
+            'm'=>static::WIRE_MODAL
+        };
+        return $enumSelf;
+    }
+
+    public static function canHaveSideMenuEntry(EnumInnerPageType $likeMe): bool {
+        return in_array($likeMe,[static::MONOLITHIC_PAGE, static::TABBED_PAGE]);
+    }
+}
+
 
 
 class TassyPageAddCommand extends Command
@@ -61,37 +130,26 @@ class TassyPageAddCommand extends Command
         }
         $replacementMap['ReplaceableString_shortNodeName'] =$shortNodeName;
         $this->info('Note: Storing in Livewire doesnt make your admin page a livewire component, cuz it still needs the basic page swap functionality. But it can be useful to store everything either in Livewire, or in Controllers');
-        $enumHoming_ControllersLivewire = match (
-        $this->choice('How do you want to store the page info',['c' => 'app/Http/Controllers', 'l' => 'app/Http/Livewire'], 'l')
-        ) {
-            'c' => 'Controllers',
-            'l' => 'Livewire',
-        };
+        $enumHoming_ControllersLivewire = EnumControllerType::getCliChoice($this);
+        //$enumHoming_ControllersLivewire = EnumControllerType::singleLetterToEnum($this->choice('How do you want to store the page info',['c' => 'app/Http/Controllers', 'l' => 'app/Http/Livewire'], 'l'));
 
-
-        $enumAdminMeFront = match (
-        $this->choice('You want to add a page, great! Where will it live?', ['f' => '/ (user facing)', 'a' => '/admin', 'm' => '/me'], 'a')
-        ) {
-            'f' => 'front',
-            'a' => 'admin',
-            'm' => 'me'
-        };
-        //assert($enumAdminMeFront == 'admin', "Me and Front are not yet implemented. Try 'admin'");
-        $replacementMap['enumAdminMeFront'] = $enumAdminMeFront;
-
+        $enumAdminMeFront = EnumSitePageType::getCliChoice($this);
+        //$enumAdminMeFront = EnumSitePageType::singleLetterToEnum($this->choice('You want to add a page, great! Where will it live?', ['f' => '/ (user facing)', 'a' => '/admin', 'm' => '/me'], 'a'));
+        //$replacementMap['enumAdminMeFront'] = $enumAdminMeFront;
 
 
         // Grouping?
-        $enumGroupScheme  = match (
-        $this->choice('You can group this into a logical directory, keeping the files geographically close to each other. Or, you can keep everything global, like default laravel. Grouping is like a lightweight package', ['g' => 'Group it', 'd' => 'Default Global behavior'], 'g')
-        ) {
-            'g' => 'group',
-            'd' => 'global',
-
-        };
+        $enumGroupScheme = EnumGroupingScheme::getCliChoice($this);
+//        $enumGroupScheme = match (
+//        $this->choice('You can group this into a logical directory, keeping the files geographically close to each other. Or, you can keep everything global, like default laravel. Grouping is like a lightweight package', ['g' => 'Group it', 'd' => 'Default Global behavior'], 'g')
+//        ) {
+//            'g' => 'group',
+//            'd' => 'global',
+//
+//        };
         $boolShopLocal = false;
-        $replacementMap['ReplaceableString_enumGroupScheme'] = $enumGroupScheme;
-        if ($enumGroupScheme == 'global') {
+//        $replacementMap['ReplaceableString_enumGroupScheme'] = $enumGroupScheme;
+        if ($enumGroupScheme == EnumGroupingScheme::GLOBAL) {
             $groupName = '';
         } else {
             $existingGroups_plusNew = ['n'=>'New Group (Chose this to create a new grouping)', ...TassyDomainListCommand::GetDomainNames($enumHoming_ControllersLivewire)];
@@ -110,7 +168,7 @@ class TassyPageAddCommand extends Command
                     $this->info("FYI: We munged your input from '$groupName_input' to '$groupName'");
                 }
 
-                if ($enumGroupScheme != 'global') {
+                if ($enumGroupScheme != EnumGroupingScheme::GLOBAL) {
                     $_fyiResourcesPath  = TassyDomainListCommand::GetDomainResourceAbsolutePath( $enumHoming_ControllersLivewire, $groupName, shopLocal:true);
 
                     $boolShopLocal = match($this->choice("You have a group, you can choose to also shop locally so the your view files site right there. If local, it will set up a new local 'resources/views' directory for your blade files.\n($_fyiResourcesPath)\n", ['l' => 'Shop Local', 'g' => 'Default Global behavior'], 'l')) {
@@ -200,11 +258,11 @@ class TassyPageAddCommand extends Command
 
 
         // Namespace ReplaceableNamespace
-        if ($enumHoming_ControllersLivewire == 'Controllers') {
+        if ($enumHoming_ControllersLivewire == EnumControllerType::CLASSIC_CONTROLLER) {
             $ReplaceableNamespace = 'App\Http\Controllers';
             $replacementMap['ReplaceableNamespace'] = $ReplaceableNamespace;
 
-        } elseif ($enumHoming_ControllersLivewire == 'Livewire') {
+        } elseif ($enumHoming_ControllersLivewire == EnumControllerType::LIVEWIRE_CONTROLLER) {
             $ReplaceableNamespace = 'App\Http\Livewire\\'.str_replace('/','\\',$groupName);
             $ReplaceableNamespace = trim($ReplaceableNamespace,'/\\');
             $replacementMap['ReplaceableNamespace'] = $ReplaceableNamespace;
@@ -213,26 +271,32 @@ class TassyPageAddCommand extends Command
         // Which Page Controller - Single, or Tabbed
 
         // Is Page controller a tabbed page?
-        $enumTopPageScheme_tab_page_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['m' => 'Monolithic Page', 't' => 'Page with tabs', 's'=>'Single Tab (within a page with tabs)'])) {
-            'm'=>'monopage',
-            't'=>'tabbedpage',
-            's'=>'singletab'
+        $enumTopPageScheme_tab_page_tabbed = EnumInnerPageType::getCliChoice($this);
+//        $enumTopPageScheme_tab_page_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['p' => 'Monolithic Page', 't' => 'Page with tabs', 's'=>'Single Tab (within a page with tabs)', 'm'=>'Modal (Wire-Modal Based)'])) {
+//            'p'=>'monopage',
+//            't'=>'tabbedpage',
+//            's'=>'singletab',
+//            'm'=>'wiremodal'
+//
+//        };//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
+//        $replacementMap['enumTopPageScheme'] = $enumTopPageScheme_tab_page_tabbed;
 
-        };//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
-        $replacementMap['enumTopPageScheme'] = $enumTopPageScheme_tab_page_tabbed;
-
-        if ($enumTopPageScheme_tab_page_tabbed == 'tabbedpage') {
+        if ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::TABBED_PAGE) {
             $ReplaceableControllerName = $shortNodeName . 'TabbedPageController';
             $controller_StubSource_filepath = __DIR__ . '/../stubs/TabbedPageController.php.stub';
 
-        } elseif ($enumTopPageScheme_tab_page_tabbed == 'monopage') {
+        } elseif ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::MONOLITHIC_PAGE) {
             $ReplaceableControllerName = $shortNodeName . 'Controller';
             $controller_StubSource_filepath = __DIR__ . '/../stubs/Controller.php.stub';
-        }elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
+        }elseif ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::SINGLE_INNER_TAB) {
             //yuck -  need to  do <livewire:horns.f-i1636769441-livetroller :tabName="'Temp'" :tabSlug="'temp'"/>. But at least it is explicit
             $ReplaceableControllerName = $shortNodeName . 'Livetroller';
 
             $controller_StubSource_filepath = __DIR__ . '/../stubs/singletab_Livetroller.php.stub';
+        }elseif ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::WIRE_MODAL) {
+            $ReplaceableControllerName = $shortNodeName . 'Livemodtroller';
+            $controller_StubSource_filepath = __DIR__ . '/../../Ui/Glances/src/stubs/WireModalButton.blade.php.stub';
+
         } else {
             assert(0,'enum logic');
         }
@@ -242,7 +306,7 @@ class TassyPageAddCommand extends Command
         /* Rule: Name groups are shunted into Livewire to avoid infinite file scattering
         */
 
-        if ($enumAdminMeFront == 'admin' && $enumTopPageScheme_tab_page_tabbed != 'singletab') {
+        if ($enumAdminMeFront == EnumSitePageType::ADMIN && $enumTopPageScheme_tab_page_tabbed != EnumInnerPageType::SINGLE_INNER_TAB) {
             $enumUpperLower = match (
             $this->choice('Where should this menu go? ', ['u' => 'Upper Menu', 'l' => 'Lower Menu'], 'u')
             ) {
@@ -258,16 +322,16 @@ class TassyPageAddCommand extends Command
         }
 
 
-        if ($enumAdminMeFront == 'admin' ) {
+        if ($enumAdminMeFront == EnumSitePageType::ADMIN ) {
             if (!str_starts_with($groupName, 'admin')) {
                 $_urlPrefix = 'admin';
             }
-        } elseif ($enumAdminMeFront == 'me') {
+        } elseif ($enumAdminMeFront == EnumSitePageType::ME) {
             if (!str_starts_with($groupName, 'me')) {
                 $_urlPrefix = 'me';
 
             }
-        } elseif ($enumAdminMeFront == 'front') {
+        } elseif ($enumAdminMeFront == EnumSitePageType::FRONT) {
             $_urlPrefix = '';
         } else {
             assert(0,$enumAdminMeFront, $groupName, $_urlPrefix);
@@ -276,7 +340,7 @@ class TassyPageAddCommand extends Command
         $_a = array_filter($_a);//https://stackoverflow.com/questions/3654295/remove-empty-array-elements
 
 
-        if ($enumTopPageScheme_tab_page_tabbed != 'singletab') {
+        if ($enumTopPageScheme_tab_page_tabbed != EnumInnerPageType::SINGLE_INNER_TAB) {
             $ReplaceableSubUrl = $this->ask('What is the relative url? Probably something like "/admin/help"', '/' . implode('/', $_a));//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
             $replacementMap['ReplaceableSubUrl'] = $ReplaceableSubUrl;
         } else {
@@ -286,11 +350,11 @@ class TassyPageAddCommand extends Command
 
 
         // what does it inherit from?
-        if ($enumAdminMeFront == 'admin') {
+        if ($enumAdminMeFront == EnumSitePageType::ADMIN) {
             $Replaceable_inheritsFrom = '\TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideAdminController_Base';
-        } elseif ($enumAdminMeFront == 'front') {
+        } elseif ($enumAdminMeFront == EnumSitePageType::FRONT) {
             $Replaceable_inheritsFrom = '\TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideFrontController_Base';
-        } elseif ($enumAdminMeFront == 'me') {
+        } elseif ($enumAdminMeFront == EnumSitePageType::ME) {
             $Replaceable_inheritsFrom = '\TallAndSassy\PageGuideAdmin\Http\Controllers\Admin\PageGuideMeController_Base';
         } else {
             assert(0,'logic error');
@@ -298,18 +362,20 @@ class TassyPageAddCommand extends Command
         $replacementMap['Replaceable_inheritsFrom'] = $Replaceable_inheritsFrom;
 
         // Where to put the controller?
-        if ($enumHoming_ControllersLivewire == 'Controllers') {
+        if ($enumHoming_ControllersLivewire == EnumControllerType::CLASSIC_CONTROLLER) {
             $path = 'app/Http/Controllers';
             $path .= (! empty($groupName)) ? "/$groupName" : '';
             $path .=  "/{$ReplaceableControllerName}.php";
 //            dd(__FILE__,__LINE__,$path);
             $controller_Destination_filepath = base_path($path);
 
-        } elseif ($enumHoming_ControllersLivewire == 'Livewire') {
+        } elseif ($enumHoming_ControllersLivewire == EnumControllerType::LIVEWIRE_CONTROLLER) {
             $path = 'app/Http/Livewire';
             $path .= (! empty($groupName)) ? "/$groupName" : '';
             $path .=  "/{$ReplaceableControllerName}.php";
             $controller_Destination_filepath = base_path($path);
+        } else {
+            assert(0, 'logic');
         }
         $replacementMap['ReplaceableString_controller_filepath'] = $controller_Destination_filepath;
 
@@ -329,15 +395,15 @@ class TassyPageAddCommand extends Command
 
 
         // Do Route
-        if ($enumTopPageScheme_tab_page_tabbed != 'singletab') {
+        if ($enumTopPageScheme_tab_page_tabbed != EnumInnerPageType::SINGLE_INNER_TAB) {
             // not normally relevant to single tab. Maybe relevant if not livewire controller, but no usecase yet.
-            if ($enumAdminMeFront == 'admin') {
+            if ($enumAdminMeFront == EnumSitePageType::ADMIN) {
                 $web_x_routes_filepath = base_path('routes/web-admin--routes.php');
                 $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route_snippets/route-web-admin-xxx.php.stub';
-            } elseif ($enumAdminMeFront == 'front') {
+            } elseif ($enumAdminMeFront == EnumSitePageType::FRONT) {
                 $web_x_routes_filepath = base_path('routes/web-front--routes.php');
                 $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route_snippets/route-web-front-xxx.php.stub';
-            } elseif ($enumAdminMeFront == 'me') {
+            } elseif ($enumAdminMeFront == EnumSitePageType::ME) {
                 $web_x_routes_filepath = base_path('routes/web-me--routes.php');
                 $route_SnippetSource_filepath_rel = __DIR__ . '/../stubs/route_snippets/route-web-me-xxx.php.stub';
             } else {
@@ -359,32 +425,32 @@ class TassyPageAddCommand extends Command
 
 
         // Do $enumTopPageScheme
-        if ($enumAdminMeFront == 'admin') {
-            if ($enumTopPageScheme_tab_page_tabbed == 'monopage') {
+        if ($enumAdminMeFront == EnumSitePageType::ADMIN) {
+            if ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::MONOLITHIC_PAGE) {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/admin_page.blade.php.stub';
-            } elseif ($enumTopPageScheme_tab_page_tabbed == 'tabbedpage') {
+            } elseif ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::TABBED_PAGE) {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/admin_pageThatIsTabbed.blade.php.stub';
-            } elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
+            } elseif ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::SINGLE_INNER_TAB) {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/singletab_body.blade.php.stub';
             } else {
                 assert(0);
             }
-        } elseif  ($enumAdminMeFront == 'front') {
-            if ($enumTopPageScheme_tab_page_tabbed == 'monopage') {
+        } elseif  ($enumAdminMeFront == EnumSitePageType::FRONT) {
+            if ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::MONOLITHIC_PAGE) {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/front_page.blade.php.stub';
-            } elseif ($enumTopPageScheme_tab_page_tabbed == 'tabbedpage') {
+            } elseif ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::TABBED_PAGE) {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/front_pageThatIsTabbed.blade.php.stub';
-            } elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
+            } elseif ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::SINGLE_INNER_TAB) {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/singletab_body.blade.php.stub';
             } else {
                 assert(0);
             }
-        }elseif  ($enumAdminMeFront == 'me') {
-            if ($enumTopPageScheme_tab_page_tabbed == 'monopage') {
+        }elseif  ($enumAdminMeFront == EnumSitePageType::ME) {
+            if ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::MONOLITHIC_PAGE) {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/me_page.blade.php.stub';
-            } elseif ($enumTopPageScheme_tab_page_tabbed == 'tabbedpage') {
+            } elseif ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::TABBED_PAGE) {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/me_pageThatIsTabbed.blade.php.stub';
-            } elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
+            } elseif ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::SINGLE_INNER_TAB) {
                 $blade_StubSource_filepath = __DIR__ . '/../stubs/singletab_body.blade.php.stub';
             } else {
                 assert(0);
@@ -411,8 +477,8 @@ class TassyPageAddCommand extends Command
         $replacementMap['ReplaceableView_htmlAttributeCompatible'] =  TsStringConvert::viewPath2htmlAttribute_playsWithLivewire($viewLikePathToController);
 
         // Do Menu Blade
-        if ($enumAdminMeFront == 'admin') {
-            if ($enumTopPageScheme_tab_page_tabbed == 'monopage' || $enumTopPageScheme_tab_page_tabbed == 'tabbedpage') {
+        if ($enumAdminMeFront == EnumSitePageType::ADMIN) {
+            if ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::MONOLITHIC_PAGE || $enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::TABBED_PAGE) {
                 $isTreeRootLeaf = true;
                 $this->info("\nPutting as a Root-Leaf menu item. You can move menu items manually, or use the `php artisan tassy-page:edit-menu` (coming soon-ish)");
                 if ($isTreeRootLeaf) {
@@ -427,7 +493,7 @@ class TassyPageAddCommand extends Command
                         }
                     );
                 }
-            } elseif ($enumTopPageScheme_tab_page_tabbed == 'singletab') {
+            } elseif ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::SINGLE_INNER_TAB) {
                 $htmlSnippet = file_get_contents(__DIR__ . '/../stubs/singletab_tab.blade.php.stub');
                 $htmlSnippet = static::HydrateStub($htmlSnippet, $replacementMap);
                 $this->info( "\n--- Please make the tab work by inserting something like this into your existing tabbed page.");
