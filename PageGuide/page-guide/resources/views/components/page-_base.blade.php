@@ -78,9 +78,12 @@
 
             {{ $slot }}
             </x-tassy::page-_base-body>
-        @stack('modals')
+
+
+{{--        @stack('modals')--}}
+     @livewire('livewire-ui-modal')
         @stack('TassyScripts')
-        @livewireScripts
+     @livewireScripts
 
 
 {{--     Giving up - tried making this work via package.json and PageGuide/page-guide/resources/js/app.js--}}
