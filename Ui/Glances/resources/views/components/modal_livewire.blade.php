@@ -1,3 +1,4 @@
+{{--This is a TASSY homegrown livewire modal. and I think it bites --}}
 @props(['name'])
 <div id="{{ $name }}"
      x-data="{ show: @entangle('showModal') }"
