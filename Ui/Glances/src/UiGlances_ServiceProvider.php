@@ -10,7 +10,8 @@ use Illuminate\Support\ServiceProvider;
 use TallAndSassy\PageGuideAdmin\Http\Controllers\Bob_outputByBlade_Controller;
 #use TallAndSassy\Ui\Glances\Components\ModalLivewire;
 use TallAndSassy\Ui\Glances\Samples\Admin_Init;
-use TallAndSassy\Ui\Glances\Samples\ModalLivewire;
+//use TallAndSassy\Ui\Glances\Samples\ModalLivewire;
+//use TallAndSassy\Ui\Glances\Samples\Modals\WireModal\HelloWorld;
 
 #use TallAndSassy\Ui\Glances\Samples\TabSample1__Page;
 #use TallAndSassy\Ui\Glances\Samples\TabSamples;
@@ -69,7 +70,7 @@ class UiGlances_ServiceProvider extends ServiceProvider
 
         // TODO: Register your livewire components that live in this package here:
 
-        #\Livewire\Livewire::component('tassy-ui::tab',  \TallAndSassy\GrokLivewireJet\Components\DemoUiChunks\AANothing::class);
+        //\Livewire\Livewire::component('tassy-ui::samples.WireModal.HelloWorld',  \TallAndSassy\Ui\Glances\Samples\Modals\WireModal\WorkingSampleLivetroller::class);
 
 
         // Samples

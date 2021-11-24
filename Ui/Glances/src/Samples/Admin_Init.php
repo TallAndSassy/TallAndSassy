@@ -12,6 +12,8 @@ class Admin_Init {
             TechBase\Status__Page::Init();
 
             SampleModalLivewire_ModalBody_Livetroller::SelfRegister(); // We can't, for some reason, init this from the blade itself
+            \TallAndSassy\Ui\Glances\Samples\Modals\WireModal\WorkingSampleLivetroller::SelfRegister();
+
 
         }
     }

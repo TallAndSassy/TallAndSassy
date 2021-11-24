@@ -15,11 +15,14 @@
 				Local body, not livewire
 			</div>
 		</x-tassy-ui::tab>
-		<x-tassy-ui::tab name="Modal-Blade Sample" slug="mbs">
+		<x-tassy-ui::tab name="Blade Modal" slug="mbs">
 			@include('tassy-ui::samples/Modals/sample_modal_blade__page')
 		</x-tassy-ui::tab>
-		<x-tassy-ui::tab name="Modal-Livewire Sample" slug="mls">
+		<x-tassy-ui::tab name="Tassy Modal" slug="mls">
 			@include('tassy-ui::samples.Modals.sample_modal_livewire__page')
+		</x-tassy-ui::tab>
+		<x-tassy-ui::tab name="Wire Modal" slug="mwm">
+			@include('tassy-ui::samples.Modals.WireModal.wire_modal__page')
 		</x-tassy-ui::tab>
 		<x-tassy-ui::tab name="Tabbed Tech Check" slug="ttc">
 			<div class="border shadow mt-2 p-2 ">

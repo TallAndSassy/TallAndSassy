@@ -6,6 +6,10 @@
     <p>
         There are some issues here. Namely the
     </p>
+    <div class="rounder bg-red-200 p-3">
+        Testing livewire modal package
+        <button onclick="Livewire.emit('openModal', 'hello-world')">Open Modal</button>
+    </div>
     @include('tassy-ui::samples/Modals/sample_modal_livewire_body')
 
     <x-tassy-ui::code-reveal summary="Code" language="html" path="vendor/tallandsassy/tallandsassy/Ui/Glances/resources/views/samples/Modals/sample_modal_livewire_body.blade.php"/>
