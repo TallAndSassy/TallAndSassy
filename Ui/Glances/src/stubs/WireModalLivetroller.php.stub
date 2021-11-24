@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+namespace ReplaceableNamespace;
+use LivewireUI\Modal\ModalComponent;
+
+
+class ReplaceableControllerName extends ModalComponent
+{
+
+    public int $counter = 1; // erase me if desired. It is just used in the stub
+    CONST COMPONENT_ATTRIBUTE_URI = 'ReplaceableView_htmlAttributeCompatible';  // Livewire names can feel like magic.
+                                                                                //   In your blade button, you could do this Livewire.emit('openModal', '{{ReplaceableFQNControllerName::COMPONENT_ATTRIBUTE_URI}}')
+
+    public function render()
+    {
+        if (ReplaceableBool_IsShoppingLocal) { // Are we shopping local? If so, tell laravel to look locally, first.
+            \Illuminate\Support\Facades\View::getFinder()->addLocation(__DIR__ . '/resources/views'); //
+        }
+        return view('ReplaceableViewRef');
+    }
+
+    public function doIncrement() {
+        $this->counter++;
+    }
+
+
+}
+

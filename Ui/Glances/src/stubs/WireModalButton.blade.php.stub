@@ -1,0 +1,2 @@
+<button onclick="Livewire.emit('openModal', '{{ReplaceableFQNControllerName::COMPONENT_ATTRIBUTE_URI}}')">[Open ReplaceableString_shortNodeName Modal]</button>
+{{-- Same as this, but the above plays nices with IDE autocompletion:	<button onclick="Livewire.emit('openModal', 'ReplaceableView_htmlAttributeCompatible')">[Open ReplaceableString_shortNodeName Modal]</button>--}}
