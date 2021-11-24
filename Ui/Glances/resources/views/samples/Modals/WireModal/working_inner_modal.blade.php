@@ -6,9 +6,12 @@
 
     <x-slot name="content">
         Hi! 👋
+        Count = {{$counter}}
     </x-slot>
 
     <x-slot name="buttons">
-        Buttons go here...
+        {{--        Buttons go here...--}}
+        <button wire:click="doIncrement">[Increment]</button>
+        <button wire:click="$emit('closeModal')">[Close Modal]</button>
     </x-slot>
 </x-tassy-ui::wire-modal>

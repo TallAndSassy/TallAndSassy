@@ -8,9 +8,14 @@ use LivewireUI\Modal\ModalComponent;
 class WorkingSampleLivetroller extends ModalComponent
 {
 
+    public int $counter = 1;
     public function render()
     {
-        return view('tassy-ui::samples.Modals.WireModal.working_inner_modal');
+        return view('tassy-ui::samples.Modals.WireModal.working_inner_modal'); // vendor/tallandsassy/tallandsassy/Ui/Glances/resources/views/samples/Modals/WireModal/working_inner_modal.blade.php
+    }
+
+    public function doIncrement() {
+        $this->counter++;
     }
 
     /*  FYI: Since this is in a package, we need to manually register ourselves.

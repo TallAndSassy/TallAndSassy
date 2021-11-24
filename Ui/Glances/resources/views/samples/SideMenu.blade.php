@@ -13,13 +13,7 @@
 		<x-tassy::menu-side-treeroot-fork-leaf suburl="/admin/tassy/samples/code" label="Code"/>
 	</x-tassy::menu-side-treeroot-fork>
 	<x-tassy::menu-side-treeroot-fork label="Level 2">
-		<x-tassy::menu-side-treeroot-fork-leaf suburl="/admin/tassy/level2/tabs" label="Tabs"/>
 		<x-tassy::menu-side-treeroot-fork-leaf suburl="{{'/admin/'.\TallAndSassy\Ui\Glances\Samples\TabSample1__Page::getSlug()}}" label="Tab Sampler"/>
 	</x-tassy::menu-side-treeroot-fork>
-	<x-tassy::menu-side-treeroot-fork label="Grok">
-		<x-tassy::menu-side-treeroot-fork-leaf suburl="{{'/admin/'.\TallAndSassy\Ui\Glances\Samples\Modals\GrokModalLepage::getSlug()}}" label="Modals"/>
-		<x-tassy::menu-side-treeroot-fork-leaf suburl="/grok" :active="request()->routeIs('grok*')" label="GrokTest"/>
-	</x-tassy::menu-side-treeroot-fork>
-	{{--	<x-tassy::menu-side-treeroot-leaf suburl="/mockups/Mock_User020_Page" label="School Year"/>--}}
-	{{--	<x-tassy::menu-side-treeroot-leaf suburl="/admin/sample_menuside_reject1" label="Season Calendar"/>--}}
+
 </x-tassy::menu-side-treeroot>
