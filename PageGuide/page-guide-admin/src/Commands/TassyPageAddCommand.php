@@ -17,6 +17,7 @@ interface CliChoicer {
     public static function getCliChoice(Command $cmdContext): self;
 }
 
+
 enum EnumControllerType implements CliChoicer {
     case CLASSIC_CONTROLLER;
     case LIVEWIRE_CONTROLLER;
@@ -76,8 +77,26 @@ enum EnumInnerPageType implements CliChoicer {
         return $enumSelf;
     }
 
-    public static function canHaveSideMenuEntry(EnumInnerPageType $likeMe): bool {
-        return in_array($likeMe,[static::MONOLITHIC_PAGE, static::TABBED_PAGE]);
+    public function canHaveSideMenuEntry(): bool {
+        return in_array($this,[static::MONOLITHIC_PAGE, static::TABBED_PAGE]);
+    }
+
+    public static function getDerivedControllerName(string $shortNodeName): string {
+
+    }
+}
+
+enum EnumUpperLowerMenu implements CliChoicer {
+    case UPPER_MENU;
+    case LOWER_MENU;
+
+    public static function getCliChoice(Command $cmdContext): self {
+        $singleLetterChoice =$cmdContext->choice('Where should this menu go? ', ['u' => 'Upper Menu', 'l' => 'Lower Menu'], 'u');
+        $enumSelf = match ($singleLetterChoice) {
+            'u'=>static::UPPER_MENU,
+            'l'=>static::LOWER_MENU,
+        };
+        return $enumSelf;
     }
 }
 
@@ -131,24 +150,9 @@ class TassyPageAddCommand extends Command
         $replacementMap['ReplaceableString_shortNodeName'] =$shortNodeName;
         $this->info('Note: Storing in Livewire doesnt make your admin page a livewire component, cuz it still needs the basic page swap functionality. But it can be useful to store everything either in Livewire, or in Controllers');
         $enumHoming_ControllersLivewire = EnumControllerType::getCliChoice($this);
-        //$enumHoming_ControllersLivewire = EnumControllerType::singleLetterToEnum($this->choice('How do you want to store the page info',['c' => 'app/Http/Controllers', 'l' => 'app/Http/Livewire'], 'l'));
-
         $enumAdminMeFront = EnumSitePageType::getCliChoice($this);
-        //$enumAdminMeFront = EnumSitePageType::singleLetterToEnum($this->choice('You want to add a page, great! Where will it live?', ['f' => '/ (user facing)', 'a' => '/admin', 'm' => '/me'], 'a'));
-        //$replacementMap['enumAdminMeFront'] = $enumAdminMeFront;
-
-
-        // Grouping?
         $enumGroupScheme = EnumGroupingScheme::getCliChoice($this);
-//        $enumGroupScheme = match (
-//        $this->choice('You can group this into a logical directory, keeping the files geographically close to each other. Or, you can keep everything global, like default laravel. Grouping is like a lightweight package', ['g' => 'Group it', 'd' => 'Default Global behavior'], 'g')
-//        ) {
-//            'g' => 'group',
-//            'd' => 'global',
-//
-//        };
         $boolShopLocal = false;
-//        $replacementMap['ReplaceableString_enumGroupScheme'] = $enumGroupScheme;
         if ($enumGroupScheme == EnumGroupingScheme::GLOBAL) {
             $groupName = '';
         } else {
@@ -208,53 +212,6 @@ class TassyPageAddCommand extends Command
 
         // Sub Url
         $_urlPrefix = '';
-//                if ($enumAdminMeFront == 'admin' && !str_starts_with($groupName, 'admin')) {
-//                    $_urlPrefix = 'admin';
-//                } elseif ($enumAdminMeFront == 'me' && !str_starts_with($groupName, 'me')) {
-//                    $_urlPrefix = 'me';
-//                } elseif ($enumAdminMeFront == 'front' && !( str_starts_with($groupName, '/') || empty($groupName) )) {
-//                    $_urlPrefix = '';
-//                } else {
-//                    assert(0,$enumAdminMeFront, $groupName, $_urlPrefix);
-//                }
-
-
-
-
-
-//        // where is this menu?
-//        $existingRoots_plusNew = ['n'=>'New TreeRootLeaf', ...static::GetMenuTreeRoots($enumAdminMeFront)];
-//        $menuPlacement_c = $this->choice('Is this a new root menu item, or will it go under another menu', $existingGroups_plusNew, array_key_first($existingGroups_plusNew));
-//        if ($menuPlacement_c == 'n') {
-//            $groupName = $this->ask("Type the name of your new grouping, like 'Admin/Tasks', or 'Stuff' ", $shortNodeName);
-//            if ($enumGroupScheme != 'global') {
-//                $_fyiResourcesPath  = TassyDomainCommands::GetDomainResourceAbsolutePath( $enumHoming_ControllersLivewire, $groupName, shopLocal:true);
-//
-//                $boolShopLocal = match($this->choice("You have a group, you can choose to also shop locally so the your view files site right there. If local, it will set up a new local 'resources/views' directory for your blade files.\n($_fyiResourcesPath)\n", ['l' => 'Shop Local', 'g' => 'Default Global behavior'], 'l')) {
-//                    'l'=>true,
-//                    'g'=>false,
-//                };
-//            }
-//            TassyDomainCommands::InitializeGroup($enumHoming_ControllersLivewire, $groupName, $boolShopLocal);
-//        } else {
-//            $groupName = TassyDomainCommands::GetDomainNames($enumHoming_ControllersLivewire)[$groupName_c];
-//
-//            $isAlreadyShoppingLocal = TassyDomainCommands::IsAlreadyShoppingLocal($enumHoming_ControllersLivewire, $groupName);
-//            if ($isAlreadyShoppingLocal) {
-//                $boolShopLocal = true;
-//            } else {
-//                $_fyiResourcesPath  = TassyDomainCommands::GetDomainResourceAbsolutePath( $enumHoming_ControllersLivewire, $groupName, shopLocal:true);
-//                $boolShopLocal = match($this->choice("You have an existing group, but it is not yet set up for local shopping. You can start using local shopping.  You can choose to also shop locally so the your view files sit right there. If local, it will set up a new local 'resources/views' directory for your blade files. \n($_fyiResourcesPath)\n", ['l' => 'Shop Local', 'g' => 'Default Global behavior'], 'l')) {
-//                    'l'=>true,
-//                    'g'=>false,
-//                };
-//                if ($boolShopLocal) {
-//                    TassyDomainCommands::InitializeGroup($enumHoming_ControllersLivewire, $groupName, $boolShopLocal);
-//                }
-//            }
-//        }
-//        $isTreeRootLeaf = true;
-
 
 
         // Namespace ReplaceableNamespace
@@ -272,14 +229,6 @@ class TassyPageAddCommand extends Command
 
         // Is Page controller a tabbed page?
         $enumTopPageScheme_tab_page_tabbed = EnumInnerPageType::getCliChoice($this);
-//        $enumTopPageScheme_tab_page_tabbed = match($this->choice('Is page a single top-level page, or a tabbed paged.', ['p' => 'Monolithic Page', 't' => 'Page with tabs', 's'=>'Single Tab (within a page with tabs)', 'm'=>'Modal (Wire-Modal Based)'])) {
-//            'p'=>'monopage',
-//            't'=>'tabbedpage',
-//            's'=>'singletab',
-//            'm'=>'wiremodal'
-//
-//        };//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
-//        $replacementMap['enumTopPageScheme'] = $enumTopPageScheme_tab_page_tabbed;
 
         if ($enumTopPageScheme_tab_page_tabbed == EnumInnerPageType::TABBED_PAGE) {
             $ReplaceableControllerName = $shortNodeName . 'TabbedPageController';
@@ -306,15 +255,8 @@ class TassyPageAddCommand extends Command
         /* Rule: Name groups are shunted into Livewire to avoid infinite file scattering
         */
 
-        if ($enumAdminMeFront == EnumSitePageType::ADMIN && $enumTopPageScheme_tab_page_tabbed != EnumInnerPageType::SINGLE_INNER_TAB) {
-            $enumUpperLower = match (
-            $this->choice('Where should this menu go? ', ['u' => 'Upper Menu', 'l' => 'Lower Menu'], 'u')
-            ) {
-                'u' => 'upper',
-                'l' => 'lower',
-            };
-            // OUTPUT: $enumUpperLower
-            $replacementMap['enumUpperLower'] = $enumUpperLower;
+        if ($enumTopPageScheme_tab_page_tabbed->canHaveSideMenuEntry()) {
+            $enumUpperLower = EnumUpperLowerMenu::getCliChoice($this);
 
             // Label
             $ReplaceableLabel = $this->ask('What is the menu text?', $shortNodeName);//https://github.com/laracademy/interactive-make/blob/master/src/Commands/MakeCommand.php
@@ -577,11 +519,11 @@ class TassyPageAddCommand extends Command
         unset($stub_withEnclosedVars);
     }
 
-    private static function getMenuBladeFileName(string $enumUpperLower): string
+    private static function getMenuBladeFileName(EnumUpperLowerMenu $enumUpperLower): string
     {
-        if ($enumUpperLower == 'upper') {
+        if ($enumUpperLower == EnumUpperLowerMenu::UPPER_MENU) {
             $filename = 'resources/views/vendor/tassy/admin/menu-side-upper-above.blade.php';
-        } elseif ($enumUpperLower == 'lower') {
+        } elseif ($enumUpperLower == EnumUpperLowerMenu::LOWER_MENU) {
             $filename = 'resources/views/vendor/tassy/admin/menu-side-lower-above.blade.php';
         } else {
             assert(0);
