@@ -34,9 +34,5 @@ $asrLocalSamples = [
     @endforeach
 
 
-    Spinner for 'working'
-    <br>
-
-
 
 </div>
